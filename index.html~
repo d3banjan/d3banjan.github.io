@@ -16,7 +16,7 @@ layout: default
     {% endfor %}
   </div>
 
-  {% include pagination.html %}
+  {% include _include/pagination.html %}
 
   <p class="rss-subscribe">subscribe <a href="{{ "/feed.xml" | prepend: site.baseurl }}">via RSS</a></p>
 </div>

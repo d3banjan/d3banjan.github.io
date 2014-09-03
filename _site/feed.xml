@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Polyamide Blog</title>
+    <description>Mostly about productivity, physics and procrastination</description>
+    <link>http://d3banjan.github.io/</link>
+    <atom:link href="http://d3banjan.github.io/feed.xml" rel="self" type="application/rss+xml" />
+    
+      <item>
+        <title>Hello, World!</title>
+        <description>&lt;p&gt;Hi, it is late and I’m tired. But it really feels good to make the first post after spending one whole hour at making this blog happen.  &lt;/p&gt;
+
+&lt;h2 id=&quot;resolutions&quot;&gt;Resolutions&lt;/h2&gt;
+
+&lt;p&gt;This would be my list of TO-DO posts&lt;sup id=&quot;fnref:foot1&quot;&gt;&lt;a href=&quot;#fn:foot1&quot; class=&quot;footnote&quot;&gt;1&lt;/a&gt;&lt;/sup&gt; for the first week of return to blogging:&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;describe the sheer joy of purpose in using git &lt;sup id=&quot;fnref:foot2&quot;&gt;&lt;a href=&quot;#fn:foot2&quot; class=&quot;footnote&quot;&gt;2&lt;/a&gt;&lt;/sup&gt;&lt;/li&gt;
+  &lt;li&gt;describe how I set up this blog by borrowing bits and pieces of technology available to me – some of them turned out to be quite interesting choices to make. The topics I can see right now are:
+    &lt;ul&gt;
+      &lt;li&gt;markdown&lt;/li&gt;
+      &lt;li&gt;jekyll&lt;/li&gt;
+      &lt;li&gt;github and github-pages&lt;/li&gt;
+      &lt;li&gt;adapting a standard jekyll-theme (like me)&lt;/li&gt;
+    &lt;/ul&gt;
+  &lt;/li&gt;
+  &lt;li&gt;do a funny post about cats (&lt;em&gt;sic&lt;/em&gt; Humorous)&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;Night night!&lt;/p&gt;
+&lt;div class=&quot;footnotes&quot;&gt;
+  &lt;ol&gt;
+    &lt;li id=&quot;fn:foot1&quot;&gt;
+      &lt;p&gt;I have been away from blogging for too long, the first few would be a bit techy!  &lt;a href=&quot;#fnref:foot1&quot; class=&quot;reversefootnote&quot;&gt;&amp;#8617;&lt;/a&gt;&lt;/p&gt;
+    &lt;/li&gt;
+    &lt;li id=&quot;fn:foot2&quot;&gt;
+      &lt;p&gt;atleast the subset of it that I use &lt;a href=&quot;#fnref:foot2&quot; class=&quot;reversefootnote&quot;&gt;&amp;#8617;&lt;/a&gt;&lt;/p&gt;
+    &lt;/li&gt;
+  &lt;/ol&gt;
+&lt;/div&gt;
+</description>
+        <pubDate>Wed, 03 Sep 2014 00:00:00 +0200</pubDate>
+        <link>http://d3banjan.github.io/general/2014/09/03/init/</link>
+        <guid isPermaLink="true">http://d3banjan.github.io/general/2014/09/03/init/</guid>
+      </item>
+    
+  </channel>
+</rss>

@@ -1,0 +1,12 @@
+# Site settings
+title: Polyamide Blog
+email: debanjan.basu@tu-clausthal.de
+author: Debanjan Basu
+description: "Mostly about productivity, physics and procrastination"
+baseurl: ""
+url: "http://d3banjan.github.io"
+#google_analytics: TODO 
+# Build settings
+markdown: kramdown
+permalink: pretty
+paginate: 10
