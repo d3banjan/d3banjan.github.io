@@ -9,9 +9,9 @@ The version of YouTube-dl in the repositories doesn't work for playlists anymore
 
 1. Download the recent version, and copy it to a directory in the system path
 
-   sudo wget https://yt-dl.org/latest/youtube-dl -O /usr/local/bin/youtube-dl 
-   sudo chmod a+x /usr/local/bin/youtube-dl
-   sudo ln -s /usr/local/bin/youtube-dl /usr/bin/youtube-dl
+    sudo wget https://yt-dl.org/latest/youtube-dl -O /usr/local/bin/youtube-dl 
+    sudo chmod a+x /usr/local/bin/youtube-dl
+    sudo ln -s /usr/local/bin/youtube-dl /usr/bin/youtube-dl
 
 2. Install yasm
 
