@@ -7,6 +7,29 @@
     <atom:link href="http://d3banjan.github.io/feed.xml" rel="self" type="application/rss+xml" />
     
       <item>
+        <title>YouTube-dl install notes</title>
+        <description>&lt;p&gt;The version of YouTube-dl in the repositories doesn’t work for playlists anymore.  &lt;/p&gt;
+
+&lt;ol&gt;
+  &lt;li&gt;Download the recent version, and copy it to a directory in the system path
+	    sudo wget https://yt-dl.org/latest/youtube-dl -O /usr/local/bin/youtube-dl 
+     sudo chmod a+x /usr/local/bin/youtube-dl
+     sudo ln -s /usr/local/bin/youtube-dl /usr/bin/youtube-dl&lt;/li&gt;
+  &lt;li&gt;Install yasm
+	   sudo apt-get install yasm&lt;/li&gt;
+  &lt;li&gt;Get the recent version of avconv from their (website)[https://libav.org/releases/libav-11.4.tar.gz]. Extract it and go into the directory - and follow up with those magic lines - 
+./configure 
+make
+(sudo) make install&lt;/li&gt;
+&lt;/ol&gt;
+
+</description>
+        <pubDate>Sat, 18 Jul 2015 00:00:00 +0530</pubDate>
+        <link>http://d3banjan.github.io/install-notes/2015/07/18/youtube-dl-notes/</link>
+        <guid isPermaLink="true">http://d3banjan.github.io/install-notes/2015/07/18/youtube-dl-notes/</guid>
+      </item>
+    
+      <item>
         <title>Hello, World!</title>
         <description>&lt;p&gt;Hi, it is late and I’m tired. But it really feels good to make the first post after spending one whole hour at making this blog happen.  &lt;/p&gt;
 
@@ -39,7 +62,7 @@
   &lt;/ol&gt;
 &lt;/div&gt;
 </description>
-        <pubDate>Wed, 03 Sep 2014 00:00:00 +0200</pubDate>
+        <pubDate>Wed, 03 Sep 2014 00:00:00 +0530</pubDate>
         <link>http://d3banjan.github.io/general/2014/09/03/init/</link>
         <guid isPermaLink="true">http://d3banjan.github.io/general/2014/09/03/init/</guid>
       </item>
