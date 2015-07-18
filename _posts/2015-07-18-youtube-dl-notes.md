@@ -15,11 +15,11 @@ The version of YouTube-dl in the repositories doesn't work for playlists anymore
 
 2. Install yasm
 
-   	   sudo apt-get install yasm
+   	    sudo apt-get install yasm
 
 3. Get the recent version of avconv from their (website)[https://libav.org/releases/libav-11.4.tar.gz]. Extract it and go into the directory - and follow up with those magic lines - 
 
-          ./configure 
-   	  make
-   	  (sudo) make install
+            ./configure 
+   	    make
+   	    (sudo) make install
    
