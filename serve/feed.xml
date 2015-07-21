@@ -11,8 +11,7 @@
         <description>&lt;p&gt;The problem with learning a mature tool/framework like &lt;code&gt;Qt&lt;/code&gt; is that there is a lot of boilerplate code to be written to get to the relatively simple problem that I am trying to solve by myself. Here I try to compile a list of resources I found useful in my quest to teach myself &lt;code&gt;Qt&lt;/code&gt;, with some commentary on their usefulness to my present state. There is some dearth of resources, however, that establish the organization and philosophy of &lt;code&gt;Qt&lt;/code&gt; development libraries/framework/tools for beginners like me.  &lt;/p&gt;
 
 &lt;h2 id=&quot;resources&quot;&gt;Resources&lt;/h2&gt;
-
-&lt;h3 id=&quot;video-tutorials&quot;&gt;Video Tutorials&lt;/h3&gt;
+&lt;p&gt;### Video Tutorials  &lt;/p&gt;
 
 &lt;p&gt;While I did find some nice resources online, the primary one being &lt;a href=&quot;https://www.youtube.com/watch?v=6KtOzh0StTc&amp;amp;list=PL2D1942A4688E9D63&quot;&gt;the C++ Qt GUI video tutorial series by VoidRealms on YouTube&lt;/a&gt;. What bugged me a lot was that this series relies heavily on using Qt Creator as an IDE, and that it is completely hands on and pragmatic in its approach to teaching Qt. I would have preferred being introduced to the organization of the libraries and the philosophy before diving in the tutorials and demos. &lt;/p&gt;
 
@@ -132,8 +131,8 @@
 
 </description>
         <pubDate>Tue, 21 Jul 2015 00:00:00 +0530</pubDate>
-        <link>http://d3banjan.github.io/self-teaching-notes/2015/07/21/qt-pt-01-overview/</link>
-        <guid isPermaLink="true">http://d3banjan.github.io/self-teaching-notes/2015/07/21/qt-pt-01-overview/</guid>
+        <link>http://d3banjan.github.io/self-teaching-notes/qt/qml/2015/07/21/qt-pt-01-overview/</link>
+        <guid isPermaLink="true">http://d3banjan.github.io/self-teaching-notes/qt/qml/2015/07/21/qt-pt-01-overview/</guid>
       </item>
     
       <item>
