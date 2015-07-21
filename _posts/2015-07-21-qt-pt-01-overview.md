@@ -6,7 +6,8 @@ categories: self-teaching-notes qt qml
 ---
 The problem with learning a mature tool/framework like `Qt` is that there is a lot of boilerplate code to be written to get to the relatively simple problem that I am trying to solve by myself. Here I try to compile a list of resources I found useful in my quest to teach myself `Qt`, with some commentary on their usefulness to my present state. There is some dearth of resources, however, that establish the organization and philosophy of `Qt` development libraries/framework/tools for beginners like me.  
 
-##Resources
+Resources
+--------
 A list of important resources follows -
  
 ### Video Tutorials  
