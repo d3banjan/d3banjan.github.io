@@ -10,3 +10,6 @@ url: "http://d3banjan.github.io"
 markdown: kramdown
 permalink: pretty
 paginate: 10
+#kramdown options 
+kramdown:
+  input: GFM

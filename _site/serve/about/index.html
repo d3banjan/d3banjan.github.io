@@ -3,12 +3,12 @@
 <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <title>YouTube-dl install notes &#8211; Polyamide Blog</title>
+    <title>About Polyamide &#8211; Polyamide Blog</title>
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <meta name="description" content="starting from Ubuntu 14.04.2 LTS - trying to make YouTube-dl work led me down a tunnel.">
+    <meta name="description" content="Mostly about productivity, physics and procrastination">
     <meta name="author" content="Debanjan Basu">
-    <meta name="keywords" content="install-notes">
-    <link rel="canonical" href="http://d3banjan.github.io/install-notes/2015/07/18/youtube-dl-notes/">
+    
+    <link rel="canonical" href="http://d3banjan.github.io/about/">
     <meta name="p:domain_verify" content="ec8955def19629028ff9cf6ca0bf98a1"/>
     <!-- Custom CSS -->
     <link rel="stylesheet" href="/css/basscss.css" type="text/css">
@@ -37,41 +37,25 @@
 
     <div class="post p2 p-responsive wrap" role="main">
       <div class="measure">
-        <div class="post-header mb2">
-  <h1 class="py2">YouTube-dl install notes</h1>
-  <span class="post-meta">Jul 18, 2015</span>
+        <div class="post">
+  <header class="post-header">
+    <h1 class="h2">About Polyamide</h1>
+  </header>
+  <article class="post-content">
+  <p>Debanjan Basu</p>
+
+<p>Thanks to the following:</p>
+
+<ul>
+  <li><a href="http://basscss.com">BASSCSS</a></li>
+  <li><a href="http://jekyllrb.com">Jekyll</a></li>
+  <li><a href="http://refills.bourbon.io/">Refills</a></li>
+  <li><a href="http://ethanschoonover.com/solarized">Solarized</a></li>
+  <li><a href="http://johnotander.com">John Otander</a>(<a href="https://twitter.com/4lpine">@4lpine</a>) who created the <a href="https://github.com/johnotander/pixyll"> <strong>pixyll</strong> theme</a> </li>
+</ul>
+
+  </article>
 </div>
-
-<article class="post-content">
-  <p>The version of YouTube-dl in the repositories doesn’t work for playlists anymore.  </p>
-
-<ol>
-  <li>
-    <p>Download the recent version, and copy it to a directory in the system path</p>
-
-    <pre><code>    sudo wget https://yt-dl.org/latest/youtube-dl -O /usr/local/bin/youtube-dl 
- sudo chmod a+x /usr/local/bin/youtube-dl
- sudo ln -s /usr/local/bin/youtube-dl /usr/bin/youtube-dl
-</code></pre>
-  </li>
-  <li>
-    <p>Install yasm</p>
-
-    <pre><code>   sudo apt-get install yasm
-</code></pre>
-  </li>
-  <li>
-    <p>Get the recent version of avconv from their (website)[https://libav.org/releases/libav-11.4.tar.gz]. Extract it and go into the directory - and follow up with those magic lines - </p>
-
-    <pre><code>	   ./configure 
-   make
-   (sudo) make install
-</code></pre>
-  </li>
-</ol>
-
-
-</article>
 
       </div>
     </div>

@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>Qt Notes 01 &#8211; Polyamide Blog</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="Overview and strategy for teaching myself Qt systematically.">
+    <meta name="author" content="Debanjan Basu">
+    <meta name="keywords" content="self-teaching-notes">
+    <link rel="canonical" href="http://d3banjan.github.io/self-teaching-notes/2015/07/21/qt-pt-01-overview/">
+    <meta name="p:domain_verify" content="ec8955def19629028ff9cf6ca0bf98a1"/>
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="/css/basscss.css" type="text/css">
+    <link rel="stylesheet" href="/css/pixyll.css" type="text/css">
+    <link rel="stylesheet" href="/css/solarized-dark.css" type="text/css">
+
+    <!-- Fonts -->
+    <link href='http://fonts.googleapis.com/css?family=Merriweather:900,900italic,300,300italic' rel='stylesheet' type='text/css'>
+    <link href='http://fonts.googleapis.com/css?family=Lato:900,300' rel='stylesheet' type='text/css'>
+</head>
+
+<body>
+  <div class="site-wrap">
+    <header class="site-header px2 px-responsive">
+  <div class="mt2 wrap">
+    <div class="measure">
+      <a href="http://d3banjan.github.io">Polyamide Blog</a>
+      <nav class="site-nav right">
+        <a href="/about/">About</a>
+
+      </nav>
+    </div>
+  </div>
+</header>
+
+
+    <div class="post p2 p-responsive wrap" role="main">
+      <div class="measure">
+        <div class="post-header mb2">
+  <h1 class="py2">Qt Notes 01</h1>
+  <span class="post-meta">Jul 21, 2015</span>
+</div>
+
+<article class="post-content">
+  <p>The problem with learning a mature tool/framework like <code>Qt</code> is that there is a lot of boilerplate code to be written to get to the relatively simple problem that I am trying to solve by myself. Here I try to compile a list of resources I found useful in my quest to teach myself <code>Qt</code>, with some commentary on their usefulness to my present state. There is some dearth of resources, however, that establish the organization and philosophy of <code>Qt</code> development libraries/framework/tools for beginners like me.  </p>
+
+<h2 id="resources">Resources</h2>
+
+<h3 id="video-tutorials">Video Tutorials</h3>
+
+<p>While I did find some nice resources online, the primary one being <a href="https://www.youtube.com/watch?v=6KtOzh0StTc&amp;list=PL2D1942A4688E9D63">the C++ Qt GUI video tutorial series by VoidRealms on YouTube</a>. What bugged me a lot was that this series relies heavily on using Qt Creator as an IDE, and that it is completely hands on and pragmatic in its approach to teaching Qt. I would have preferred being introduced to the organization of the libraries and the philosophy before diving in the tutorials and demos. </p>
+
+<p>I also zipped through <a href="https://www.youtube.com/watch?v=vQr3fljHizc&amp;list=PL2F919ADECA5E39A6">the C++ series by the same channel</a> which was awesome for me because I am well versed with fortran and the language features were faster to pick up here. I do not think this C++ series is a good idea for someone who is being introduced to a compiled language for the first time. This tutorial also uses Microsoft Visual Studio heavily as an IDE and would have done better without it. </p>
+
+<p><a href="https://www.youtube.com/playlist?list=PLD0D54219E5F2544D">The video tutorials by newboston on YouTube</a> were more up my alley – because of its insistence on introducing the code first and then GUI features of <code>Qt Creator</code> to accomplish that goal, or not. This is much more introductory than the one by VoidRealms. And much shorter. </p>
+
+<h3 id="the-qt-docs">The Qt Docs</h3>
+<p>The <a href="http://doc.qt.io/qt-5">official Qt documentation</a> was, surprisingly, the last place I looked for an overview of the Qt Toolchain, or atleast the toolchain that I would end up using the most later on. I would urge anyone who finds my learning path similar to their own to go through the following pages in the <code>Qt</code> Docs. I tried to write down a quick guide for looking through :  </p>
+
+<h4 id="about-qthttpwikiqtioaboutqt"><a href="http://wiki.qt.io/About_Qt"><strong>About Qt</strong></a></h4>
+<blockquote>
+  <p>Qt is a <strong>cross-platform</strong> application development framework for desktop, embedded and mobile. </p>
+</blockquote>
+
+<p>The best thing about <code>Qt</code> is that you can compile the same source code to run on Windows, Linux or Android. Although Graphical Elements are a large part of the <code>Qt</code> library, it provides additional tools to simplify common problems that come up in application development - like APIs for network programming, multimedia, SQL, webkit elements and widgets or unit testing.  </p>
+
+<blockquote>
+  <p>Qt is not a programming language by its own. It is a <strong>framework</strong> written in C++.</p>
+</blockquote>
+
+<blockquote>
+  <p>Before the compilation step, the <a href="http://doc.qt.io/qt-5/moc.html">MOC(Meta-Object Compiler)</a> parses the source files written in <strong>Qt-extended C++</strong> and generates <strong>standard compliant C++</strong> sources from them. </p>
+</blockquote>
+
+<p>So, Qt-Extended C++ <strong>—MOC—»</strong> C++ <strong>—GCC/other compiler—»</strong> Executable</p>
+
+<h4 id="qt-moduleshttpdocqtioqt-5qtmoduleshtml"><a href="http://doc.qt.io/qt-5/qtmodules.html"><strong>Qt Modules</strong></a></h4>
+<p>This table from the above-mentioned page on <code>Qt</code> modules is a nice resource to visualize the organization of the core modules.</p>
+
+<table>
+  <thead>
+    <tr>
+      <th>Module</th>
+      <th>Description</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>Qt Core</td>
+      <td>Core non-graphical classes used by other modules.</td>
+    </tr>
+    <tr>
+      <td>Qt GUI</td>
+      <td>Base classes for graphical user interface (GUI) components. Includes OpenGL.</td>
+    </tr>
+    <tr>
+      <td>Qt Multimedia</td>
+      <td>Classes for audio, video, radio and camera functionality.</td>
+    </tr>
+    <tr>
+      <td>Qt Multimedia Widgets</td>
+      <td>Widget-based classes for implementing multimedia functionality.</td>
+    </tr>
+    <tr>
+      <td>Qt Network</td>
+      <td>Classes to make network programming easier and more portable.</td>
+    </tr>
+    <tr>
+      <td>Qt QML</td>
+      <td>Classes for QML and JavaScript languages.</td>
+    </tr>
+    <tr>
+      <td>Qt Quick</td>
+      <td>A declarative framework for building highly dynamic applications with custom user interfaces.</td>
+    </tr>
+    <tr>
+      <td>Qt Quick Controls</td>
+      <td>Reusable Qt Quick based UI controls to create classic desktop-style user interfaces.</td>
+    </tr>
+    <tr>
+      <td>Qt Quick Dialogs</td>
+      <td>Types for creating and interacting with system dialogs from a Qt Quick application.</td>
+    </tr>
+    <tr>
+      <td>Qt Quick Layouts</td>
+      <td>Layouts are items that are used to arrange Qt Quick 2 based items in the user interface.</td>
+    </tr>
+    <tr>
+      <td>Qt SQL</td>
+      <td>Classes for database integration using SQL.</td>
+    </tr>
+    <tr>
+      <td>Qt Test</td>
+      <td>Classes for unit testing Qt applications and libraries.</td>
+    </tr>
+    <tr>
+      <td>Qt WebKit (Deprecated)</td>
+      <td>Classes for a WebKit2 based implementation and a QML API. Deprecated in favor of Qt WebEngine.</td>
+    </tr>
+    <tr>
+      <td>Qt WebKit Widgets (Deprecated)</td>
+      <td>WebKit1 and QWidget-based classes from Qt 4.</td>
+    </tr>
+    <tr>
+      <td>Qt Widgets</td>
+      <td>Classes to extend Qt GUI with C++ widgets.</td>
+    </tr>
+  </tbody>
+</table>
+
+<h4 id="qt-reference-pageshttpdocqtioqt-5reference-overviewhtml"><a href="http://doc.qt.io/qt-5/reference-overview.html"><strong><code>Qt</code> reference pages</strong></a></h4>
+<p>This is not a resource by itself but this is pretty good as a gateway to information that would be invaluable once we actually start using <code>Qt</code> hands on. </p>
+
+<h4 id="examples-and-tutorialshttpdocqtioqt-5qtexamplesandtutorialshtml"><a href="http://doc.qt.io/qt-5/qtexamplesandtutorials.html"><strong>Examples and Tutorials</strong></a></h4>
+<p>This is a similarly valuable <strong>“gateway”</strong> resource that would come in handy for reading simple blocks of understandable and well commented code later on. </p>
+
+<h4 id="all-overviewshttpdocqtioqt-5overviewshtml"><a href="http://doc.qt.io/qt-5/overviews.html"><strong>All Overviews</strong></a></h4>
+<p>This is a list of all <strong>overviews</strong>, i.e a strongly hierarchical documentation that culminates in a highly detailed page on specific topics. I would probably use these for reference and not for initial studying.</p>
+
+<h4 id="qml-and-qt-quickhttpdocqtioqt-5qmlapplicationshtml"><a href="http://doc.qt.io/qt-5/qmlapplications.html"><strong>QML and Qt Quick</strong></a></h4>
+<p>This describes the QML language in detail that can be used for rapid protyping development as Qt Quick projects and also as an API sometimes.</p>
+
+<blockquote>
+  <p>Qt Quick is the standard library of types and functionality for QML. It includes visual types, interactive types, animations, models and views, particle effects and shader effects. </p>
+</blockquote>
+
+
+</article>
+
+      </div>
+    </div>
+  </div>
+
+  <footer class="footer">
+  <div class="p2 wrap">
+    <div class="measure mt1 center">
+      <small>
+	Blog Page of a certain [Debanjan Basu](mailto://debanjan.basu@tu-clausthal.de) 
+      </small>
+    </div>
+  </div>
+</footer>
+
+
+
+</body>
+</html>
