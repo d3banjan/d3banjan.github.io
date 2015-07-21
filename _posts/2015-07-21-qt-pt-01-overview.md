@@ -6,7 +6,9 @@ categories: self-teaching-notes qt qml
 ---
 The problem with learning a mature tool/framework like `Qt` is that there is a lot of boilerplate code to be written to get to the relatively simple problem that I am trying to solve by myself. Here I try to compile a list of resources I found useful in my quest to teach myself `Qt`, with some commentary on their usefulness to my present state. There is some dearth of resources, however, that establish the organization and philosophy of `Qt` development libraries/framework/tools for beginners like me.  
 
-##Resources 
+##Resources
+A list of important resources follows -
+ 
 ### Video Tutorials  
 
 While I did find some nice resources online, the primary one being [the C++ Qt GUI video tutorial series by VoidRealms on YouTube](https://www.youtube.com/watch?v=6KtOzh0StTc&list=PL2D1942A4688E9D63). What bugged me a lot was that this series relies heavily on using Qt Creator as an IDE, and that it is completely hands on and pragmatic in its approach to teaching Qt. I would have preferred being introduced to the organization of the libraries and the philosophy before diving in the tutorials and demos. 
