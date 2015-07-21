@@ -34,7 +34,7 @@ The best thing about `Qt` is that you can compile the same source code to run on
 
 So, Qt-Extended C++ **---MOC--->>** C++ **---GCC/other compiler--->>** Executable
 
-####[**Qt Modules**](http://doc.qt.io/qt-5/qtmodules.html)
+#### [**Qt Modules**](http://doc.qt.io/qt-5/qtmodules.html)
 This table from the above-mentioned page on `Qt` modules is a nice resource to visualize the organization of the core modules.
 
 |    Module	    	      |	      Description									             |
