@@ -11,7 +11,7 @@ Resources
 A list of important resources follows -
  
 ### Video Tutorials  
-
+x
 While I did find some nice resources online, the primary one being [the C++ Qt GUI video tutorial series by VoidRealms on YouTube](https://www.youtube.com/watch?v=6KtOzh0StTc&list=PL2D1942A4688E9D63). What bugged me a lot was that this series relies heavily on using Qt Creator as an IDE, and that it is completely hands on and pragmatic in its approach to teaching Qt. I would have preferred being introduced to the organization of the libraries and the philosophy before diving in the tutorials and demos. 
 
 I also zipped through [the C++ series by the same channel](https://www.youtube.com/watch?v=vQr3fljHizc&list=PL2F919ADECA5E39A6) which was awesome for me because I am well versed with fortran and the language features were faster to pick up here. I do not think this C++ series is a good idea for someone who is being introduced to a compiled language for the first time. This tutorial also uses Microsoft Visual Studio heavily as an IDE and would have done better without it. 
@@ -65,9 +65,10 @@ This is a similarly valuable **"gateway"** resource that would come in handy for
 This is a list of all **overviews**, i.e a strongly hierarchical documentation that culminates in a highly detailed page on specific topics. I would probably use these for reference and not for initial studying.
 
 #### [**QML and Qt Quick**](http://doc.qt.io/qt-5/qmlapplications.html) 
-This describes the QML language in detail that can be used for rapid protyping development as Qt Quick projects and also as an API sometimes.
+This describes the QML language in detail that can be used for rapid prototyping development as Qt Quick projects and also as an API sometimes to do certain common things without writing any C++ code.
 
 >Qt Quick is the standard library of types and functionality for QML. It includes visual types, interactive types, animations, models and views, particle effects and shader effects. 
 
-
+### [**(Book) Intro to Design Patterns in C++ with Qt** ](http://www.ics.com/design-patterns)
+This book was a perfect fit for my specific use case. I didn't know C++ before I wanted to learn Qt. This book uses Qt features to teach C++. This is an awesome idea because Qt makes available a lot of different functionality to the new student and you tend to write a lot less code to see an appreciable result as compared to using the Standard Library Features. This leads to easier and faster iterations, having access to Qt creator, which is a superb IDE by any standards. Especially since I have done all of the above mentioned video tutorials - I have an overview of how Qt works for some problems and that puts me at a perfect position to delve deeper and play around a bit more with the framework. 
  
