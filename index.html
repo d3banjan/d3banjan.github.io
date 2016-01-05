@@ -5,6 +5,7 @@ layout: default
 <div class="home">
   {% include navbar.html %}
 
+<div class="debug">
   <h2>navlist for debug</h2>
   <h3>list of site posts</h3>
   <ul>
@@ -14,8 +15,8 @@ layout: default
   </ul>
   <h3>list of categories</h3>
   <ul>
-  {% for cat in site.categories %}
-    <li>{{ cat.first }}</li>
+  {% for category in site.category-list %}
+    <li>{{ category }}{% if site.categories contains category %}(present){% endif %}</li>
   {% endfor %}
   </ul>
   <h3>list of tags</h3>
@@ -24,6 +25,16 @@ layout: default
     <li>{{ tag.first }}</li>
   {% endfor %}
   </ul>
+
+  <h4>TODO:</h4>
+  <ul>
+    <li>create navbar based on categories</li>
+    <li>create a tag cloud</li>
+    <li>better typography and columns with bootstrap</li>
+    <li>wth is Sass?</li>
+  </ul>
+
+</div>
 
   <div class="posts">
     <div class="post">
