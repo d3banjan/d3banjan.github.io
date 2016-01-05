@@ -3,7 +3,19 @@ layout: default
 ---
 
 <div class="home">
-
+  {% include navbar.html %}
+  <h3>list of site pages</h3>
+  <ul>
+    {% for post in site.posts %}
+    <li>{{post.title}}</li>
+    {% endfor %}
+  </ul>
+  <h3>list of metatags</h3>
+  <ul>
+  {% for mt in site.metatags %}
+    <li>{{ mt }}</li>
+  {% endfor %}
+  </ul>
   <div class="posts">
     {% for post in paginator.posts %}
       <div class="post">
