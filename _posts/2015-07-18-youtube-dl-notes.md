@@ -2,8 +2,8 @@
 layout:		post
 title: 		YouTube-dl install notes
 summary:	starting from Ubuntu 14.04.2 LTS - trying to make YouTube-dl work led me down a tunnel.
-metatag: 	software
-categories:	install-notes
+category: 	software
+tag:	install-notes
 ---
 
 The version of YouTube-dl in the repositories doesn't work for playlists anymore.  

@@ -5,12 +5,12 @@ author: Debanjan Basu
 description: "Mostly about productivity, physics and procrastination"
 baseurl: ""
 url: "http://d3banjan.github.io"
-metatags: [ journal , software , physics , literary , opinions ]
+#categories: [ all , journal , software , physics , literary , opinions , none ]
 #google_analytics: TODO 
 # Build settings
 markdown: kramdown
 permalink: pretty
-paginate: 10
+#paginate: 10
 #kramdown options 
 kramdown:
   input: GFM

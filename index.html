@@ -4,31 +4,40 @@ layout: default
 
 <div class="home">
   {% include navbar.html %}
-  <h3>list of site pages</h3>
+
+  <h2>navlist for debug</h2>
+  <h3>list of site posts</h3>
   <ul>
     {% for post in site.posts %}
-    <li>{{post.title}}</li>
+    <li><a href="{{post.url | prepend: site.baseurl }}"> {{ post.title }} </a></li>
     {% endfor %}
   </ul>
-  <h3>list of metatags</h3>
+  <h3>list of categories</h3>
   <ul>
-  {% for mt in site.metatags %}
-    <li>{{ mt }}</li>
+  {% for cat in site.categories %}
+    <li>{{ cat.first }}</li>
   {% endfor %}
   </ul>
+  <h3>list of tags</h3>
+  <ul>
+  {% for tag in site.tags %}
+    <li>{{ tag.first }}</li>
+  {% endfor %}
+  </ul>
+
   <div class="posts">
-    {% for post in paginator.posts %}
-      <div class="post">
-        <a href="{{ post.url | prepend: site.baseurl }}" class="post-link">
-          <p class="post-meta">{{ post.date | date: "%b %-d, %Y" }}</p>
-          <h3 class="h2 post-title">{{ post.title }}</h3>
-          <p class="post-summary">{{ post.summary }}</p>
-        </a>
-      </div>
-    {% endfor %}
+    <div class="post">
+      {% for post in site.posts %}
+      <a href="{{ post.url | prepend: site.baseurl }}" class="post-link">
+        <p class="post-meta">{{ post.date | date: "%b %-d, %Y" }}</p>
+        <h3 class="h2 post-title">{{ post.title }}</h3>
+        <p class="post-summary">{{ post.summary }}</p>
+      </a>
+      {% endfor %}
+    </div>
   </div>
 
-  {% include pagination.html %}
+  <!-- {% include pagination.html %} -->
 
   <p class="rss-subscribe">subscribe <a href="{{ "/feed.xml" | prepend: site.baseurl }}">via RSS</a></p>
 </div>
