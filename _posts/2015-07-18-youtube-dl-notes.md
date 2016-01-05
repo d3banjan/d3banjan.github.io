@@ -2,6 +2,7 @@
 layout:		post
 title: 		YouTube-dl install notes
 summary:	starting from Ubuntu 14.04.2 LTS - trying to make YouTube-dl work led me down a tunnel.
+metatag: 	software
 categories:	install-notes
 ---
 
