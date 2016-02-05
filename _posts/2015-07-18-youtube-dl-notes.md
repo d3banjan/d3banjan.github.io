@@ -8,7 +8,7 @@ tag:	install-notes
 
 The version of YouTube-dl in the repositories doesn't work for playlists anymore.  
 
-1. Download the recent version, and copy it to a directory in the system path
+1. Download the recent version, and copy it to a directory in the system path  
 
    	    sudo wget https://yt-dl.org/latest/youtube-dl -O /usr/local/bin/youtube-dl 
 	    sudo chmod a+x /usr/local/bin/youtube-dl
