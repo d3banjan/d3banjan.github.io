@@ -3,52 +3,60 @@ layout: default
 ---
 
 <div class="home">
-  {% include navbar.html %}
-
-<div class="debug">
-  <h2>navlist for debug</h2>
-  <h3>list of site posts</h3>
-  <ul>
-    {% for post in site.posts %}
-    <li><a href="{{post.url | prepend: site.baseurl }}"> {{ post.title }} </a></li>
-    {% endfor %}
-  </ul>
-  <h3>list of categories</h3>
-  <ul>
-  {% for category in site.category-list %}
-    <li>{{ category }}{% if site.categories contains category %}(present){% endif %}</li>
-  {% endfor %}
-  </ul>
-  <h3>list of tags</h3>
-  <ul>
-  {% for tag in site.tags %}
-    <li>{{ tag.first }}</li>
-  {% endfor %}
-  </ul>
-
-  <h4>TODO:</h4>
-  <ul>
-    <li>create navbar based on categories</li>
-    <li>create a tag cloud</li>
-    <li>better typography and columns with bootstrap</li>
-    <li>wth is Sass?</li>
-  </ul>
-
-</div>
-
-  <div class="posts">
-    <div class="post">
-      {% for post in site.posts %}
-      <a href="{{ post.url | prepend: site.baseurl }}" class="post-link">
-        <p class="post-meta">{{ post.date | date: "%b %-d, %Y" }}</p>
-        <h3 class="h2 post-title">{{ post.title }}</h3>
-        <p class="post-summary">{{ post.summary }}</p>
-      </a>
-      {% endfor %}
-    </div>
-  </div>
-
-  <!-- {% include pagination.html %} -->
-
+ {% include navbar.html %}
+ <div class="container">
+   <div class="panel-group">
+     <div class="panel panel-default">
+       <div class="panel-heading">
+         <h4 class="panel-title">
+           <a data-toggle="collapse" href="#collapse1">debug / sidebar content</a>
+         </h4>
+       </div>
+       <div id="collapse1" class="panel-collapse collapse">
+         <div class="panel-body">
+           testing
+           <!-- <h3>list of site posts</h3>
+           <ul>
+             {% for post in site.posts %}
+             <li><a href="{{post.url | prepend: site.baseurl }}"> {{ post.title }} </a></li>
+             {% endfor %}
+           </ul>
+           <h5>list of categories</h3>
+           <ul>
+             {% for category in site.category-list %}
+             <li>{{ category }}{% if site.categories contains category %}(present){% endif %}</li>
+             {% endfor %}
+           </ul>
+           <h5>list of tags</h3>
+           <ul>
+             {% for tag in site.tags %}
+             <li>{{ tag.first }}</li>
+             {% endfor %}
+           </ul>
+           <h5>TODO:</h4>
+           <ul>
+             <li>create navbar based on categories</li>
+             <li>create a tag cloud</li>
+             <li>better typography and columns with bootstrap</li>
+             <li>wth is Sass?</li>
+           </ul> -->
+         </div>
+       </div>
+       <!-- <div class="panel-footer">Panel Footer</div> -->
+     </div>
+   </div>
+ </div>
+ <div class="posts">
+   <div class="post">
+     {% for post in site.posts %}
+     <a href="{{ post.url | prepend: site.baseurl }}" class="post-link">
+       <p class="post-meta">{{ post.date | date: "%b %-d, %Y" }}</p>
+       <h3 class="h2 post-title">{{ post.title }}</h3>
+       <p class="post-summary">{{ post.summary }}</p>
+     </a>
+     {% endfor %}
+   </div>
+ </div>
+<!-- {% include pagination.html %} -->
   <p class="rss-subscribe">subscribe <a href="{{ "/feed.xml" | prepend: site.baseurl }}">via RSS</a></p>
 </div>
