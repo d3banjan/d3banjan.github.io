@@ -12,7 +12,7 @@ Resources
 A list of important resources follows -
  
 ### Video Tutorials  
-x
+
 While I did find some nice resources online, the primary one being [the C++ Qt GUI video tutorial series by VoidRealms on YouTube](https://www.youtube.com/watch?v=6KtOzh0StTc&list=PL2D1942A4688E9D63). What bugged me a lot was that this series relies heavily on using Qt Creator as an IDE, and that it is completely hands on and pragmatic in its approach to teaching Qt. I would have preferred being introduced to the organization of the libraries and the philosophy before diving in the tutorials and demos. 
 
 I also zipped through [the C++ series by the same channel](https://www.youtube.com/watch?v=vQr3fljHizc&list=PL2F919ADECA5E39A6) which was awesome for me because I am well versed with fortran and the language features were faster to pick up here. I do not think this C++ series is a good idea for someone who is being introduced to a compiled language for the first time. This tutorial also uses Microsoft Visual Studio heavily as an IDE and would have done better without it. 
