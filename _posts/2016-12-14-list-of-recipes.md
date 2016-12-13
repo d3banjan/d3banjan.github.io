@@ -13,10 +13,11 @@ While a set of articles are being downloaded (in the requisite order) at low spe
 - if download happens in the correct order, this can be improved to a scheme where once concatenated files are not concatenated again. 
 - generate makefile and create targets to create a binary tree such that updates take minimal computational effort - too  fancy! 
 
-    set -x 
+
+    set -x
     while sleep 300 
     do for file in `find -maxdepth 1 | grep fulltext | grep -v html`
-      do mv $file pdfs/$file.pdf
-      done
-      pdfunite pdfs/*.pdf ~/ownCloud/Documents/resonance.pdf
+        do mv $file pdfs/$file.pdf
+        done
+        pdfunite pdfs/*.pdf ~/ownCloud/Documents/resonance.pdf
     done
