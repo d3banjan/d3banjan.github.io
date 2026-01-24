@@ -9,41 +9,236 @@ import { SITE_DESCRIPTION, SITE_TITLE } from '../consts';
 <html lang="en">
 	<head>
 		<BaseHead title={SITE_TITLE} description={SITE_DESCRIPTION} />
+		<style>
+			main {
+				width: 960px;
+				max-width: calc(100% - 2em);
+				margin: auto;
+				padding: 3em 1em;
+			}
+			.tagline {
+				font-style: italic;
+				color: var(--accent);
+				font-size: 1.1em;
+				margin-bottom: 0.5em;
+			}
+			.location {
+				color: rgb(var(--gray));
+				margin-bottom: 2em;
+			}
+			section {
+				margin-bottom: 2.5em;
+			}
+			h2 {
+				border-bottom: 2px solid var(--accent);
+				padding-bottom: 0.3em;
+				margin-bottom: 1em;
+			}
+			.topics {
+				display: grid;
+				grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+				gap: 1em;
+				margin-top: 1em;
+			}
+			.topic {
+				padding: 1em;
+				background: rgba(var(--gray-light), 0.1);
+				border-radius: 4px;
+			}
+			.topic h3 {
+				margin: 0 0 0.5em 0;
+				color: var(--accent);
+				font-size: 1em;
+			}
+			.topic p {
+				margin: 0;
+				font-size: 0.95em;
+				color: rgb(var(--gray));
+			}
+			.topic h3 a {
+				color: var(--accent);
+				text-decoration: none;
+			}
+			.topic h3 a:hover {
+				text-decoration: underline;
+			}
+			.topic p a {
+				color: var(--accent);
+			}
+			.cta {
+				margin-top: 2em;
+			}
+			.cta a {
+				display: inline-block;
+				background: var(--accent);
+				color: white;
+				padding: 0.6em 1.5em;
+				border-radius: 4px;
+				text-decoration: none;
+				margin-right: 1em;
+				margin-bottom: 0.5em;
+			}
+			.cta a:hover {
+				opacity: 0.9;
+			}
+			.cta a.secondary {
+				background: transparent;
+				border: 1px solid var(--accent);
+				color: var(--accent);
+			}
+			.contact-reveal {
+				color: var(--accent);
+				cursor: pointer;
+				text-decoration: underline;
+				background: none;
+				border: none;
+				font: inherit;
+				padding: 0;
+			}
+			.contact-info {
+				margin-top: 1em;
+				padding: 1em;
+				background: rgba(var(--gray-light), 0.1);
+				border-radius: 4px;
+				display: none;
+			}
+			.contact-info.visible {
+				display: block;
+			}
+		</style>
 	</head>
 	<body>
 		<Header />
 		<main>
-			<h1>🧑‍🚀 Hello, Astronaut!</h1>
-			<p>
-				Welcome to the official <a href="https://astro.build/">Astro</a> blog starter template. This template
-				serves as a lightweight, minimally-styled starting point for anyone looking to build a personal
-				website, blog, or portfolio with Astro.
-			</p>
-			<p>
-				This template comes with a few integrations already configured in your
-				<code>astro.config.mjs</code> file. You can customize your setup with
-				<a href="https://astro.build/integrations">Astro Integrations</a> to add tools like Tailwind,
-				React, or Vue to your project.
-			</p>
-			<p>Here are a few ideas on how to get started with the template:</p>
-			<ul>
-				<li>Edit this page in <code>src/pages/index.astro</code></li>
-				<li>Edit the site header items in <code>src/components/Header.astro</code></li>
-				<li>Add your name to the footer in <code>src/components/Footer.astro</code></li>
-				<li>Check out the included blog posts in <code>src/content/blog/</code></li>
-				<li>Customize the blog post page layout in <code>src/layouts/BlogPost.astro</code></li>
-			</ul>
-			<p>
-				Have fun! If you get stuck, remember to
-				<a href="https://docs.astro.build/">read the docs</a>
-				or <a href="https://astro.build/chat">join us on Discord</a> to ask questions.
-			</p>
-			<p>
-				Looking for a blog template with a bit more personality? Check out
-				<a href="https://github.com/Charca/astro-blog-template">astro-blog-template</a>
-				by <a href="https://twitter.com/Charca">Maxi Ferreira</a>.
-			</p>
+			<h1>Debanjan Basu</h1>
+			<p class="tagline">Where theoretical physics meets practical AI</p>
+
+			<p class="location">Berlin, Germany</p>
+
+			<section>
+				<p>
+					I'm a Senior Python Developer working at the intersection of AI systems,
+					distributed computing, and backend infrastructure. My path here wasn't linear—it wound
+					through five years of theoretical physics research at TU Clausthal, data science at an
+					IoT startup, and eventually into building production AI systems.
+				</p>
+				<p>
+					What I carry from physics isn't just mathematical fluency. It's a particular way of seeing:
+					finding the minimal description that captures a system's essential behavior, recognizing
+					when a problem has hidden symmetries, knowing when to zoom in on details and when to step
+					back and look for universal patterns.
+				</p>
+				<p>
+					These days, I build AI agent systems, web scraping infrastructure, and observability pipelines.
+					I'm fascinated by the emerging discipline of making AI systems that are
+					not just capable, but <em>observable</em>, <em>debuggable</em>, and <em>composable</em>.
+				</p>
+			</section>
+
+			<section>
+				<h2>Current Series: The Wayland Migration</h2>
+				<p>
+					I wanted to switch to Wayland completely. Not just "it works," but a desktop that feels
+					intentional—where the compositor, shell, terminal, and tools all speak the same language.
+				</p>
+				<p>
+					I started with <strong>Hyprland</strong>, which is excellent. But I discovered
+					<strong>DankMaterialShell</strong> and its great defaults, which led me to
+					<strong>Niri</strong>—a scrolling tiling compositor that matched how I actually think
+					about windows. Niri is now my daily driver, though I maintain the same keyboard shortcuts
+					on both compositors. The muscle memory transfers; only the mental model shifts.
+				</p>
+				<p>
+					The blog documents this journey: not just "what I use," but <em>why</em> each choice makes sense,
+					what tradeoffs I accepted, and how to maintain consistency when you can't have everything.
+				</p>
+
+				<div class="topics">
+					<div class="topic">
+						<h3><a href="/blog/2025-10-05-kitty-terminal-fundamentals/">Terminal Power User</a></h3>
+						<p>
+							Kitty terminal, kittens, shell integration, and how terminal + shell + prompt
+							become a complete development environment. 4 posts, Oct–Nov 2025.
+						</p>
+					</div>
+					<div class="topic">
+						<h3><a href="/blog/2025-12-07-niri-scrolling-compositor/">Wayland Desktop Mastery</a></h3>
+						<p>
+							Niri's scrolling paradigm, unified shortcuts across compositors, DankMaterialShell,
+							and building a cohesive desktop. 4 posts, Dec 2025–Jan 2026.
+						</p>
+					</div>
+					<div class="topic">
+						<h3>Standalone</h3>
+						<p>
+							<a href="/blog/2025-11-30-ssh-high-latency-optimization/">SSH optimization</a> for
+							high-latency VPN links, and
+							<a href="/blog/2026-01-11-claude-code-power-features/">Claude Code power features</a>
+							for parallel AI-assisted development.
+						</p>
+					</div>
+				</div>
+			</section>
+
+			<section>
+				<h2>What I Write About</h2>
+				<div class="topics">
+					<div class="topic">
+						<h3>The Practical Side</h3>
+						<p>
+							Development environment deep-dives, agent harness architectures,
+							LLM orchestration patterns, and observability for AI systems.
+						</p>
+					</div>
+					<div class="topic">
+						<h3>The Theoretical Side</h3>
+						<p>
+							Physics-inspired approaches to understanding neural networks—phase transitions,
+							renormalization group theory, information geometry.
+						</p>
+					</div>
+					<div class="topic">
+						<h3>Other Wanderings</h3>
+						<p>
+							Ancient history, travels to places where the past feels tangible,
+							and whatever else I find worth thinking through in writing.
+						</p>
+					</div>
+				</div>
+			</section>
+
+			<section>
+				<h2>Get in Touch</h2>
+				<p>
+					I'm always interested in conversations about AI systems, physics-informed machine learning,
+					or elegant solutions to hard problems.
+				</p>
+				<button class="contact-reveal" id="reveal-contact">Click to reveal contact details</button>
+				<div class="contact-info" id="contact-info">
+					<noscript>Email: debanjan.basu.ds [at] gmail [dot] com</noscript>
+				</div>
+			</section>
+
+			<div class="cta">
+				<a href="/blog/">Read the Blog</a>
+				<a href="/about/" class="secondary">View CV</a>
+			</div>
 		</main>
 		<Footer />
+
+		<script>
+			// Obfuscated email - decoded only on user interaction
+			const e = [100,101,98,97,110,106,97,110,46,98,97,115,117,46,100,115,64,103,109,97,105,108,46,99,111,109];
+
+			document.getElementById('reveal-contact')?.addEventListener('click', function() {
+				const email = String.fromCharCode(...e);
+				const container = document.getElementById('contact-info');
+				if (container) {
+					container.innerHTML = `<p style="margin: 0;"><strong>Email:</strong> <a href="mailto:${email}">${email}</a></p>`;
+					container.classList.add('visible');
+					this.style.display = 'none';
+				}
+			});
+		</script>
 	</body>
 </html>
