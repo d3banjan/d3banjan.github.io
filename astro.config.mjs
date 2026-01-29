@@ -8,4 +8,7 @@ import { defineConfig } from 'astro/config';
 export default defineConfig({
 	site: 'https://d3banjan.github.io',
 	integrations: [mdx(), sitemap()],
+	redirects: {
+		'/software/2016/04/18/recordmydesktop-notes': '/',
+	},
 });
