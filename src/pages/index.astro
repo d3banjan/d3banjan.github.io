@@ -181,6 +181,53 @@ import { SITE_DESCRIPTION, SITE_TITLE } from '../consts';
 			</section>
 
 			<section>
+				<h2>Production Django Task Queue</h2>
+				<p>
+					My friend Shubham spotted the opportunity: Django already has a database connection—why
+					add Redis just for a task queue? We built <strong>django-simple-queue</strong>, a ~300 LOC
+					task worker that uses the database as a message broker. Then production happened.
+				</p>
+				<p>
+					This series follows the library from prototype to production-hardened infrastructure:
+					memory leaks, fork pitfalls, pessimistic locking, security hardening. Each fix created
+					new constraints. Each constraint led to the next fix.
+				</p>
+
+				<div class="topics">
+					<div class="topic">
+						<h3><a href="/blog/2024-12-21-django-simple-queue-intro/">1. 300 Lines to Replace Celery</a></h3>
+						<p>
+							Database as broker, importlib resolution, and when this beats Celery.
+						</p>
+					</div>
+					<div class="topic">
+						<h3><a href="/blog/2025-03-29-django-queue-memory-leaks/">2. Hunting Memory Leaks</a></h3>
+						<p>
+							RAM climbing to 500 MB. Subprocess isolation brings it to 50 MB.
+						</p>
+					</div>
+					<div class="topic">
+						<h3><a href="/blog/2025-04-12-django-queue-fork-pitfalls/">3. The Fork and the Deployment</a></h3>
+						<p>
+							Shared database connections after fork, and broken directories after deploy.
+						</p>
+					</div>
+					<div class="topic">
+						<h3><a href="/blog/2025-09-06-django-queue-pessimistic-locking/">4. Pessimistic Locking</a></h3>
+						<p>
+							SELECT FOR UPDATE SKIP LOCKED — one task, one worker, no duplicates.
+						</p>
+					</div>
+					<div class="topic">
+						<h3><a href="/blog/2026-02-01-django-queue-production-hardening/">5. Production Hardening</a></h3>
+						<p>
+							Stalled task detection, security hardening, refactoring, and lifecycle signals.
+						</p>
+					</div>
+				</div>
+			</section>
+
+			<section>
 				<h2>What I Write About</h2>
 				<div class="topics">
 					<div class="topic">
