@@ -6,6 +6,9 @@ tags: ["berlin", "transit", "europe", "public-policy"]
 series: "Berlin's Transit Crisis"
 seriesOrder: 4
 ---
+import BarChart from '../../components/charts/BarChart.svelte';
+import LineChart from '../../components/charts/LineChart.svelte';
+import RadarChart from '../../components/charts/RadarChart.svelte';
 
 ## Why Comparisons Matter
 
@@ -60,13 +63,27 @@ The cap requires **9.25 million euros in savings for 2026** and **15.8 million e
 
 Munich's U-Bahn punctuality has held reasonably steady at **91.9% in 2024**. But bus punctuality tells a different story:
 
-| Year | Munich bus punctuality |
-|---|---|
-| 2020 | 79.5% |
-| 2021 | 76.2% |
-| 2022 | 73.1% |
-| 2023 | 71.3% |
-| 2024 | **69.5%** |
+<LineChart
+	client:visible
+	title="Munich Bus Punctuality: A Steady Collapse"
+	areaFill={true}
+	series={[
+		{
+			label: "Munich bus punctuality (%)",
+			data: [
+				{ x: 2020, y: 79.5 },
+				{ x: 2021, y: 76.2 },
+				{ x: 2022, y: 73.1 },
+				{ x: 2023, y: 71.3 },
+				{ x: 2024, y: 69.5 },
+			],
+			color: "#e07c39",
+		},
+	]}
+	xLabel="Year"
+	yLabel="Punctuality %"
+	formatYKey="percent"
+/>
 
 A collapse from nearly 80% to under 70% in four years, driven by driver shortages and deferred maintenance. If you ride Munich's buses, you now have a roughly 1-in-3 chance of your bus being late.
 
@@ -86,19 +103,19 @@ Vienna complemented this structural funding with a transformative fare policy. I
 
 The results were dramatic:
 
-```mermaid
-flowchart LR
-    subgraph before["Before €365 Pass (2012)"]
-        P1["363,000 annual pass holders"]
-        C1["Cars dominant"]
-    end
-    subgraph after["After €365 Pass (2024)"]
-        P2["1.29 million annual pass holders"]
-        C2["1.29M passes vs 736K registered cars"]
-        M2["34% transit modal share"]
-    end
-    before -->|"12 years"| after
-```
+<BarChart
+	client:visible
+	title="Vienna: Annual Pass Holders vs Registered Cars"
+	horizontal={false}
+	data={[
+		{ label: "Pass holders (2012)", value: 363, color: "#d4a843" },
+		{ label: "Pass holders (2024)", value: 1290, color: "#2da87e" },
+		{ label: "Registered cars", value: 736, color: "#e07c39" },
+	]}
+	format="K"
+	references={[{ label: "Cars: 736K", value: 736 }]}
+	valueLabel="Thousands"
+/>
 
 Annual pass holders more than **tripled** — from 363,000 to over 1.29 million by 2024. For the first time, the number of transit pass holders in Vienna **exceeded the number of registered cars** (1.29 million vs 736,000). Public transit's **modal share reached 34%**, compared to Berlin's approximately 27%.
 
@@ -169,6 +186,26 @@ Zurich voters recently approved a plan to cut annual passes from CHF 809 to **CH
 | **Driver shortage** | 800+ positions | Moderate | Moderate | Resolved (2024) | Minimal |
 | **Annual pass price** | 49 euros (Deutschlandticket) | 49 euros | 49 euros | 365 euros | ~380 euros (soon 365 CHF) |
 | **Dedicated transit funding** | None | None | None | Employer tax (60M euros/yr) | Fare recovery mandate |
+
+<RadarChart
+	client:visible
+	title="Five-City Transit Comparison"
+	axes={[
+		{ key: "wages", label: "Driver Wages", max: 80000 },
+		{ key: "col_premium", label: "CoL-Adjusted Premium", max: 50 },
+		{ key: "fare_recovery", label: "Fare Recovery %", max: 100 },
+		{ key: "punctuality", label: "Punctuality Score", max: 100 },
+		{ key: "funding", label: "Funding Stability", max: 100 },
+		{ key: "supply", label: "Driver Supply", max: 100 },
+	]}
+	entities={[
+		{ label: "Berlin", values: { wages: 38000, col_premium: 0, fare_recovery: 70, punctuality: 60, funding: 20, supply: 20 }, color: "#e07c39" },
+		{ label: "Hamburg", values: { wages: 39300, col_premium: 3, fare_recovery: 78, punctuality: 65, funding: 70, supply: 55 }, color: "#5b8def" },
+		{ label: "Munich", values: { wages: 41200, col_premium: 5, fare_recovery: 65, punctuality: 55, funding: 40, supply: 55 }, color: "#d4a843" },
+		{ label: "Vienna", values: { wages: 45000, col_premium: 12, fare_recovery: 40, punctuality: 70, funding: 85, supply: 80 }, color: "#2da87e" },
+		{ label: "Zurich", values: { wages: 77000, col_premium: 40, fare_recovery: 60, punctuality: 87, funding: 90, supply: 95 }, color: "#c44dbb" },
+	]}
+/>
 
 Several patterns emerge:
 

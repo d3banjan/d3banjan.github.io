@@ -6,6 +6,9 @@ tags: ["berlin", "transit", "bvg", "austerity"]
 series: "Berlin's Transit Crisis"
 seriesOrder: 2
 ---
+import StackedBar from '../../components/charts/StackedBar.svelte';
+import TimelineChart from '../../components/charts/TimelineChart.svelte';
+import BarChart from '../../components/charts/BarChart.svelte';
 
 ## The Schwarze Null Explained
 
@@ -81,35 +84,46 @@ It cannot be used for:
 
 German transit experts call this the **"Beton statt Menschen"** (concrete instead of people) trap. The federal government will happily fund a new U-Bahn extension that a politician can announce at a press conference. But the driver who operates the train, the technician who maintains the track, and the replacement parts for the existing fleet — those must come entirely from municipal budgets and fare revenue.
 
-```mermaid
-flowchart LR
-    subgraph federal["Federal Funding (GVFG)"]
-        direction TB
-        f1["€2B/year from 2025"]
-        f2["New construction ONLY"]
-        f3["Politicians cut ribbons"]
-    end
-    subgraph municipal["Municipal + Fares"]
-        direction TB
-        m1["Driver wages"]
-        m2["Maintenance"]
-        m3["Operating costs"]
-        m4["Energy (€140M/year)"]
-    end
-    federal -->|"Capital projects"| NEW["New tram lines<br/>New U-Bahn extensions<br/>New stations"]
-    municipal -->|"Everything else"| EXIST["Keep existing system<br/>running"]
-```
-
 Berlin's 15-year service contract with BVG (2020-2035) reflects this bias directly:
 
-| Category | Allocated |
-|---|---|
-| New light rail construction | **2 billion euros** |
-| Maintenance and renovation of existing infrastructure | **1.7 billion euros** |
+<StackedBar
+	client:visible
+	title="BVG Service Contract: Allocation vs Actual Need (Billions EUR)"
+	data={[
+		{
+			label: "Contract allocation",
+			segments: [
+				{ label: "New construction", value: 2.0, color: "#c44dbb" },
+				{ label: "Maintenance", value: 1.7, color: "#2da87e" },
+			],
+		},
+		{
+			label: "Actual maintenance need",
+			segments: [
+				{ label: "U-Bahn alone", value: 2.8, color: "#2da87e" },
+				{ label: "Rest of network (est.)", value: 0.5, color: "#d4a843" },
+			],
+		},
+	]}
+	references={[{ label: "Maintenance need: €3B+", value: 3.0 }]}
+	format="euroB"
+/>
 
 The system that needs 2.8 billion euros just for U-Bahn maintenance gets 1.7 billion for *all* maintenance — and 2 billion for new lines that will create even more infrastructure to maintain.
 
 To make matters worse, planned investment for 2026-2027 has already been cut from **645 million euros to just 320 million** — a 50% reduction before the money is even spent.
+
+<BarChart
+	client:visible
+	title="Investment Cuts: Planned vs Actual (2026-2027)"
+	horizontal={false}
+	data={[
+		{ label: "Planned", value: 645, color: "#2da87e" },
+		{ label: "Actual", value: 320, color: "#e07c39" },
+	]}
+	format="euroM"
+	valueLabel="Millions EUR"
+/>
 
 Energy costs compound the squeeze. BVG's 2024 energy expenditure reached **140.2 million euros** (up 7.9 million from 2023). The 2022-2023 energy crisis — when German electricity prices rose **29.7% in a single year** — exposed the company's vulnerability to external shocks. The push toward electrification (targeting 500 e-buses by 2027) requires massive capital investment: a single new depot at Treptow costs **120 million euros**, and the federal government has committed **196 million euros** in e-bus subsidies.
 
@@ -119,24 +133,22 @@ If you want to understand why German infrastructure projects take so long and co
 
 Germany's **Vergaberecht** (public procurement law) governs how public entities purchase goods and services. It exists for good reasons — preventing corruption, ensuring fair competition, and getting value for taxpayer money. But in practice, it creates procurement timelines that would be comical if the consequences weren't so serious.
 
-```mermaid
-gantt
-    title J/JK U-Bahn Train Procurement Timeline
-    dateFormat YYYY
-    axisFormat %Y
-    section Procurement
-    Tender published           :2016, 2017
-    Evaluation period          :2017, 2019
-    Stadler selected           :milestone, 2019, 0d
-    section Legal Challenge
-    Alstom appeals             :crit, 2019, 2020
-    Court rules for BVG        :milestone, 2020, 0d
-    section Delivery
-    Contract finalized         :2020, 2021
-    Manufacturing begins       :2021, 2024
-    First test vehicle arrives :milestone, 2024, 0d
-    Serial production          :2025, 2027
-```
+<TimelineChart
+	client:visible
+	title="J/JK U-Bahn Train Procurement Timeline"
+	minYear={2016}
+	maxYear={2027}
+	events={[
+		{ label: "Tender published", start: 2016, end: 2017, type: "period", row: 0 },
+		{ label: "Evaluation", start: 2017, end: 2019, type: "period", row: 0 },
+		{ label: "Stadler selected", start: 2019, type: "milestone", detail: "May 2019: Stadler beats Alstom", row: 0 },
+		{ label: "Alstom appeal", start: 2019, end: 2020, type: "critical", detail: "Legal challenge escalates to Court of Appeals", row: 1 },
+		{ label: "Court rules for BVG", start: 2020, type: "milestone", detail: "March 2020: 4 years after tender", row: 1 },
+		{ label: "Contract + manufacturing", start: 2020, end: 2024, type: "period", row: 0 },
+		{ label: "First test vehicle", start: 2024, type: "milestone", detail: "Jan 2024: 3+ years late", row: 0 },
+		{ label: "Serial production", start: 2025, end: 2027, type: "period", row: 0 },
+	]}
+/>
 
 Here's the timeline:
 

@@ -6,6 +6,8 @@ tags: ["berlin", "transit", "bvg", "automation"]
 series: "Berlin's Transit Crisis"
 seriesOrder: 5
 ---
+import SliderSimulation from '../../components/charts/SliderSimulation.svelte';
+import ComparisonTable from '../../components/charts/ComparisonTable.svelte';
 
 ## The Solutions Are Not Unknown
 
@@ -54,11 +56,22 @@ Vienna's **Dienstgeberabgabe** (employer transit tax) — 2 euros per employee p
 
 Scaling this to Berlin is straightforward arithmetic. Berlin has approximately 2 million employed persons (compared to Vienna's ~900,000). A Vienna-style levy of 2 euros per employee per week could generate **80 to 100 million euros annually** — enough to cover a significant portion of the 140 million euro wage settlement cost.
 
-| Levy rate | Annual revenue (est.) | Equivalent to |
-|---|---|---|
-| 1 euro/employee/week | ~100M euros | 71% of wage settlement cost |
-| 2 euros/employee/week (Vienna rate) | ~200M euros | Covers wage settlement + partial maintenance |
-| 3 euros/employee/week | ~300M euros | Wage settlement + significant maintenance catch-up |
+<SliderSimulation
+	client:load
+	title="Employer Transit Levy: What Could Berlin Generate?"
+	sliderLabel="Levy per employee per week"
+	min={0}
+	max={5}
+	step={0.5}
+	initialValue={2}
+	unit=" EUR"
+	references={[{ label: "Vienna: \u20AC2/wk", value: 2 }]}
+	outputs={[
+		{ label: "Annual revenue", multiply: 104, prefix: "\u20AC", suffix: "M" },
+		{ label: "% of \u20AC140M settlement", multiply: 74.3, suffix: "%" },
+		{ label: "Per employer/year (10 staff)", multiply: 520, prefix: "\u20AC" },
+	]}
+/>
 
 **The political framing matters.** Vienna's tax has survived 55 years because it's positioned as infrastructure investment by employers who benefit from worker mobility — not as a tax burden. Employers need their workers to get to work. Transit enables that. An employer levy makes the implicit subsidy explicit.
 
@@ -79,19 +92,23 @@ For context, 600 million euros annually is roughly:
 - 4x the annual cost of the wage settlement
 - 20% of the total U-Bahn maintenance backlog
 
-```mermaid
-flowchart LR
-    CC["Congestion charge<br/>€6/day within S-Bahn ring"] --> R["~€600M/year revenue"]
-    CC --> T["~23% traffic reduction"]
-    R --> M["Transit investment"]
-    R --> W["Driver wages"]
-    R --> I["Infrastructure maintenance"]
-    T --> B["Better bus punctuality<br/>(less traffic congestion)"]
-    T --> E["Reduced emissions"]
-    B --> Q["Higher service quality"]
-    Q --> RP["Higher ridership"]
-    RP --> FR["Higher fare revenue"]
-```
+<SliderSimulation
+	client:load
+	title="Congestion Charge: Revenue & Impact Projections"
+	sliderLabel="Daily charge within S-Bahn ring"
+	min={0}
+	max={12}
+	step={1}
+	initialValue={6}
+	unit=" EUR/day"
+	references={[{ label: "Studied rate: \u20AC6", value: 6 }]}
+	outputs={[
+		{ label: "Annual revenue", multiply: 100, prefix: "\u20AC", suffix: "M" },
+		{ label: "Traffic reduction", multiply: 3.8, prefix: "~", suffix: "%" },
+		{ label: "BVG deficits covered", multiply: 1.75, suffix: "x", fixed: 1 },
+		{ label: "Maintenance backlog years", multiply: 100, dividend: 3000, suffix: " years", fixed: 1, zeroText: "\u221E" },
+	]}
+/>
 
 Three international cities demonstrate the model works:
 
@@ -115,12 +132,24 @@ Nuremberg's **VAG** (Verkehrs-Aktiengesellschaft Nuernberg) has operated **drive
 
 The results directly address the reliability and cost concerns that dominate BVG's crisis:
 
-| Metric | Nuremberg automated (U2/U3) | Nuremberg conventional (U1) |
-|---|---|---|
-| Punctuality | **99.6-99.8%** | 97-98% |
-| Minimum headway | **100 seconds** | 200 seconds |
-| Annual passengers | 70 million | — |
-| Serious safety incidents | None in 16+ years | — |
+<ComparisonTable
+	client:visible
+	title="Automated vs Conventional U-Bahn Performance"
+	columns={[
+		{ key: "metric", label: "Metric", sortable: true },
+		{ key: "automated", label: "Nuremberg Automated (U2/U3)", highlight: true, sortable: true },
+		{ key: "conventional", label: "Nuremberg Conventional (U1)", sortable: true },
+		{ key: "bvg", label: "BVG Berlin", sortable: true },
+	]}
+	rows={[
+		{ metric: "Punctuality", automated: "99.6-99.8%", conventional: "97-98%", bvg: "~96%" },
+		{ metric: "Min. headway", automated: "100 sec", conventional: "200 sec", bvg: "~300 sec" },
+		{ metric: "Passengers/year", automated: "70M", conventional: "-", bvg: "~600M total" },
+		{ metric: "Safety incidents", automated: "0 (16+ yrs)", conventional: "Rare", bvg: "3.7% trip failures" },
+		{ metric: "Staffing model", automated: "GoA4 (unattended)", conventional: "Driver in cab", bvg: "Driver in cab" },
+	]}
+	highlightRow={-1}
+/>
 
 **100-second headways** mean a train every 1 minute 40 seconds during peak hours — roughly double the capacity of driver-operated lines. And 99.6% punctuality means that out of 1,000 trips, only 4 are late.
 

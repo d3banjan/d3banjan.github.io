@@ -6,6 +6,8 @@ tags: ["berlin", "transit", "bvg", "reunification"]
 series: "Berlin's Transit Crisis"
 seriesOrder: 1
 ---
+import BarChart from '../../components/charts/BarChart.svelte';
+import LineChart from '../../components/charts/LineChart.svelte';
 
 ## Two Cities, Two Transit Philosophies
 
@@ -68,16 +70,19 @@ The **Bahnreform** (Railway Reform) of 1994 restructured Deutsche Bahn (German R
 
 Deutsche Bahn's workforce fell from **331,000 in 1994 to 214,000 by 2001** — a 35% reduction in seven years. This wasn't just a DB problem. The railway schools (**Eisenbahnerschulen**) that had historically trained transit workers — including those who went on to work at local operators like BVG — were consolidated or eliminated. Apprenticeship programs (**Ausbildungsprogramme**, the structured training pathways that are central to German vocational education) were cut across the board. Half of all railway workers lost their positions.
 
-```mermaid
-flowchart TB
-    BR["Bahnreform 1994"] --> WF["Workforce: 331K → 214K<br/>(35% reduction)"]
-    BR --> NW["Network: 20% of rail cut"]
-    BR --> ST["Stations: 40% closed"]
-    BR --> FR["Freight: 80% of direct connections eliminated"]
-    BR --> TR["Training: Railway schools consolidated/closed"]
-    TR --> LP["Local transit training pipeline destroyed"]
-    LP --> BVG["BVG loses access to trained workers"]
-```
+<BarChart
+	client:visible
+	title="Bahnreform 1994: The Scale of Cuts"
+	horizontal={true}
+	data={[
+		{ label: "Workforce (thousands)", value: 331, color: "#2da87e" },
+		{ label: "Workforce after (thousands)", value: 214, color: "#e07c39" },
+		{ label: "Rail network cut (%)", value: 20, color: "#c44dbb" },
+		{ label: "Stations closed (%)", value: 40, color: "#c44dbb" },
+		{ label: "Freight connections cut (%)", value: 80, color: "#c44dbb" },
+	]}
+	format="number"
+/>
 
 Meanwhile, the physical network shrank. **20% of Germany's rail network was cut**, **40% of stations closed**, and **80% of direct freight rail connections eliminated**. These cuts didn't only affect long-distance rail. Local transit systems — which shared infrastructure, training programs, and workforce pipelines with Deutsche Bahn — lost their support ecosystem.
 
@@ -90,6 +95,29 @@ The twenty years between the first service contract and the beginning of the "Bl
 Berlin itself was in financial crisis. The city had accumulated massive debt from reunification-era construction projects (including the infamous **Bankenskandal**, the banking scandal of 2001 that cost Berlin an estimated 21 billion euros when its state-owned bank collapsed). The Berlin Senate repeatedly cut BVG's service contract to balance its own books.
 
 By 2013, BVG's service contract funding had **declined over 60% from its 1993 level in real terms**. Adjusted for inflation, the agency was receiving less than 40 cents for every dollar it had started with.
+
+<LineChart
+	client:visible
+	title="BVG Service Contract Funding (Real Terms, Indexed)"
+	areaFill={true}
+	series={[
+		{
+			label: "Funding (millions USD, inflation-adjusted)",
+			data: [
+				{ x: 1993, y: 986 },
+				{ x: 1997, y: 850 },
+				{ x: 2001, y: 720 },
+				{ x: 2005, y: 600 },
+				{ x: 2009, y: 490 },
+				{ x: 2013, y: 394 },
+			],
+			color: "#e07c39",
+		},
+	]}
+	xLabel="Year"
+	yLabel="Millions USD"
+	formatYKey="dollarM"
+/>
 
 The effects accumulated invisibly. Maintenance schedules stretched. Rolling stock replacement was deferred. Training programs were minimized. None of this produced immediate visible crises — transit systems have enormous inertia, and deferred maintenance doesn't cause failures for years or decades. But each year of underfunding added to a growing backlog of work that would eventually need to be done.
 

@@ -6,6 +6,8 @@ tags: ["berlin", "transit", "bvg", "labor"]
 series: "Berlin's Transit Crisis"
 seriesOrder: 3
 ---
+import BarChart from '../../components/charts/BarChart.svelte';
+import LineChart from '../../components/charts/LineChart.svelte';
 
 ## The Pay Gap, by the Numbers
 
@@ -14,6 +16,18 @@ BVG CEO Henrik Falk earns **454,000 euros annually** — not including bonuses. 
 To put this ratio in context: Berlin owns companies across housing (degewo, HOWOGE), water (Berliner Wasserbetriebe), energy (BEW), and hospitals (Vivantes). None of them pay their CEO nearly ten times what their frontline workers earn.
 
 This isn't about whether Falk's salary is unreasonable in absolute terms — CEOs of transit agencies running 15,000+ employees in European capitals can earn this much. The issue is the gap at the bottom.
+
+<BarChart
+	client:visible
+	title="BVG Annual Compensation: The 9.8:1 Ratio"
+	horizontal={true}
+	data={[
+		{ label: "CEO (Falk)", value: 454000, color: "#c44dbb" },
+		{ label: "Driver (entry)", value: 37000, color: "#2da87e" },
+	]}
+	format="euroK"
+	valueLabel="Annual EUR"
+/>
 
 ## What a BVG Driver's Day Looks Like
 
@@ -43,6 +57,20 @@ The gap between BVG wages and those at comparable German operators is stark.
 | Weekly hours | 39 | 39 | 38 |
 | Special allowances | Fahrdienstzulage 225 euros | Muenchenzulage 270 euros | Attendance bonuses |
 | Vacation days (pre-2025) | 28 | 30 | 30 |
+
+<BarChart
+	client:visible
+	title="Monthly Entry Wages: Berlin vs Munich vs Hamburg"
+	horizontal={false}
+	data={[
+		{ label: "Berlin", value: 2807, color: "#e07c39" },
+		{ label: "Munich", value: 3435, color: "#2da87e" },
+		{ label: "Hamburg", value: 3277, color: "#5b8def" },
+	]}
+	format="euro"
+	references={[{ label: "Berlin: \u20AC2,807", value: 2807 }]}
+	valueLabel="EUR/month"
+/>
 
 Munich's **Muenchenzulage** (Munich supplement) is a local cost-of-living bonus of **270 euros per month** paid to all city employees. Hamburg Hochbahn offers attendance bonuses — financial incentives for maintaining low sick-day counts. BVG Berlin has a **Fahrdienstzulage** (driver service allowance) of 225 euros — the lowest special allowance among the three cities.
 
@@ -120,6 +148,28 @@ For an entry-level driver previously earning approximately 2,807 euros monthly:
 - **January 2026**: 3,187 + 50 = **3,237 euros/month**
 
 This closes much of the gap with Hamburg (3,277 euros) but still trails Munich (3,435 euros) — even before Munich's Muenchenzulage is factored in. Berlin drivers gained 2 vacation days (reaching the Munich and Hamburg standard of 30) but did not achieve the 35-hour week Ver.di demanded.
+
+<LineChart
+	client:visible
+	title="Berlin Driver Wage Trajectory vs Peer Cities"
+	series={[
+		{
+			label: "Berlin (BVG)",
+			data: [
+				{ x: "Pre-2025", y: 2807 },
+				{ x: "Jun 2025", y: 3187 },
+				{ x: "Jan 2026", y: 3237 },
+			],
+			color: "#e07c39",
+		},
+	]}
+	references={[
+		{ label: "Hamburg: \u20AC3,277", value: 3277, color: "#5b8def" },
+		{ label: "Munich: \u20AC3,435", value: 3435, color: "#2da87e" },
+	]}
+	yLabel="EUR/month"
+	formatYKey="euro"
+/>
 
 ### The Cost
 
