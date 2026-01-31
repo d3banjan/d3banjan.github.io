@@ -3,8 +3,9 @@
 
 import { getCollection } from 'astro:content';
 
-/** Return blog posts whose pubDate is not in the future (at build time). */
+/** Return blog posts whose pubDate is not in the future. In dev mode, returns all posts. */
 export async function getPublishedPosts() {
+	if (import.meta.env.DEV) return getCollection('blog');
 	const now = new Date();
 	return getCollection('blog', ({ data }) => data.pubDate <= now);
 }
