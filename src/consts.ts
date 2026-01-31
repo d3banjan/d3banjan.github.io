@@ -1,6 +1,14 @@
 // Place any global data in this file.
 // You can import this data from anywhere in your site by using the `import` keyword.
 
+import { getCollection } from 'astro:content';
+
+/** Return blog posts whose pubDate is not in the future (at build time). */
+export async function getPublishedPosts() {
+	const now = new Date();
+	return getCollection('blog', ({ data }) => data.pubDate <= now);
+}
+
 export const SITE_TITLE = 'Debanjan Basu';
 export const SITE_DESCRIPTION = 'Senior Software Engineer - ML & Data Systems. Blog and portfolio.';
 
