@@ -2,6 +2,9 @@
 title: 'Mastering Niri Navigation: Shortcuts That Preserve Muscle Memory'
 description: 'Designing a unified shortcut system for Niri that maintains consistency with Hyprland and standard desktop patterns.'
 pubDate: 'Dec 21 2025'
+tags: ["niri", "wayland", "keyboard-shortcuts"]
+series: "Wayland Desktop Mastery"
+seriesOrder: 2
 ---
 
 ## The Consistency Principle
@@ -252,5 +255,3 @@ If coming from Hyprland:
 The result: 80% of my shortcuts are identical to Hyprland. 20% adapted to Niri's model. The mental overhead of switching is minimal.
 
 ---
-
-*This is part 2 of the **Wayland Desktop Mastery** series. Next: [Desktop Polish: DankMaterialShell and the Perfect Rofi Launcher](/blog/2026-01-04-dankmaterialshell-rofi)*

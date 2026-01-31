@@ -2,6 +2,9 @@
 title: 'From Bug Fix to Production Hardening: A Refactoring Marathon'
 description: 'Stalled task detection, security hardening, code refactoring, and lifecycle signals — turning a task queue into production-grade infrastructure.'
 pubDate: 'Feb 01 2026'
+tags: ["django", "python", "security", "refactoring"]
+series: "Production Django Task Queue"
+seriesOrder: 5
 ---
 
 ## The Starting Point
@@ -488,5 +491,3 @@ That's the thesis of this series: **you can go surprisingly far with simple tool
 6. **Signals for extensibility** — let consumers hook in without forking your library
 
 ---
-
-*This concludes the **Production Django Task Queue** series. The series starts at [django-simple-queue: 300 Lines to Replace Celery](/blog/2024-12-21-django-simple-queue-intro).*

@@ -2,6 +2,9 @@
 title: 'The Fork, the File Descriptor, and the Deployment'
 description: 'Two production bugs from subprocess isolation: shared database connections after fork, and lost working directories after deployment.'
 pubDate: 'Apr 12 2025'
+tags: ["django", "python", "fork", "linux"]
+series: "Production Django Task Queue"
+seriesOrder: 3
 ---
 
 ## The Consequence of Forking
@@ -190,5 +193,3 @@ If you're spawning child processes from a long-running Django command, verify:
 5. **Every fix has second-order effects** — solving memory created fork and deployment bugs
 
 ---
-
-*This is part 3 of the **Production Django Task Queue** series. Previous: [Hunting Memory Leaks in a Django Task Worker](/blog/2025-03-29-django-queue-memory-leaks). Next: [Pessimistic Locking: One Task, One Worker](/blog/2025-09-06-django-queue-pessimistic-locking)*

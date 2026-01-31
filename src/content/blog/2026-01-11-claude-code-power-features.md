@@ -2,6 +2,7 @@
 title: 'Two Claude Code Power Features You Should Be Using'
 description: 'Custom status lines for ambient awareness and git worktrees for parallel AI-assisted development sessions.'
 pubDate: 'Jan 11 2026'
+tags: ["claude-code", "ai", "workflow"]
 ---
 
 ## Part 1: Custom Status Lines

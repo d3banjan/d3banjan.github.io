@@ -2,6 +2,9 @@
 title: 'Pessimistic Locking: One Task, One Worker'
 description: 'Using SELECT FOR UPDATE SKIP LOCKED to prevent multiple workers from claiming the same task — database-level concurrency without application-level locks.'
 pubDate: 'Sep 06 2025'
+tags: ["django", "python", "postgresql", "concurrency"]
+series: "Production Django Task Queue"
+seriesOrder: 4
 ---
 
 ## The Race Condition
@@ -315,5 +318,3 @@ At 50+ workers, you'd start hitting a ceiling. The database has to do more bookk
 5. **Know your scaling ceiling** — this approach works well for a handful of workers; dozens of workers need a dedicated broker
 
 ---
-
-*This is part 4 of the **Production Django Task Queue** series. Previous: [The Fork, the File Descriptor, and the Deployment](/blog/2025-04-12-django-queue-fork-pitfalls). Next: [From Bug Fix to Production Hardening](/blog/2026-02-01-django-queue-production-hardening)*

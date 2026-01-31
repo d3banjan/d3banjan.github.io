@@ -2,6 +2,9 @@
 title: 'From Terminal to Development Environment: Putting It All Together'
 description: 'Combining Kitty, shell tools, and Claude Code into a cohesive workflow with git worktrees for parallel development.'
 pubDate: 'Nov 16 2025'
+tags: ["kitty", "terminal", "workflow"]
+series: "Terminal Power User"
+seriesOrder: 4
 ---
 
 ## The Integration Mindset
@@ -294,5 +297,3 @@ git worktree remove ../myapp-hotfix
 | `~/.claude/statusline.sh` | Status line script |
 
 ---
-
-*This concludes the **Terminal Power User** series. For high-latency SSH optimization, see [SSH in 33 Seconds?](/blog/2025-11-30-ssh-high-latency-optimization). For Wayland desktop integration, start with [Niri: The Scrolling Compositor](/blog/2025-12-07-niri-scrolling-compositor).*

@@ -2,6 +2,9 @@
 title: 'Completing the Terminal Stack: Bash, Starship, and History Tools'
 description: 'Choosing shell components for portability and power, with switchable history backends and cross-shell prompt.'
 pubDate: 'Nov 02 2025'
+tags: ["bash", "terminal", "starship", "shell"]
+series: "Terminal Power User"
+seriesOrder: 3
 ---
 
 ## The Portability Question
@@ -261,5 +264,3 @@ Each layer is independently replaceable:
 | OSC 7 integration | Shell modification | Directory inheritance in tabs |
 
 ---
-
-*This is part 3 of the **Terminal Power User** series. Next: [From Terminal to Development Environment: Putting It All Together](/blog/2025-11-16-terminal-workflow-finale)*

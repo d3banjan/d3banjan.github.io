@@ -5,10 +5,13 @@ import BaseHead from '../components/BaseHead.astro';
 import Footer from '../components/Footer.astro';
 import FormattedDate from '../components/FormattedDate.astro';
 import Header from '../components/Header.astro';
+import TagList from '../components/TagList.astro';
+import SeriesNav from '../components/SeriesNav.astro';
 
-type Props = CollectionEntry<'blog'>['data'];
+type Props = CollectionEntry<'blog'>['data'] & { id: string };
 
-const { title, description, pubDate, updatedDate, heroImage } = Astro.props;
+const { title, description, pubDate, updatedDate, heroImage, tags, series, seriesOrder, id } =
+	Astro.props;
 ---
 
 <html lang="en">
@@ -75,8 +78,12 @@ const { title, description, pubDate, updatedDate, heroImage } = Astro.props;
 							}
 						</div>
 						<h1>{title}</h1>
+						<TagList tags={tags} />
 						<hr />
 					</div>
+					{series && seriesOrder && (
+						<SeriesNav currentId={id} seriesName={series} seriesOrder={seriesOrder} />
+					)}
 					<slot />
 				</div>
 			</article>

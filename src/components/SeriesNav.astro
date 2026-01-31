@@ -1,0 +1,113 @@
+---
+import { getCollection } from 'astro:content';
+import { SERIES_META } from '../consts';
+
+interface Props {
+	currentId: string;
+	seriesName: string;
+	seriesOrder: number;
+}
+
+const { currentId, seriesName, seriesOrder } = Astro.props;
+
+const allPosts = await getCollection('blog');
+const seriesPosts = allPosts
+	.filter((p) => p.data.series === seriesName)
+	.sort((a, b) => (a.data.seriesOrder ?? 0) - (b.data.seriesOrder ?? 0));
+
+const currentIndex = seriesPosts.findIndex((p) => p.id === currentId);
+const prev = currentIndex > 0 ? seriesPosts[currentIndex - 1] : null;
+const next = currentIndex < seriesPosts.length - 1 ? seriesPosts[currentIndex + 1] : null;
+
+const meta = SERIES_META[seriesName];
+const seriesUrl = meta ? `/series/${meta.slug}/` : null;
+---
+
+<nav class="series-nav" aria-label="Series navigation">
+	<p class="series-header">
+		Part {seriesOrder} of {seriesPosts.length} in
+		{seriesUrl ? <a href={seriesUrl}><strong>{seriesName}</strong></a> : <strong>{seriesName}</strong>}
+	</p>
+
+	<ol class="series-toc">
+		{
+			seriesPosts.map((post) => (
+				<li>
+					{post.id === currentId ? (
+						<strong>{post.data.title}</strong>
+					) : (
+						<a href={`/blog/${post.id}/`}>{post.data.title}</a>
+					)}
+				</li>
+			))
+		}
+	</ol>
+
+	<div class="series-prevnext">
+		{
+			prev && (
+				<a href={`/blog/${prev.id}/`} class="prev">
+					&larr; {prev.data.title}
+				</a>
+			)
+		}
+		{
+			next && (
+				<a href={`/blog/${next.id}/`} class="next">
+					{next.data.title} &rarr;
+				</a>
+			)
+		}
+	</div>
+</nav>
+
+<style>
+	.series-nav {
+		margin-top: 2em;
+		padding: 1em 1.2em;
+		border-left: 3px solid var(--accent);
+		background: rgba(var(--gray-light), 0.1);
+	}
+	.series-header {
+		margin: 0 0 0.8em 0;
+		font-size: 0.95em;
+		color: rgb(var(--gray));
+	}
+	.series-header a {
+		color: var(--accent);
+		text-decoration: none;
+	}
+	.series-header a:hover {
+		text-decoration: underline;
+	}
+	.series-toc {
+		margin: 0 0 1em 0;
+		padding-left: 1.4em;
+		font-size: 0.9em;
+		line-height: 1.8;
+	}
+	.series-toc a {
+		color: rgb(var(--gray-dark));
+		text-decoration: none;
+	}
+	.series-toc a:hover {
+		color: var(--accent);
+	}
+	.series-prevnext {
+		display: flex;
+		justify-content: space-between;
+		gap: 1em;
+		font-size: 0.9em;
+	}
+	.series-prevnext a {
+		color: var(--accent);
+		text-decoration: none;
+	}
+	.series-prevnext a:hover {
+		text-decoration: underline;
+	}
+	.series-prevnext .next {
+		margin-left: auto;
+		text-align: right;
+	}
+</style>

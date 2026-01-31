@@ -2,6 +2,9 @@
 title: 'django-simple-queue: 300 Lines to Replace Celery'
 description: 'How a ~300 LOC task queue built on Django ORM replaces Celery for small teams — the architecture, the tradeoffs, and when it makes sense.'
 pubDate: 'Dec 21 2024'
+tags: ["django", "python", "task-queue", "celery"]
+series: "Production Django Task Queue"
+seriesOrder: 1
 ---
 
 ## The Insight
@@ -207,5 +210,3 @@ Each of these becomes a post in this series as I encounter them in production an
 4. **Simplicity has a throughput ceiling** — know when you'll outgrow it
 
 ---
-
-*This is part 1 of the **Production Django Task Queue** series. Next: [Hunting Memory Leaks in a Django Task Worker](/blog/2025-03-29-django-queue-memory-leaks)*

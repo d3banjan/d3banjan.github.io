@@ -2,6 +2,9 @@
 title: 'Desktop Polish: DankMaterialShell and the Perfect Rofi Launcher'
 description: 'Unifying desktop aesthetics across shell, launcher, and compositor with shared color tokens and consistent IPC patterns.'
 pubDate: 'Jan 04 2026'
+tags: ["wayland", "rofi", "desktop-shell", "linux"]
+series: "Wayland Desktop Mastery"
+seriesOrder: 3
 ---
 
 ## The Integration Problem
@@ -271,5 +274,3 @@ dms restart
 Niri hot-reloads automatically.
 
 ---
-
-*This is part 3 of the **Wayland Desktop Mastery** series. Next: [My 2026 Linux Desktop: Niri + DankMaterialShell + Kitty](/blog/2026-01-18-wayland-desktop-finale)*

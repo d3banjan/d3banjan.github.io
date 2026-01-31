@@ -2,6 +2,9 @@
 title: 'Niri: The Scrolling Tiling Compositor That Made Me Leave Hyprland'
 description: 'Why Niri scrolling paradigm works better than traditional tiling for ultrawide monitors, and how to think about window management differently.'
 pubDate: 'Dec 07 2025'
+tags: ["niri", "wayland", "tiling-wm", "linux"]
+series: "Wayland Desktop Mastery"
+seriesOrder: 1
 ---
 
 ## The Mental Model Shift
@@ -248,5 +251,3 @@ Start Niri from your display manager or TTY. Edit the config, and changes apply 
 - You need mature, battle-tested window rules
 
 ---
-
-*This is part 1 of the **Wayland Desktop Mastery** series. Next: [Mastering Niri Navigation: Shortcuts That Preserve Muscle Memory](/blog/2025-12-21-niri-shortcuts-navigation)*

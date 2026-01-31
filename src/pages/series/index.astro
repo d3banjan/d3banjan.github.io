@@ -1,0 +1,59 @@
+---
+import { getCollection } from 'astro:content';
+import BaseHead from '../../components/BaseHead.astro';
+import Footer from '../../components/Footer.astro';
+import Header from '../../components/Header.astro';
+import SeriesCard from '../../components/SeriesCard.astro';
+import { SERIES_META, SITE_TITLE } from '../../consts';
+
+const posts = await getCollection('blog');
+
+const seriesGroups = new Map<string, typeof posts>();
+for (const post of posts) {
+	if (post.data.series) {
+		const group = seriesGroups.get(post.data.series) ?? [];
+		group.push(post);
+		seriesGroups.set(post.data.series, group);
+	}
+}
+---
+
+<!doctype html>
+<html lang="en">
+	<head>
+		<BaseHead title={`Series - ${SITE_TITLE}`} description="Blog post series" />
+		<style>
+			main {
+				width: 960px;
+				max-width: calc(100% - 2em);
+				margin: auto;
+				padding: 3em 1em;
+			}
+			h1 {
+				margin-bottom: 1em;
+			}
+			.series-grid {
+				display: grid;
+				grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+				gap: 1em;
+			}
+		</style>
+	</head>
+	<body>
+		<Header />
+		<main>
+			<h1>Series</h1>
+			<div class="series-grid">
+				{
+					Object.keys(SERIES_META).map((name) => {
+						const group = seriesGroups.get(name) ?? [];
+						return group.length > 0 ? (
+							<SeriesCard seriesName={name} posts={group} />
+						) : null;
+					})
+				}
+			</div>
+		</main>
+		<Footer />
+	</body>
+</html>

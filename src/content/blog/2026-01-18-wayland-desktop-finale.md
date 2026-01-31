@@ -2,6 +2,9 @@
 title: 'My 2026 Linux Desktop: Niri + DankMaterialShell + Kitty'
 description: 'Complete stack overview showing how compositor, shell, terminal, and tools integrate through consistent patterns.'
 pubDate: 'Jan 18 2026'
+tags: ["niri", "wayland", "linux", "desktop-shell"]
+series: "Wayland Desktop Mastery"
+seriesOrder: 4
 ---
 
 ## The Integration Thesis
@@ -227,5 +230,3 @@ Each step is independent. Add what helps, skip what doesn't.
 - [Catppuccin](https://catppuccin.com) — The color palette
 
 ---
-
-*This concludes the **Wayland Desktop Mastery** series. The terminal series starts at [Kitty Terminal Fundamentals](/blog/2025-10-05-kitty-terminal-fundamentals).*

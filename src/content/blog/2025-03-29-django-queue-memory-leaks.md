@@ -2,6 +2,9 @@
 title: 'Hunting Memory Leaks in a Django Task Worker'
 description: 'Production memory climbing to 500 MB. The fix: run tasks in subprocesses so the OS reclaims everything. From 500 MB to 50 MB.'
 pubDate: 'Mar 29 2025'
+tags: ["django", "python", "memory-leak", "debugging"]
+series: "Production Django Task Queue"
+seriesOrder: 2
 ---
 
 ## The Symptom
@@ -263,5 +266,3 @@ Both of these caused production incidents. They're the subject of the next post.
 5. **Every architectural fix creates new constraints** — subprocess model has its own failure modes
 
 ---
-
-*This is part 2 of the **Production Django Task Queue** series. Previous: [django-simple-queue: 300 Lines to Replace Celery](/blog/2024-12-21-django-simple-queue-intro). Next: [The Fork, the File Descriptor, and the Deployment](/blog/2025-04-12-django-queue-fork-pitfalls)*

@@ -1,0 +1,60 @@
+---
+import { SERIES_META } from '../consts';
+import type { CollectionEntry } from 'astro:content';
+
+interface Props {
+	seriesName: string;
+	posts: CollectionEntry<'blog'>[];
+}
+
+const { seriesName, posts } = Astro.props;
+
+const meta = SERIES_META[seriesName];
+if (!meta) return;
+
+const sorted = posts.sort((a, b) => (a.data.seriesOrder ?? 0) - (b.data.seriesOrder ?? 0));
+const firstDate = sorted[0]?.data.pubDate;
+const lastDate = sorted[sorted.length - 1]?.data.pubDate;
+
+function formatShort(date: Date) {
+	return date.toLocaleDateString('en-us', { month: 'short', year: 'numeric' });
+}
+---
+
+<div class="topic">
+	<h3><a href={`/series/${meta.slug}/`}>{seriesName}</a></h3>
+	<p class="series-meta">
+		{sorted.length} posts &middot; {formatShort(firstDate)}&ndash;{formatShort(lastDate)}
+	</p>
+	<p>{meta.description}</p>
+</div>
+
+<style>
+	.topic {
+		padding: 1em;
+		background: rgba(var(--gray-light), 0.1);
+		border-radius: 4px;
+	}
+	.topic h3 {
+		margin: 0 0 0.3em 0;
+		color: var(--accent);
+		font-size: 1em;
+	}
+	.topic h3 a {
+		color: var(--accent);
+		text-decoration: none;
+	}
+	.topic h3 a:hover {
+		text-decoration: underline;
+	}
+	.series-meta {
+		margin: 0 0 0.4em 0;
+		font-size: 0.85em;
+		color: rgb(var(--gray));
+	}
+	.topic p {
+		margin: 0;
+		font-size: 0.95em;
+		color: rgb(var(--gray));
+	}
+</style>

@@ -1,0 +1,74 @@
+---
+import { getCollection } from 'astro:content';
+import BaseHead from '../../components/BaseHead.astro';
+import Footer from '../../components/Footer.astro';
+import Header from '../../components/Header.astro';
+import { SITE_TITLE } from '../../consts';
+
+const posts = await getCollection('blog');
+
+const tagCounts = new Map<string, number>();
+for (const post of posts) {
+	for (const tag of post.data.tags) {
+		tagCounts.set(tag, (tagCounts.get(tag) ?? 0) + 1);
+	}
+}
+
+const sortedTags = [...tagCounts.entries()].sort((a, b) => a[0].localeCompare(b[0]));
+---
+
+<!doctype html>
+<html lang="en">
+	<head>
+		<BaseHead title={`Tags - ${SITE_TITLE}`} description="All tags" />
+		<style>
+			main {
+				width: 960px;
+				max-width: calc(100% - 2em);
+				margin: auto;
+				padding: 3em 1em;
+			}
+			h1 {
+				margin-bottom: 1em;
+			}
+			.tag-grid {
+				display: flex;
+				flex-wrap: wrap;
+				gap: 0.6em;
+			}
+			.tag-pill {
+				display: inline-block;
+				padding: 0.3em 0.8em;
+				border: 1px solid rgb(var(--gray-light));
+				border-radius: 1em;
+				color: rgb(var(--gray-dark));
+				text-decoration: none;
+				font-size: 0.95em;
+			}
+			.tag-pill:hover {
+				border-color: var(--accent);
+				color: var(--accent);
+			}
+			.tag-count {
+				color: rgb(var(--gray));
+				font-size: 0.85em;
+			}
+		</style>
+	</head>
+	<body>
+		<Header />
+		<main>
+			<h1>Tags</h1>
+			<div class="tag-grid">
+				{
+					sortedTags.map(([tag, count]) => (
+						<a href={`/tags/${tag}/`} class="tag-pill">
+							#{tag} <span class="tag-count">({count})</span>
+						</a>
+					))
+				}
+			</div>
+		</main>
+		<Footer />
+	</body>
+</html>

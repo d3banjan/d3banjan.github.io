@@ -2,6 +2,9 @@
 title: 'Kitty Superpowers: Kittens, Hints, and Remote Control'
 description: 'How Kitty extensions solve real problems with smart selection, better SSH, and terminal automation.'
 pubDate: 'Oct 19 2025'
+tags: ["kitty", "terminal", "ssh", "automation"]
+series: "Terminal Power User"
+seriesOrder: 2
 ---
 
 ## The Extension Philosophy
@@ -241,5 +244,3 @@ All in the terminal. No context switching. No mouse except when I want it.
 4. **Session files** make workspaces reproducible — morning setup becomes one command
 
 ---
-
-*This is part 2 of the **Terminal Power User** series. Next: [Completing the Terminal Stack: Bash, Starship, and History Tools](/blog/2025-11-02-bash-starship-history-tools)*

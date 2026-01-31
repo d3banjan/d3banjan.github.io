@@ -2,6 +2,7 @@
 title: 'SSH in 33 Seconds? Optimizing for India-to-Bulgaria VPN Connections'
 description: 'Diagnosing and fixing SSH latency over high-latency VPN links, with focus on the TCP-over-TCP problem and connection multiplexing.'
 pubDate: 'Nov 30 2025'
+tags: ["ssh", "networking", "vpn", "linux"]
 ---
 
 ## The Symptom

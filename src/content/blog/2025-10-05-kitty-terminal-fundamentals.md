@@ -2,6 +2,9 @@
 title: 'Kitty Terminal: Why GPU Acceleration Changes Everything'
 description: 'Introduction to Kitty terminal emulator with focus on the design decisions that make it different from alternatives.'
 pubDate: 'Oct 05 2025'
+tags: ["kitty", "terminal", "gpu"]
+series: "Terminal Power User"
+seriesOrder: 1
 ---
 
 ## The Core Insight
@@ -170,5 +173,3 @@ map ctrl+shift+enter launch --cwd=current
 4. **Directory inheritance** requires explicit configuration but transforms workflow
 
 ---
-
-*This is part 1 of the **Terminal Power User** series. Next: [Kitty Superpowers: Kittens, Hints, and Remote Control](/blog/2025-10-19-kitty-kittens-remote-control)*

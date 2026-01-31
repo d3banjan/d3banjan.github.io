@@ -1,8 +1,27 @@
 ---
+import { getCollection } from 'astro:content';
 import BaseHead from '../components/BaseHead.astro';
 import Footer from '../components/Footer.astro';
 import Header from '../components/Header.astro';
-import { SITE_DESCRIPTION, SITE_TITLE } from '../consts';
+import SeriesCard from '../components/SeriesCard.astro';
+import { SERIES_META, SITE_DESCRIPTION, SITE_TITLE } from '../consts';
+
+const posts = await getCollection('blog');
+
+const seriesGroups = new Map<string, typeof posts>();
+const standalonePosts: typeof posts = [];
+
+for (const post of posts) {
+	if (post.data.series && SERIES_META[post.data.series]) {
+		const group = seriesGroups.get(post.data.series) ?? [];
+		group.push(post);
+		seriesGroups.set(post.data.series, group);
+	} else {
+		standalonePosts.push(post);
+	}
+}
+
+standalonePosts.sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf());
 ---
 
 <!doctype html>
@@ -136,96 +155,36 @@ import { SITE_DESCRIPTION, SITE_TITLE } from '../consts';
 			</section>
 
 			<section>
-				<h2>Current Series: The Wayland Migration</h2>
-				<p>
-					I wanted to switch to Wayland completely. Not just "it works," but a desktop that feels
-					intentional—where the compositor, shell, terminal, and tools all speak the same language.
-				</p>
-				<p>
-					I started with <strong>Hyprland</strong>, which is excellent. But I discovered
-					<strong>DankMaterialShell</strong> and its great defaults, which led me to
-					<strong>Niri</strong>—a scrolling tiling compositor that matched how I actually think
-					about windows. Niri is now my daily driver, though I maintain the same keyboard shortcuts
-					on both compositors. The muscle memory transfers; only the mental model shifts.
-				</p>
-				<p>
-					The blog documents this journey: not just "what I use," but <em>why</em> each choice makes sense,
-					what tradeoffs I accepted, and how to maintain consistency when you can't have everything.
-				</p>
-
+				<h2>Series</h2>
 				<div class="topics">
-					<div class="topic">
-						<h3><a href="/blog/2025-10-05-kitty-terminal-fundamentals/">Terminal Power User</a></h3>
-						<p>
-							Kitty terminal, kittens, shell integration, and how terminal + shell + prompt
-							become a complete development environment. 4 posts, Oct–Nov 2025.
-						</p>
-					</div>
-					<div class="topic">
-						<h3><a href="/blog/2025-12-07-niri-scrolling-compositor/">Wayland Desktop Mastery</a></h3>
-						<p>
-							Niri's scrolling paradigm, unified shortcuts across compositors, DankMaterialShell,
-							and building a cohesive desktop. 4 posts, Dec 2025–Jan 2026.
-						</p>
-					</div>
-					<div class="topic">
-						<h3>Standalone</h3>
-						<p>
-							<a href="/blog/2025-11-30-ssh-high-latency-optimization/">SSH optimization</a> for
-							high-latency VPN links, and
-							<a href="/blog/2026-01-11-claude-code-power-features/">Claude Code power features</a>
-							for parallel AI-assisted development.
-						</p>
-					</div>
+					{
+						Object.keys(SERIES_META).map((name) => {
+							const group = seriesGroups.get(name) ?? [];
+							return group.length > 0 ? (
+								<SeriesCard seriesName={name} posts={group} />
+							) : null;
+						})
+					}
 				</div>
 			</section>
 
-			<section>
-				<h2>Production Django Task Queue</h2>
-				<p>
-					My friend Shubham spotted the opportunity: Django already has a database connection—why
-					add Redis just for a task queue? We built <strong>django-simple-queue</strong>, a ~300 LOC
-					task worker that uses the database as a message broker. Then production happened.
-				</p>
-				<p>
-					This series follows the library from prototype to production-hardened infrastructure:
-					memory leaks, fork pitfalls, pessimistic locking, security hardening. Each fix created
-					new constraints. Each constraint led to the next fix.
-				</p>
-
-				<div class="topics">
-					<div class="topic">
-						<h3><a href="/blog/2024-12-21-django-simple-queue-intro/">1. 300 Lines to Replace Celery</a></h3>
-						<p>
-							Database as broker, importlib resolution, and when this beats Celery.
-						</p>
-					</div>
-					<div class="topic">
-						<h3><a href="/blog/2025-03-29-django-queue-memory-leaks/">2. Hunting Memory Leaks</a></h3>
-						<p>
-							RAM climbing to 500 MB. Subprocess isolation brings it to 50 MB.
-						</p>
-					</div>
-					<div class="topic">
-						<h3><a href="/blog/2025-04-12-django-queue-fork-pitfalls/">3. The Fork and the Deployment</a></h3>
-						<p>
-							Shared database connections after fork, and broken directories after deploy.
-						</p>
-					</div>
-					<div class="topic">
-						<h3><a href="/blog/2025-09-06-django-queue-pessimistic-locking/">4. Pessimistic Locking</a></h3>
-						<p>
-							SELECT FOR UPDATE SKIP LOCKED — one task, one worker, no duplicates.
-						</p>
-					</div>
-					<div class="topic">
-						<h3><a href="/blog/2026-02-01-django-queue-production-hardening/">5. Production Hardening</a></h3>
-						<p>
-							Stalled task detection, security hardening, refactoring, and lifecycle signals.
-						</p>
-					</div>
-				</div>
-			</section>
+			{
+				standalonePosts.length > 0 && (
+					<section>
+						<h2>Standalone Posts</h2>
+						<div class="topics">
+							{standalonePosts.map((post) => (
+								<div class="topic">
+									<h3>
+										<a href={`/blog/${post.id}/`}>{post.data.title}</a>
+									</h3>
+									<p>{post.data.description}</p>
+								</div>
+							))}
+						</div>
+					</section>
+				)
+			}
 
 			<section>
 				<h2>What I Write About</h2>
