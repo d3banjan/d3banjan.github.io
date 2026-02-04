@@ -1,4 +1,4 @@
 User-agent: *
 Allow: /
 
-Sitemap: https://d3banjan.github.io/sitemap.xml
+Sitemap: https://d3banjan.github.io/sitemap-index.xml
