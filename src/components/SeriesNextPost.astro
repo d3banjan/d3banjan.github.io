@@ -1,0 +1,48 @@
+---
+import { getPublishedPosts } from '../consts';
+
+interface Props {
+	currentId: string;
+	seriesName: string;
+	seriesOrder: number;
+}
+
+const { currentId, seriesName, seriesOrder } = Astro.props;
+
+const allPosts = await getPublishedPosts();
+const seriesPosts = allPosts
+	.filter((p) => p.data.series === seriesName)
+	.sort((a, b) => (a.data.seriesOrder ?? 0) - (b.data.seriesOrder ?? 0));
+
+const currentIndex = seriesPosts.findIndex((p) => p.id === currentId);
+const next = currentIndex >= 0 && currentIndex < seriesPosts.length - 1
+	? seriesPosts[currentIndex + 1]
+	: null;
+const prev = currentIndex > 0 ? seriesPosts[currentIndex - 1] : null;
+---
+
+{next && (
+	<p class="series-next">
+		<em>Next in this series: <a href={`/blog/${next.id}/`}>{next.data.title}</a></em>
+	</p>
+)}
+{!next && prev && (
+	<p class="series-next">
+		<em>This is the final post in this series.</em>
+	</p>
+)}
+
+<style>
+	.series-next {
+		margin-top: 2em;
+		color: rgb(var(--gray));
+		font-size: 0.95em;
+	}
+	.series-next a {
+		color: var(--accent);
+		text-decoration: none;
+	}
+	.series-next a:hover {
+		text-decoration: underline;
+	}
+</style>

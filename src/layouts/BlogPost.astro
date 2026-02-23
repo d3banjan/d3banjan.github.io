@@ -7,6 +7,7 @@ import FormattedDate from '../components/FormattedDate.astro';
 import Header from '../components/Header.astro';
 import TagList from '../components/TagList.astro';
 import SeriesNav from '../components/SeriesNav.astro';
+import SeriesNextPost from '../components/SeriesNextPost.astro';
 
 type Props = CollectionEntry<'blog'>['data'] & { id: string };
 
@@ -17,6 +18,18 @@ const { title, description, pubDate, updatedDate, heroImage, tags, series, serie
 <html lang="en">
 	<head>
 		<BaseHead title={title} description={description} />
+		<style is:global>
+			/* Bilingual toggle */
+			.lang-bn {
+				display: none;
+			}
+			body[data-lang='bn'] .lang-bn {
+				display: block;
+			}
+			body[data-lang='bn'] .lang-en {
+				display: none;
+			}
+		</style>
 		<style>
 			main {
 				width: calc(100% - 2em);
@@ -85,6 +98,9 @@ const { title, description, pubDate, updatedDate, heroImage, tags, series, serie
 						<SeriesNav currentId={id} seriesName={series} seriesOrder={seriesOrder} />
 					)}
 					<slot />
+					{series && seriesOrder && (
+						<SeriesNextPost currentId={id} seriesName={series} seriesOrder={seriesOrder} />
+					)}
 				</div>
 			</article>
 		</main>
