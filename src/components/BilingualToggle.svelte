@@ -1,25 +1,38 @@
 <script lang="ts">
-	const STORAGE_KEY = 'bilingual-lang';
+	const SCROLL_KEY = 'bilingual-scroll-ratio';
 
 	let lang = $state<'en' | 'bn'>('en');
+	let href = $state('#');
 
 	$effect(() => {
-		const stored = localStorage.getItem(STORAGE_KEY) as 'en' | 'bn' | null;
-		if (stored === 'bn') {
-			lang = 'bn';
-			document.body.dataset.lang = 'bn';
+		const path = window.location.pathname;
+		lang = path.startsWith('/bn/') ? 'bn' : 'en';
+		if (path.startsWith('/bn/')) {
+			const slug = path.replace(/^\/bn\//, '').replace(/\/$/, '');
+			href = `/blog/${slug}/`;
+		} else {
+			const slug = path.replace(/^\/blog\//, '').replace(/\/$/, '');
+			href = `/bn/${slug}/`;
+		}
+
+		// On arrival: restore scroll position if we just toggled
+		const saved = sessionStorage.getItem(SCROLL_KEY);
+		if (saved !== null) {
+			sessionStorage.removeItem(SCROLL_KEY);
+			const ratio = parseFloat(saved);
+			const target = ratio * (document.body.scrollHeight - window.innerHeight);
+			window.scrollTo({ top: target, behavior: 'instant' });
 		}
 	});
 
-	function toggle() {
-		lang = lang === 'en' ? 'bn' : 'en';
-		document.body.dataset.lang = lang;
-		localStorage.setItem(STORAGE_KEY, lang);
+	function handleClick() {
+		const ratio = window.scrollY / (document.body.scrollHeight - window.innerHeight);
+		sessionStorage.setItem(SCROLL_KEY, String(ratio));
 	}
 </script>
 
 <div class="bilingual-toggle">
-	<button onclick={toggle} aria-label="Switch language" title={lang === 'en' ? 'বাংলায় পড়ুন' : 'Read in English'}>
+	<a {href} onclick={handleClick} aria-label="Switch language" title={lang === 'en' ? 'বাংলায় পড়ুন' : 'Read in English'}>
 		{#if lang === 'en'}
 			<span class="active">EN</span>
 			<span class="divider">/</span>
@@ -29,33 +42,37 @@
 			<span class="divider">/</span>
 			<span class="active">বাংলা</span>
 		{/if}
-	</button>
+	</a>
 </div>
 
 <style>
 	.bilingual-toggle {
-		display: flex;
-		justify-content: flex-end;
-		margin-bottom: 1.5rem;
+		position: fixed;
+		bottom: 1.5rem;
+		right: 1.5rem;
+		z-index: 100;
 	}
 
-	button {
+	a {
 		display: inline-flex;
 		align-items: center;
 		gap: 0;
 		border: 1px solid color-mix(in srgb, currentColor 25%, transparent);
 		border-radius: 20px;
-		padding: 4px 14px;
-		background: transparent;
+		padding: 6px 16px;
+		background: rgb(var(--gray-light, 241, 243, 249));
+		box-shadow: 0 2px 8px rgba(0, 0, 0, 0.12);
 		cursor: pointer;
 		font-size: 0.82em;
 		letter-spacing: 0.03em;
 		color: inherit;
-		transition: border-color 0.15s;
+		text-decoration: none;
+		transition: border-color 0.15s, box-shadow 0.15s;
 	}
 
-	button:hover {
+	a:hover {
 		border-color: color-mix(in srgb, currentColor 55%, transparent);
+		box-shadow: 0 3px 12px rgba(0, 0, 0, 0.18);
 	}
 
 	.active {

@@ -10,6 +10,13 @@ export async function getPublishedPosts() {
 	return getCollection('blog', ({ data }) => data.pubDate <= now);
 }
 
+/** Return Bengali posts whose pubDate is not in the future. In dev mode, returns all. */
+export async function getPublishedBnPosts() {
+	if (import.meta.env.DEV) return getCollection('bn');
+	const now = new Date();
+	return getCollection('bn', ({ data }) => data.pubDate <= now);
+}
+
 export const SITE_TITLE = 'Debanjan Basu';
 export const SITE_DESCRIPTION = 'Senior Software Engineer - ML & Data Systems. Blog and portfolio.';
 

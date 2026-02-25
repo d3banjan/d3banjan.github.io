@@ -15,16 +15,34 @@ export function getStaticPaths() {
 
 const { seriesName, meta } = Astro.props;
 
+const SITE_URL = 'https://d3banjan.github.io';
+
 const allPosts = await getPublishedPosts();
 const posts = allPosts
 	.filter((p) => p.data.series === seriesName)
 	.sort((a, b) => (a.data.seriesOrder ?? 0) - (b.data.seriesOrder ?? 0));
+
+const itemListJsonLd = {
+	'@context': 'https://schema.org',
+	'@type': 'ItemList',
+	name: seriesName,
+	description: meta.description,
+	url: `${SITE_URL}/series/${meta.slug}/`,
+	numberOfItems: posts.length,
+	itemListElement: posts.map((post, i) => ({
+		'@type': 'ListItem',
+		position: i + 1,
+		url: `${SITE_URL}/blog/${post.id}/`,
+		name: post.data.title,
+	})),
+};
 ---
 
 <!doctype html>
 <html lang="en">
 	<head>
 		<BaseHead title={`${seriesName} - ${SITE_TITLE}`} description={meta.description} />
+		<script type="application/ld+json" set:html={JSON.stringify(itemListJsonLd)} />
 		<style>
 			main {
 				width: 960px;

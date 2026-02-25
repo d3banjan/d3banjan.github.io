@@ -1,6 +1,5 @@
 ---
 title: "Before We Were Bengali — The People of the Red Earth"
-titleBn: "বাঙালি হওয়ার আগে — লাল মাটির মানুষ"
 description: "3,600 years ago, a rice-farming civilization on the Ajay River left words, bones, and pottery that are still with us. Who were they?"
 pubDate: 2026-02-25
 series: "A Deep History of Bengali Culture"
@@ -11,7 +10,7 @@ import BilingualToggle from '../../components/BilingualToggle.svelte';
 import SVGMap from '../../components/charts/SVGMap.svelte';
 import TimelineChart from '../../components/charts/TimelineChart.svelte';
 import BarChart from '../../components/charts/BarChart.svelte';
-
+import Bibliography from '../../components/Bibliography.astro';
 export const raarhMapEn = [
   { type: 'region', name: 'rarh', fill: '#c44dbb', opacity: 0.3, dashed: true },
   { type: 'region', name: 'chota-nagpur', fill: '#e07c39', opacity: 0.15, dashed: true },
@@ -101,7 +100,14 @@ export const panduTimelineBn = [
 export const haplogroupMapEn = [
   { type: 'region', name: 'chota-nagpur', fill: '#c0392b', opacity: 0.55 },
   { type: 'region', name: 'santhal-parganas', fill: '#c0392b', opacity: 0.5 },
-  { type: 'region', coords: [[10,100],[22,100],[22,108],[10,108]], fill: '#e07c39', opacity: 0.3 },
+  { type: 'region', coords: [
+    [22.0,100.0],[21.5,101.2],[21.0,101.8],[20.5,101.5],[20.0,102.0],[19.5,102.1],[19.0,102.5],
+    [18.5,103.0],[18.0,103.8],[17.5,104.0],[17.0,104.8],[16.5,105.0],[16.0,105.5],[15.5,105.8],
+    [15.0,105.9],[14.5,105.5],[14.0,105.8],[13.5,105.5],[13.0,104.5],[12.5,104.0],[11.5,103.0],
+    [11.0,103.5],[10.5,104.0],[10.5,105.0],[10.8,106.5],[11.0,107.5],[11.5,108.0],[12.5,109.0],
+    [13.5,109.5],[14.5,109.5],[15.0,108.9],[16.0,108.5],[17.0,107.8],[18.0,106.6],[19.0,105.5],
+    [20.0,104.5],[20.5,103.5],[21.0,102.8],[22.0,103.5],[22.5,103.0],[23.0,102.5],[23.0,101.0],[22.0,100.0]
+  ], fill: '#e07c39', opacity: 0.3 },
   { type: 'region', name: 'vanga', fill: '#d4a843', opacity: 0.2 },
   { type: 'point', lat: 23.35, lon: 85.33, label: 'Santali/Munda', labelDir: 'n', detail: 'O1b1a1a frequency: 50–65%', color: '#c0392b' },
   { type: 'point', lat: 22.8, lon: 86.18, label: 'Ho people', labelDir: 's', detail: 'O1b1a1a frequency: ~55%', color: '#c0392b' },
@@ -109,12 +115,20 @@ export const haplogroupMapEn = [
   { type: 'point', lat: 14.06, lon: 108.28, label: 'Vietnam', labelDir: 'e', detail: 'O1b1a1a frequency: ~20%', color: '#e07c39' },
   { type: 'point', lat: 13.45, lon: 102.98, label: 'Thailand', labelDir: 'w', detail: 'O1b1a1a frequency: ~15%', color: '#e07c39' },
   { type: 'point', lat: 23.68, lon: 90.35, label: 'Bengali', labelDir: 'n', detail: 'O1b1a1a frequency: ~5–8%', color: '#d4a843' },
-  { type: 'route', points: [[15,104],[12,95],[11,86],[14,86],[19,86],[21,85],[23,85]], color: '#c0392b', dashed: true },
+  { type: 'point', lat: 12.5, lon: 92.7, label: 'Andaman & Nicobar', labelDir: 'w', detail: 'Nicobaric branch of Austroasiatic still spoken here', color: '#c0392b' },
+  { type: 'route', points: [[15,104],[12,92.7],[14,88],[17,87],[19,86],[21,85],[23,85]], color: '#c0392b', dashed: true },
 ]
 export const haplogroupMapBn = [
   { type: 'region', name: 'chota-nagpur', fill: '#c0392b', opacity: 0.55 },
   { type: 'region', name: 'santhal-parganas', fill: '#c0392b', opacity: 0.5 },
-  { type: 'region', coords: [[10,100],[22,100],[22,108],[10,108]], fill: '#e07c39', opacity: 0.3 },
+  { type: 'region', coords: [
+    [22.0,100.0],[21.5,101.2],[21.0,101.8],[20.5,101.5],[20.0,102.0],[19.5,102.1],[19.0,102.5],
+    [18.5,103.0],[18.0,103.8],[17.5,104.0],[17.0,104.8],[16.5,105.0],[16.0,105.5],[15.5,105.8],
+    [15.0,105.9],[14.5,105.5],[14.0,105.8],[13.5,105.5],[13.0,104.5],[12.5,104.0],[11.5,103.0],
+    [11.0,103.5],[10.5,104.0],[10.5,105.0],[10.8,106.5],[11.0,107.5],[11.5,108.0],[12.5,109.0],
+    [13.5,109.5],[14.5,109.5],[15.0,108.9],[16.0,108.5],[17.0,107.8],[18.0,106.6],[19.0,105.5],
+    [20.0,104.5],[20.5,103.5],[21.0,102.8],[22.0,103.5],[22.5,103.0],[23.0,102.5],[23.0,101.0],[22.0,100.0]
+  ], fill: '#e07c39', opacity: 0.3 },
   { type: 'region', name: 'vanga', fill: '#d4a843', opacity: 0.2 },
   { type: 'point', lat: 23.35, lon: 85.33, label: 'সাঁওতাল/মুন্ডা', labelDir: 'n', detail: 'O1b1a1a: ৫০–৬৫%', color: '#c0392b' },
   { type: 'point', lat: 22.8, lon: 86.18, label: 'হো জনগোষ্ঠী', labelDir: 's', detail: 'O1b1a1a: ~৫৫%', color: '#c0392b' },
@@ -122,7 +136,8 @@ export const haplogroupMapBn = [
   { type: 'point', lat: 14.06, lon: 108.28, label: 'ভিয়েতনাম', labelDir: 'e', detail: 'O1b1a1a: ~২০%', color: '#e07c39' },
   { type: 'point', lat: 13.45, lon: 102.98, label: 'থাইল্যান্ড', labelDir: 'w', detail: 'O1b1a1a: ~১৫%', color: '#e07c39' },
   { type: 'point', lat: 23.68, lon: 90.35, label: 'বাঙালি', labelDir: 'n', detail: 'O1b1a1a: ~৫–৮%', color: '#d4a843' },
-  { type: 'route', points: [[15,104],[12,95],[11,86],[14,86],[19,86],[21,85],[23,85]], color: '#c0392b', dashed: true },
+  { type: 'point', lat: 12.5, lon: 92.7, label: 'আন্দামান ও নিকোবর', labelDir: 'w', detail: 'নিকোবরীয় শাখার অস্ট্রোএশিয়াটিক ভাষা এখনও প্রচলিত', color: '#c0392b' },
+  { type: 'route', points: [[15,104],[12,92.7],[14,88],[17,87],[19,86],[21,85],[23,85]], color: '#c0392b', dashed: true },
 ]
 export const haplogroupLegend = [
   { color: '#c0392b', label: 'High frequency (>40%)', shape: 'rect' },
@@ -160,10 +175,22 @@ export const haplogroupBarBn = [
   { label: 'বাঙালি (সাধারণ)', value: 7 },
   { label: 'উত্তর ভারতীয় (গড়)', value: 2 },
 ]
+export const wariTradeMapEn = [
+  { type: 'point', lat: 23.9, lon: 90.7, label: 'Wari-Bateshwar', labelDir: 'n', detail: 'Industrial bead manufacture, c.400–100 BCE: agate, carnelian, chalcedony, amethyst', color: '#c0392b' },
+  { type: 'point', lat: 14.6, lon: 121.0, label: 'Philippines finds', labelDir: 'n', detail: 'Carnelian beads of Wari-Bateshwar type recovered at multiple sites', color: '#2980b9' },
+  { type: 'point', lat: 3.0, lon: 113.5, label: 'Borneo finds', labelDir: 's', detail: 'Semi-precious stone beads of Bengal origin recovered in excavations', color: '#2980b9' },
+  { type: 'point', lat: 1.35, lon: 103.8, label: 'Malacca Strait', labelDir: 's', detail: 'Maritime chokepoint on Bengal–SE Asia trade route', color: '#7f8c8d' },
+  { type: 'route', points: [[23.9,90.7],[16,93],[8,97],[3,103.8],[3,113.5],[14.6,121.0]], color: '#c0392b', dashed: true },
+  { type: 'route', points: [[3,103.8],[3,113.5]], color: '#c0392b', dashed: true },
+]
+export const wariTradeLegend = [
+  { color: '#c0392b', label: 'Production site', shape: 'circle' },
+  { color: '#2980b9', label: 'Find sites (Bengal beads recovered)', shape: 'circle' },
+  { color: '#7f8c8d', label: 'Maritime waypoint', shape: 'circle' },
+  { color: '#c0392b', label: 'Inferred trade route', shape: 'line', dashed: true },
+]
 
 <BilingualToggle client:load />
-
-<div class="lang-en">
 
 There is a moment, traveling west from Kolkata by train toward Bardhaman or Bolpur, when the landscape changes without warning. The alluvial green of the Ganga delta — flat, water-saturated, the colour of rice paddy and pond weed — gives way to something older and harder. The soil turns ochre. Then terracotta. Then a deep, oxidized red. The land lifts slightly. Laterite boulders appear at the edges of fields. The air smells different: drier, with something mineral in it.
 
@@ -181,31 +208,6 @@ The Rarh of Bengal is red for the same reason — but because the rainfall is he
   aspectRatio={0.75}
   client:load
 />
-
-</div>
-
-<div class="lang-bn">
-
-কলকাতা থেকে ট্রেনে চেপে বর্ধমান বা বোলপুর যাওয়ার পথে একটা অদ্ভুত মুহূর্ত আসে খেয়াল করেছেন? চারপাশের ল্যান্ডস্কেপটা কাউকে কিছু না জানিয়ে হুট করে একেবারে বদলে যায়। গঙ্গার বদ্বীপের সেই চিরচেনা, থকথকে ভিজে সবুজ রং—যেটা ধানের খেত আর পুকুর পাড়ের পানার—সেটা উধাও হয়ে যায়। তার বদলে উঁকি মারে বেশ রুক্ষ, প্রাচীন একটা জিনিস। মাটির রং প্রথমে গেরুয়া, তারপর পোড়ামাটির মতো টেরাকোটা, আর শেষে একেবারে টকটকে অক্সিডাইজড লাল\! জমিও একটু যেন উঁচু হয়ে আসে। মাঠের প্রান্তে চোখে পড়ে ল্যাটেরাইট পাথরের চাঁই। হাওয়ার গন্ধটাও কেমন পালটে যায়—একটু শুকনো, আর তাতে একটা মেঠো, খনিজ খনিজ গন্ধ।
-
-এটাই হলো আমাদের রাঢ়। বীরভূম, বাঁকুড়া, পূর্ব আর পশ্চিম বর্ধমান জুড়ে বিস্তৃত এই উঁচু মালভূমি অঞ্চল—বাংলার পশ্চিম সীমানা, যেখানে ছোটনাগপুর মালভূমি সমতলের ওপর নিজের অস্তিত্ব জাহির করতে শুরু করেছে। বাংলায় 'রাঢ়' বলতে নির্দিষ্ট করে এই জোনটাকেই বোঝায়। এটা বদ্বীপ তৈরি হওয়ার আগের জায়গা, এক প্রাচীন ভূমি, যেখানে নদীগুলোর জল পলিমাটির ঘোলাটে রঙের বদলে ল্যাটেরাইটের ওপর দিয়ে স্বচ্ছ ধারায় বয়ে যায়।
-
-প্রসঙ্গান্তরে বলি, এই বছরের শুরুতে আমার সপরিবারে হাম্পি যাওয়ার সুযোগ হয়েছিল, বৌ বাচ্চা দিদি জামাইবাবু ভাগ্নে ভাগ্নী সহ। কর্ণাটকের ওই হাম্পি এবং চিত্রদূর্গ অঞ্চলে গ্রানাইট এবং লাল ধুলো কয়েক কিলোমিটারের মধ্যেই পাশাপাশি সহাবস্থান করছে।  তখন বিজয়নগর সাম্রাজ্যের শিল্পনিদর্শনে মন মেটেনি তখন \-- মাথায় ভূতত্ত্বের ভূত ঘুরছিলো\!  তখনই জেনেছিলাম যে সেখানকার গ্রানাইট পৃথিবীর সবচেয়ে পুরোনো, অর্ধেক অস্ট্রেলিয়ায়, অর্ধেক দক্ষিণ ভারতে।  সেই গ্রানাইট দিন-রাত, খটখটে রোদ্দুর আর বৃষ্টি-বাদলার ষড়যন্ত্রে লোহা এবং অ্যালুমিনিয়াম সম্পন্ন লাল ধুলো হয়ে গেছে।
-
-রাঢ় বাংলায় সেই কারণেই লাল \- তবে বৃষ্টি আরও বেশি বলে সিলিকা বা বালি ধুয়ে গেছে \- রেখে গেছে শুধু লোহা আর অ্যালুমিনিয়াম \- পাপড়ের মতন ফুলে থাকে তাই।  কর্ণাটকের সঙ্গে যেমন ভূতাত্ত্বিক যোগ আছে, অনেক পার্থক্যও আছে যেটা এই গল্পে মানায় না।
-
-<SVGMap
-  extent="bengal-wide"
-  features={raarhMapBn}
-  legend={raarhMapLegendBn}
-  title="রাঢ়: পশ্চিমবঙ্গের ল্যাটেরাইট দেশ"
-  aspectRatio={0.75}
-  client:load
-/>
-
-</div>
-
-<div class="lang-en">
 
 It is also the oldest inhabited landscape in Bengal.
 
@@ -228,33 +230,6 @@ They left a mound.
   client:load
 />
 
-</div>
-
-<div class="lang-bn">
-
-মজার ব্যাপারটা হলো, এই রক্তিমবর্ণ ল্যাটেরাইট পাপড় অধ্যুষিত রাঢ় অঞ্চল বাংলার সবচেয়ে পুরনো জনবসতির জায়গা।
-
-ট্রেন যে লাল মাটির বুক চিরে ছুটে যায়, সেটা নেহাতই কোনো ব্যাকগ্রাউন্ড সিনারি নয়। ওটা আসলে ৩,৬০০ বছর পুরোনো একটা সভ্যতার মেঝে। আর যে মানুষগুলো এই সভ্যতা গড়ে তুলেছিলেন—যারা সেই একই ধান ফলাতেন যা আমরা আজ খাচ্ছি, যারা আমাদের ভাষার গভীরে সযত্নে গুঁজে দিয়ে গেছেন তাদের নিজেদের শব্দ—তাঁরা কিন্তু মোটেও 'বাঙালি' ছিলেন না। কিন্তু তাঁরা না থাকলে আজকের বাঙালি হওয়াটাই সম্ভব হতো না।
-
----
-
-### অজয়ের ধারের সেই ঢিবি
-
-অজয় নদ বর্ধমানের বুক চিরে পুবদিকে বয়ে গিয়ে মিশেছে ভাগীরথীতে। খ্রিষ্টপূর্ব ১৬০০ অব্দের আশেপাশে কোনো এক সময়ে—মহাভারত লেখা হওয়ার আগে, মগধ সাম্রাজ্য গড়ে ওঠার আগে, এমনকী বৌদ্ধধর্মেরও আগে—পূর্ব বর্ধমান জেলার অজয়ের তীরে ধান চাষ করা একদল মানুষ নিজেদের বসতি গড়ে তুলেছিলেন।
-
-তাঁরা ফেলে গেছেন একটা আস্ত ঢিবি।
-
-<SVGMap
-  extent="southeast-asia"
-  features={maritimeMapBn}
-  legend={maritimeLegendBn}
-  title="সম্ভাব্য প্রোটো-মুন্ডা/অস্ট্রোএশিয়াটিক সামুদ্রিক অভিবাসন পথ, আনু. ২০০০–১৫০০ খ্রিপূ"
-  aspectRatio={0.6}
-  client:load
-/>
-
-</div>
-
 <figure>
 <img src="https://upload.wikimedia.org/wikipedia/commons/e/e6/Radhamadhab_Temple_at_Bishnupur_in_Bankura_district_of_West_Bengal.jpg" alt="The Radhamadhab Temple at Bishnupur, built entirely from local laterite — the deep ochre-red of the Rarh" />
 <figcaption>
@@ -271,8 +246,6 @@ They left a mound.
 </figcaption>
 </figure>
 
-<div class="lang-en">
-
 পাণ্ডু রাজার ঢিবি (*Pandu Rajar Dhibi*, "the mound of King Pandu") was first systematically excavated between 1962 and 1965 by the archaeologist Paresh Chandra Das Gupta. What he found there changed how historians understood western Bengal's antiquity. This was a Chalcolithic site — "Chalcolithic" meaning copper-using, pre-iron — with occupation layers dating from roughly 1600 BCE onward.
 
 The material culture was specific and coherent. Pottery was black-and-red ware: vessels fired so that the interior and upper portion came out black while the body remained red, decorated with painted motifs of starfish, ladders, and triangles. Alongside the pottery: copper bangles, copper fishhooks, copper needles. Bone tools. And crucially — rice husk impressions pressed into the clay walls of storage vessels, left there either by accident or by deliberate tempering with rice chaff.
@@ -281,18 +254,6 @@ That rice. The same grain. The same species — *Oryza sativa*, the domesticated
 
 {/* CognateTooltip: latin="dhaan" bengali="ধান" meaning="unhusked rice; the plant itself — distinct from chal (husked rice) or bhat (cooked rice)" */}
 
-</div>
-
-<div class="lang-bn">
-
-১৯৬২ থেকে ১৯৬৫ সালের মধ্যে প্রত্নতত্ত্ববিদ পরেশচন্দ্র দাশগুপ্ত মশাই প্রথমবার খুব নিয়মতান্ত্রিকভাবে 'পাণ্ডু রাজার ঢিবি'র খোঁড়াখুঁড়ি শুরু করেন। সেখানে তিনি যা পেলেন, তা পশ্চিমবাংলার প্রাচীন ইতিহাস নিয়ে ঐতিহাসিকদের পুরনো ধারণাটাই আমূল পালটে দিল। এটা ছিল তাম্রপ্রস্তর যুগের (Chalcolithic) একটা সাইট। "Chalcolithic" মানে যেখানে মানুষ তামার ব্যবহার শিখেছে, কিন্তু লোহার ব্যবহার তখনো শুরু হয়নি। এখানকার বসতির স্তরগুলো প্রায় খ্রিষ্টপূর্ব ১৬০০ অব্দ বা তারও আগের।
-
-ওখানকার মানুষের জীবনযাত্রা বা material culture বেশ সুনির্দিষ্ট আর গোছানো ছিল। তাঁরা বানাতেন কালো-আর-লাল রঙের মৃৎপাত্র (black-and-red ware)—এগুলোকে এমনভাবে পোড়ানো হতো যে পাত্রের ভেতরটা আর ওপরের অংশ কালো হয়ে যেত, আর নিচটা থাকত লাল। তাতে আবার তারামাছ/Starfish, মই আর ত্রিভুজের চমৎকার সব নকশা\! এর পাশাপাশি পাওয়া গেল তামার চুড়ি, তামার ছিপের বড়শি, তামার সুঁচ। হাড়ের তৈরি যন্ত্রপাতি। আর সবচেয়ে মোক্ষম যে জিনিসটা পাওয়া গেল তা হলো—মাটির বড় বড় পাত্রের গায়ে ধানের তুষের ছাপ। হয় দুর্ঘটনাবশত তুষ এসে পড়েছিল, অথবা পাত্রের মাটি শক্ত করার জন্য ইচ্ছে করেই তুষ মেশানো হয়েছিল।
-
-আর সেই ধান\! ঠিক আমাদের আজকের সেই চেনা শস্য। সেই একই প্রজাতি—*Oryza sativa*, যাকে আমরা এশিয়ান চাল বলি, যা আজ বিশ্বের দুশো কোটি মানুষের পেট ভরায়। পাণ্ডু রাজার ঢিবির সেই মানুষগুলো আজ থেকে সাড়ে তিন হাজার বছরেরও বেশি সময় আগে ওই ধান ফলাতেন, প্রক্রিয়াজাত করতেন, সংরক্ষণ করতেন আর নিজেদের অজান্তেই মাটির পাত্রে তার তুষের ছাপ রেখে যেতেন।
-
-</div>
-
 <figure>
 <img src="https://upload.wikimedia.org/wikipedia/commons/0/09/Urn-burial%2C_Period-II%2C_Pandu_Rajar_Dhibi.png" alt="Urn burial from Period II, Pandu Rajar Dhibi" />
 <figcaption>
@@ -300,8 +261,6 @@ That rice. The same grain. The same species — *Oryza sativa*, the domesticated
   <span class="lang-bn">পাণ্ডু রাজার ঢিবির দ্বিতীয় স্তরের কলসি-সমাধি। মৃতদেহ দাহ করে হাড়গুলো বড় মাটির কলসিতে রাখা হতো। এই প্রথা পূর্ব ভারত ও দক্ষিণ-পূর্ব এশিয়া জুড়ে প্রচলিত অস্ট্রোএশিয়াটিক অন্ত্যেষ্টি ঐতিহ্যের সাথে মিলে যায়। ছবি: সংস্কৃতি মন্ত্রণালয়, ভারত সরকার (GODL-India)।</span>
 </figcaption>
 </figure>
-
-<div class="lang-en">
 
 Pandu Rajar Dhibi was not unique. Subsequent surveys have identified 76 Chalcolithic sites across the Rāṛh zone — along the Ajay, the Damodar, the Kopai, and their tributaries. This was not a single village. It was a regional culture: a networked rice-producing civilization spread across the laterite uplands of western Bengal, doing something remarkably consistent across a large territory for several centuries.
 
@@ -386,7 +345,28 @@ The words for how to feed yourself may be the oldest stratum of Bengali's vocabu
 
 Period III at Pandu Rajar Dhibi ends badly. Excavators found clear evidence of a major conflagration — burning intense enough to leave a distinct layer in the stratigraphy. After this event, copper disappears from the material record and iron appears in its place. The pottery traditions change. There is an archaeological discontinuity that is hard to explain as gradual cultural evolution.
 
+<figure>
+  <img src="/assets/pandu/section-drawing-stratigraphy.jpg" alt="Stratigraphic section drawing of Trench IC, Pandu Rajar Dhibi, showing layered deposits from Period I through Period IV. Layers 5A ('thin patch of burnt earth') and 6B ('loose earth of dark gray colour with dots of charcoal, ashes') mark the conflagration horizon at the Period III–IV boundary." />
+  <figcaption>Northern section of Trench IC, Pandu Rajar Dhibi (1963 excavation). Layer 5A is described as "a thin patch of burnt earth. Sherds." Layer 6B: "loose earth of dark gray colour with dots of charcoal, ashes and fragments of pottery." These are the physical trace of the fire that ended Period III. Drawing by E.D. Sampson; from Dasgupta (1964).</figcaption>
+</figure>
+
+<div class="figure-pair">
+  <figure>
+    <img src="/assets/pandu/plate-xii-copper-period-ii.jpg" alt="Plate XII: Period II material assemblage — painted pottery sherds, copper bangles, microlith, and bone arrowhead from Pandu Rajar Dhibi." />
+    <figcaption>Plate XII — Period II copper assemblage: painted chocolate ware sherds, copper bangles, microlith, bone arrowhead. These objects vanish from the record after the conflagration.</figcaption>
+  </figure>
+  <figure>
+    <img src="/assets/pandu/plate-xiii-iron-period-iii.jpg" alt="Plate XIII: Iron implements from Period III — an arrowhead with hollow tang and a bar-celt, excavated 1962." />
+    <figcaption>Plate XIII — Period III iron implements: arrowhead with hollow tang (No. 1) and bar-celt (No. 2). Iron replaces copper immediately above the ash layer. Excavation 1962.</figcaption>
+  </figure>
+</div>
+
 What caused it? We do not know. Invasion by incoming groups is one possibility — the first millennium BCE saw major population movements associated with iron-using cultures spreading eastward through the subcontinent. Environmental change is another possibility: the Ajay's hydrology has shifted significantly over three millennia. The conflagration itself might have been deliberate or accidental.
+
+<figure>
+  <img src="/assets/pandu/cultural-sequence-ajay-valley.jpg" alt="The Cultural Sequence in the Ajay Valley — a composite chart drawn by E.D. Sampson showing representative artifacts from each period, Period I through Period V, arranged chronologically." />
+  <figcaption>The Cultural Sequence in the Ajay Valley — Period I (microlithic stone tools) through Period V (late historical). The sharp break between Periods III and IV corresponds to the conflagration horizon: painted black-and-red ware and copper drop out; plain coarse ware and iron come in. Drawing by E.D. Sampson; from Dasgupta (1964).</figcaption>
+</figure>
 
 What we can say is that the Chalcolithic culture of the Rāṛh — the black-and-red ware, the copper tools, the rice-farming villages — ends. And when the historical record picks up again in this landscape, it is a different world: iron-using, eventually Indo-Aryan-speaking, eventually Buddhist.
 
@@ -399,6 +379,15 @@ The people who had lived here did not vanish. But they were displaced, absorbed,
 Before closing, a contrasting data point from the opposite end of Bengal's geography.
 
 Wari-Bateshwar, in Narsingdi district of present-day Bangladesh — the eastern delta, river-fed and flat, the antithesis of the Rāṛh — was an Iron Age site occupied roughly from 400 to 100 BCE. Excavations by Jahangirnagar University from 2000 onward revealed an industrial-scale bead-making operation: semi-precious stone beads — agate, carnelian, chalcedony, amethyst — produced here in large quantities, and found in archaeological contexts as far away as the Philippines and Indonesia.
+
+<SVGMap
+  features={wariTradeMapEn}
+  legend={wariTradeLegend}
+  title="Wari-Bateshwar bead trade routes, c.400–100 BCE"
+  extent="maritime-bengal"
+  aspectRatio={0.5}
+  client:load
+/>
 
 Bengal was not just a recipient of maritime connections. It was a producer. It was exporting luxury goods by sea to Southeast Asia during the mid-first millennium BCE. The sea-lanes that the Munda ancestors may have used to arrive on the Odisha coast were also the sea-lanes that Bengali merchants used to trade eastward.
 
@@ -426,133 +415,4 @@ They are not museum pieces. They are not remnants. They are living people with c
 
 Bengali is a language spoken by people who came later, built on a foundation laid by people who were already here. The red soil the train passes through is that foundation. And it is worth knowing what you are standing on.
 
----
-
-</div>
-
-<div class="lang-bn">
-
-তবে পাণ্ডু রাজার ঢিবি একা ছিল না। পরের দিকের জরিপে অজয়, দামোদর, কোপাই আর তাদের শাখা নদীগুলোর আশেপাশে, গোটা রাঢ় অঞ্চল জুড়ে তাম্রপ্রস্তর যুগের এমন ৭৬টি সাইট পাওয়া গেছে। তার মানে এটা নেহাত বিচ্ছিন্ন কোনো গ্রাম ছিল না। এটা ছিল আস্ত একটা আঞ্চলিক সংস্কৃতি—পশ্চিমবঙ্গের ল্যাটেরাইট মালভূমি জুড়ে ছড়িয়ে থাকা, একে অপরের সাথে যুক্ত এক বিশাল ধান-উৎপাদনকারী সভ্যতা। কয়েক শতাব্দী ধরে এই বিশাল এলাকা জুড়ে মানুষগুলো প্রায় একই রকমভাবে জীবনযাপন করে গেছে।
-
-<TimelineChart
-  events={panduTimelineBn}
-  title="পাণ্ডু রাজার ঢিবি — প্রত্নতাত্ত্বিক স্তর, আনু. ১৬০০–৪০০ খ্রিপূ"
-  tickInterval={400}
-  aspectRatio={0.35}
-  client:load
-/>
-
----
-
-### কারা ছিল এই মানুষগুলো?
-
-এই জায়গাতেই প্রত্নতত্ত্ব বা archaeology-কে একটু বেশি খাটতে হয়, আর প্রমাণের সীমাবদ্ধতা নিয়ে সততা বজায় রাখাও খুব জরুরি।
-
-পাণ্ডু রাজার ঢিবিতে খোঁড়াখুঁড়ির সময় বেশ কিছু কঙ্কাল পাওয়া গিয়েছিল—মোট চোদ্দো জনের, যা দিয়ে তাদের শারীরিক গঠন বা morphological analysis করা সম্ভব। যে গবেষকরা এই কঙ্কালগুলো নিয়ে কাজ করেছেন, তাঁরা বলেছেন যে এদের সাথে আজকের যুগের সাঁওতাল আর শবর (Saora) জনগোষ্ঠীর শারীরিক গঠনের বেশ মিল রয়েছে। তবে বলে রাখা ভালো, এটা গবেষকদের একটা অনুমান, এবং এটাকে একটু সতর্কতার সাথেই গ্রহণ করা উচিত। কারণ কঙ্কালের গঠন দেখে কোনো জনগোষ্ঠীর পরিচয় নিখুঁতভাবে বলা যায় না, আর এখানে স্যাম্পল সাইজও বেশ ছোট। কিন্তু তা সত্ত্বেও, আমাদের হাতে এর চেয়ে ভালো কোনো প্রত্যক্ষ প্রমাণ নেই, এবং এটা একটা নির্দিষ্ট দিকেই ইঙ্গিত করে।
-
-যে মাটির লোহা আর অ্যালুমিনিয়াম ৩,৬০০ বছর আগেকার মৃৎপাত্রকে অবিনশ্বর করে রেখেছে, সেই একই অ্যাসিডিক মাটি ইতিহাসের নিষ্ঠুর পরিহাসে তার কারিগরদের শরীরের ডিএনএ-টুকু পর্যন্ত মুছে দিয়েছে । আমাদের কাছে আজ কোনো জীনতাত্ত্বিক প্রমাণ নেই, আছে শুধু সেই 'ব্ল্যাক-অ্যান্ড-রেড' পাত্রের গায়ে লেগে থাকা পোড়া গন্ধ আর ধানের তুষের নীরব সাক্ষ্য।
-
-সাঁওতাল সম্প্রদায়—যাঁরা সাঁওতালি ভাষায় কথা বলেন এবং বর্তমানে মূলত ঝাড়খণ্ড, ওড়িশা, পশ্চিমবঙ্গ আর বাংলাদেশে ছড়িয়ে আছেন—তাঁরা অস্ট্রোএশিয়াটিক (Austroasiatic) ভাষাগোষ্ঠীর মানুষ। তাঁদের ভাষা অস্ট্রোএশিয়াটিক পরিবারের 'মুণ্ডা' (Munda) শাখার অন্তর্গত। মূল ভূখণ্ড দক্ষিণ-পূর্ব এশিয়ার মন (Mon) এবং খমের (Khmer) ভাষাগুলোও এই একই পরিবারের অংশ, যদিও মুণ্ডা শাখাটি তাদের দক্ষিণ-পূর্ব এশীয় আত্মীয়দের থেকে হাজার হাজার বছর আগেই আলাদা হয়ে গিয়েছিল। ওড়িশার শবর বা সাউরা (Saora) সম্প্রদায়ও এই একই অস্ট্রোএশিয়াটিক গোষ্ঠীর অন্তর্ভুক্ত—তাদের ভাষাও মুণ্ডা শাখার, তবে সাঁওতালির চেয়ে আলাদা।
-
-যদি কঙ্কালের ওই বিশ্লেষণ সত্যি হয়, তবে পাণ্ডু রাজার ঢিবির সেই মানুষগুলো এমন এক জনগোষ্ঠীর পূর্বপুরুষ ছিলেন, যাদের বংশধররা আজও এই অঞ্চলে বাস করছে। বোলপুরের সাপ্তাহিক হাটে যখন আপনি কোনো সাঁওতাল পরিবারকে দেখেন, কিংবা পুরুলিয়ায় যখন কোনো মুণ্ডা রমণীকে মাথায় ধানের বোঝা নিয়ে যেতে দেখেন, তখন আপনি আসলে সাড়ে তিন হাজার বছরের পুরোনো একটা সুতোর টানই দেখতে পাচ্ছেন। তাঁরা হয়তো সরাসরি বংশধর নন—কারণ হাজার হাজার বছর ধরে বহু জনগোষ্ঠীর মিশ্রণ ঘটেছে, মানুষ এক জায়গা থেকে অন্য জায়গায় গেছে—কিন্তু কোথাও একটা গভীর সংযোগ রয়ে গেছে। জিনের কিছু মিল। কিছু জীবনযাপনের মিল। আর সেই একই ধান।
-
----
-
-### জীনতত্ত্ব: সমুদ্র পেরিয়ে আসা
-
-গত দুই দশকে পপুলেশন জেনেটিক্স বা জীনতত্ত্বের গবেষণা এই ছবিটাকে আরও অনেক বেশি স্পষ্ট করে তুলেছে—আর সত্যি বলতে কি, এমন একটা তথ্য সামনে এনেছে, যা রীতিমতো চমকে দেওয়ার মতো।
-
-পুরো দক্ষিণ এশিয়ার জনগোষ্ঠীর মধ্যে ওয়াই-ক্রোমোজোম (Y-chromosome, যা বাবা থেকে ছেলের শরীরে যায়) নিয়ে গবেষণা করতে গিয়ে বিজ্ঞানীরা একটা বিশেষ হ্যাপ্লোগ্রুপের (haplogroup) খোঁজ পেয়েছেন, যার নাম O1b1a1a (আগে এর অন্যান্য নামও ছিল)। এটা আসলে একটা দক্ষিণ-পূর্ব এশীয় পুরুষ বংশধারা। দক্ষিণ এশিয়ার মুণ্ডা-ভাষী জনগোষ্ঠীর মধ্যে এই জিন প্রবলভাবে দেখা যায়, আর যাদের মুণ্ডা পূর্বপুরুষ নেই, তাদের মধ্যে এটা প্রায় দেখাই যায় না বললেই চলে।
-
-তাহলে প্রশ্ন হলো, এই বংশধারা ভারতীয় উপমহাদেশে ঢুকল কোথা দিয়ে? ভাষাবিদ পল সিডওয়েল (Paul Sidwell) ২০১৮ সালে ভাষাতত্ত্ব এবং জীনতত্ত্বের প্রমাণ একসঙ্গে মিলিয়ে একটা তত্ত্ব দাঁড় করান। তিনি দাবি করেন যে, মুণ্ডা পূর্বপুরুষরা ইন্দো-আর্যদের মতো উত্তর-পশ্চিম দিক দিয়ে স্থলপথে আসেননি, কিংবা তিব্বতি-বর্মণ গোষ্ঠীর মতো উত্তর-পূর্ব দিক দিয়েও আসেননি। তাঁরা এসেছিলেন **ওড়িশার উপকূলে**—একেবারে সরাসরি **সমুদ্রপথে**, দক্ষিণ-পূর্ব এশিয়া থেকে, আনুমানিক ২০০০-১৫০০ খ্রিষ্টপূর্বাব্দের দিকে।
-
-ভাবুন তো একবার\! নৌকায় করে। বঙ্গোপসাগর পেরিয়ে।
-
-অবশ্য এই ব্যাপারটা নিয়ে পণ্ডিতদের মধ্যে তর্কবিতর্ক আছে, আর সেটা পরিষ্কার করে বলাই ভালো। এই সমুদ্রপথে আসার তত্ত্বটা বেশ যৌক্তিক এবং জীনতত্ত্বের ডিস্ট্রিবিউশনের সাথে মিলেও যায়, কিন্তু সবাই যে এটা একবাক্যে মেনে নিয়েছেন তা নয়। ভাষাবিদ আর জীনতত্ত্ববিদরা এখনও এর গতিপথ আর সময়কাল নিয়ে বিতর্ক চালিয়ে যাচ্ছেন। তবে যেটা একেবারে প্রতিষ্ঠিত সত্য, তা হলো মুণ্ডা-ভাষীদের মধ্যে এই দক্ষিণ-পূর্ব এশীয় পুরুষ বংশধারার অস্তিত্ব। আর এটাও প্রতিষ্ঠিত যে, তাঁরা পশ্চিম থেকে নয়, পূর্ব দিক থেকেই এসেছিলেন।
-
-জীনতত্ত্বের আরেকটা দিক বাংলার সামাজিক স্তরবিন্যাস বোঝার জন্য ভীষণ জরুরি। হার্ভার্ডের গবেষক ডেভিড রাইখ এবং তাঁর সঙ্গীদের তৈরি করা এএনআই/এএসআই (ANI/ASI \- Ancestral North Indian এবং Ancestral South Indian) মডেল অনুযায়ী, বাঙালিদের জিনের মধ্যে একটা অদ্ভুত গ্রেডিয়েন্ট বা বিভাজন দেখা যায়। বাঙালি ব্রাহ্মণদের মধ্যে এএনআই (ANI) বা উত্তরের জিনের ভাগ বেশি। অন্যদিকে বাঙালি দলিত, নিম্নবর্ণের মানুষ এবং বিশেষ করে পূর্ববঙ্গের বদ্বীপ অঞ্চলের জনগোষ্ঠীর মধ্যে এএসআই (ASI) এবং ওই O1b1a1a হ্যাপ্লোগ্রুপের মাত্রা অনেক বেশি দেখা যায়। তার মানে, যারা পরে এসেছিল—সেই ইন্দো-আর্য ভাষী মানুষজন, ব্রাহ্মণ্যবাদী সমাজ—তারা আসলে একটা পুরোনো 'substrate' বা ভিত্তিমূলের ওপর নিজেদের চাপিয়ে দিয়েছিল। আর সেই পুরোনো ভিত্তিমূল আজও রয়ে গেছে সেই মানুষগুলোর শরীরে, যারা আজ সামাজিকভাবে এবং অর্থনৈতিকভাবে সবচেয়ে বেশি প্রান্তিক।
-
-বাংলার তথাকথিত নিচু জাতের মানুষের পূর্বপুরুষরা আসলে কারা ছিল, তা নিয়ে জীনতত্ত্ব কোনো রাখঢাক করে না। তারা হলো সেই মানুষদেরই বংশধর, যারা আগে থেকেই এই মাটিতে ছিল।
-
-<SVGMap
-  extent="southeast-asia"
-  features={haplogroupMapBn}
-  legend={haplogroupLegendBn}
-  title="O1b1a1a হ্যাপ্লোগ্রুপ — অস্ট্রোএশিয়াটিক অভিবাসনের জিনগত চিহ্ন"
-  aspectRatio={0.6}
-  client:load
-/>
-
-<BarChart
-  data={haplogroupBarBn}
-  horizontal={true}
-  format="percent"
-  title="জনগোষ্ঠী অনুযায়ী O1b1a1a (O-M95) ঘনত্ব"
-  client:load
-/>
-
----
-
-### আমাদের মুখে ওদের শব্দ
-
-এবার আসি সেই অংশে যেটা আমাকে সবচেয়ে বেশি নাড়া দেয়।
-
-যে ঐতিহাসিক ভাষাবিদরা বাংলা এবং অন্যান্য পূর্ব ভারতীয় আর্য ভাষায় মুণ্ডা 'সাবস্ট্রেট' বা প্রভাব নিয়ে গবেষণা করছেন, তাঁরা এমন কিছু শব্দের খোঁজ পেয়েছেন যেগুলো আর্য-পূর্ব অস্ট্রোএশিয়াটিক ভাষীদের কাছ থেকে ধার করা। এগুলো এমন সব শব্দ, যা একটা বিশেষ ল্যান্ডস্কেপে বেঁচে থাকার জন্য আপনার নিত্যদিন প্রয়োজন হয়: রোজকার যন্ত্রপাতি, পশুপাখি, গাছপালা, আর কৃষিকাজের সাথে জড়িত নানা শব্দ।
-
-ঢেঁকি—ধান ভানার সেই আদি এবং অকৃত্রিম পা-চালিত যন্ত্র। মুণ্ডা ভাষাগুলোতে এর সমগোত্রীয় শব্দ (cognate) পাওয়া যায়: মুণ্ডারিতে *ḍheṅki*, সাঁওতালিতে *dheṅki*। এই শব্দটা কিন্তু সংস্কৃত থেকে বাংলায় আসেনি (সংস্কৃতে ধান ভানার যন্ত্রের নিজস্ব শব্দ আছে—হামানদিস্তার জন্য *উলূখল*, আর মুষলের জন্য *মুষল*)। এই শব্দটা এসেছে সেই মানুষগুলোর কাছ থেকে, যারা সংস্কৃতভাষীরা আসার অনেক আগে থেকেই রাঢ় অঞ্চলে বসে ধান ভানত।
-
-ডাঙা—জলে ডোবা ধানখেতের ঠিক বিপরীত, উঁচু আর শুকনো জায়গা বোঝাতে আমরা এই শব্দটা ব্যবহার করি। সাঁওতালিতে *ḍaṅgra*, মুণ্ডারিতে *ḍaṅgā*। এই ভৌগোলিক শব্দভাণ্ডারটা তৈরি করেছিল সেই মানুষগুলো, যাদের রাঢ়ের ল্যাটেরাইট মালভূমির মতো নির্দিষ্ট একটা ভূখণ্ডের জন্য একেবারে জুতসই শব্দের দরকার ছিল। আর বাংলা ভাষা যখন এখানে এল, তখন সে ওই শব্দগুলোকে নিজের করে নিল।
-
-এখানে একটা ব্যাপার খোলসা করে বলা দরকার: বাংলা ভাষায় মুণ্ডা শব্দের প্রভাব যে আছে, সেটা সুনীতিকুমার চট্টোপাধ্যায় থেকে শুরু করে সাউথওয়ার্থ পর্যন্ত অনেকেই প্রমাণ করেছেন এবং এটা সর্বজনস্বীকৃত। তবে প্রতিটি আলাদা আলাদা শব্দ ঠিক কোন ভাষা থেকে এসেছে, তা নিয়ে পণ্ডিতদের মধ্যে মতবিরোধ আছে। কিছু মুণ্ডা শব্দের ক্ষেত্রে সংস্কৃত বা দ্রাবিড় উৎসও দাবি করা হয়। তাই সত্যি কথাটা এই নয় যে "এই শব্দটা নিশ্চিতভাবেই পাণ্ডু রাজার ঢিবির কৃষকদের কাছ থেকে এসেছে", বরং ব্যাপারটা হলো: কৃষিকাজের যন্ত্রপাতি বা পদ্ধতি বোঝাতে বাংলা যে শব্দগুলো ব্যবহার করে, তার বেশ কিছু শব্দ খুব সম্ভবত সেই প্রাচীন অস্ট্রোএশিয়াটিক ভাষী মানুষদের কাছ থেকেই ধার করা। আর রাঢ়ের তাম্রপ্রস্তর যুগের কৃষকরা যে প্রায় নিশ্চিতভাবেই অস্ট্রোএশিয়াটিক ভাষায় কথা বলতেন, তাতে খুব একটা সন্দেহ নেই।
-
-পেটের ভাত জোগাড় করার জন্য আমরা যে শব্দগুলো ব্যবহার করি, সেগুলোই হয়তো বাংলা শব্দভাণ্ডারের সবচেয়ে প্রাচীন স্তর।
-
----
-
-### অগ্নিকাণ্ড, এবং তারপর
-
-পাণ্ডু রাজার ঢিবির 'তৃতীয় পর্যায়' (Period III)-এর শেষটা হয়েছিল খুব মর্মান্তিকভাবে। প্রত্নতাত্ত্বিকরা সেখানে একটা ভয়াবহ অগ্নিকাণ্ডের স্পষ্ট প্রমাণ পেয়েছেন—আগুনটা এতটাই তীব্র ছিল যে মাটির স্তরে তার একটা আলাদা কালো দাগ রয়ে গেছে। এই ঘটনার পর থেকে জিনিসপত্রের মধ্যে তামার ব্যবহার একেবারে উধাও হয়ে যায়, আর তার জায়গা নেয় লোহা। মৃৎপাত্র তৈরির স্টাইলও পালটে যায়। এই আকস্মিক প্রত্নতাত্ত্বিক পরিবর্তনটাকে কোনোভাবেই ধীরেসুস্থে হওয়া 'সাংস্কৃতিক বিবর্তন' বলে চালিয়ে দেওয়া যায় না।
-
-কী কারণে এমনটা হয়েছিল? আমরা ঠিক জানি না। এমন হতে পারে যে বাইরে থেকে নতুন কোনো গোষ্ঠী এসে আক্রমণ করেছিল—কারণ খ্রিষ্টপূর্ব প্রথম সহস্রাব্দে লোহার ব্যবহার জানা মানুষজন দলে দলে উপমহাদেশের পূর্বদিকে ছড়িয়ে পড়ছিল। আবার পরিবেশগত পরিবর্তনও একটা কারণ হতে পারে—গত তিন হাজার বছরে অজয় নদের গতিপথ এবং জলপ্রবাহ অনেকটাই বদলেছে। আর সেই অগ্নিকাণ্ড হয়তো নেহাতই কোনো দুর্ঘটনা ছিল, অথবা ইচ্ছে করেই লাগানো হয়েছিল।
-
-আমরা শুধু এটুকুই বলতে পারি যে, রাঢ় অঞ্চলের সেই তাম্রপ্রস্তর যুগের সংস্কৃতি—সেই কালো-আর-লাল পাত্র, তামার যন্ত্রপাতি, আর ধানচাষি গ্রামগুলো—চিরতরে হারিয়ে যায়। এরপর যখন আবার এই ল্যান্ডস্কেপের ঐতিহাসিক প্রমাণ পাওয়া শুরু হয়, তখন সেটা একেবারে অন্য একটা জগত: যেখানে লোহার ব্যবহার আছে, যারা কালক্রমে ইন্দো-আর্য ভাষায় কথা বলছে, এবং একটা সময়ে গিয়ে যারা বৌদ্ধধর্ম গ্রহণ করছে।
-
-কিন্তু আগের মানুষগুলো তো আর হাওয়ায় মিলিয়ে যায়নি। তাদের হয়তো উৎখাত করা হয়েছিল, পশ্চিমের মালভূমির দিকে—আজকের ঝাড়খণ্ড আর পশ্চিম ওড়িশার দিকে—ঠেলে দেওয়া হয়েছিল। অথবা, নতুন যে সামাজিক বর্ণব্যবস্থা গড়ে উঠছিল, তার সবচেয়ে নিচু স্তরে তাদের ঢুকিয়ে নেওয়া হয়েছিল। ঝাড়খণ্ড, ওড়িশা আর ছোটনাগপুরের আজকের মুণ্ডা-ভাষী সম্প্রদায় হলো এক অর্থে পাণ্ডু রাজার ঢিবির সেই মানুষদেরই বংশধর, যারা পশ্চিমে সরে গিয়েছিল। আর রাঢ়ের বাংলা-ভাষী নিম্নবর্ণের মানুষরা হলো সেই অংশের বংশধর, যারা ওখানেই থেকে গিয়েছিল—এবং নতুন সমাজে শোষিত হয়ে মিশে গিয়েছিল।
-
----
-
-### পূর্ববঙ্গের বদ্বীপ এবং সমুদ্র
-
-শেষ করার আগে বাংলার ঠিক উল্টোদিকের ভূগোলের একটা সম্পূর্ণ ভিন্ন চিত্র একটু তুলে ধরি।
-
-আজকের বাংলাদেশের নরসিংদী জেলার উয়ারী-বটেশ্বর—একেবারে পূর্ব দিকের নদীমাতৃক সমতল বদ্বীপ, রাঢ়ের ঠিক উল্টো—ছিল লৌহ যুগের (Iron Age) একটা সাইট, যা আনুমানিক খ্রিষ্টপূর্ব ৪০০ থেকে ১০০ অব্দ পর্যন্ত টিকে ছিল। ২০০০ সালের পর থেকে জাহাঙ্গীরনগর বিশ্ববিদ্যালয়ের খোঁড়াখুঁড়িতে সেখানে রীতিমতো কারখানার মাপে পুঁতি তৈরির প্রমাণ মেলে। দামি এবং আধা-দামি পাথরের পুঁতি—অ্যাগেট, কার্নেলিয়ান, চ্যালসেডনি, অ্যামিথিস্ট—এখানে বিপুল পরিমাণে তৈরি হতো। আর আশ্চর্যের ব্যাপার হলো, এখানকার তৈরি পুঁতি ফিলিপিন্স এবং ইন্দোনেশিয়ার প্রত্নতাত্ত্বিক সাইটেও পাওয়া গেছে\!
-
-তার মানে, বাংলা শুধু বাইরের মানুষের আসার জায়গা ছিল না, বাংলা নিজেও ছিল এক বিশাল উৎপাদক। খ্রিষ্টপূর্ব প্রথম সহস্রাব্দের মাঝামাঝি সময়ে বাংলা সমুদ্রপথে দক্ষিণ-পূর্ব এশিয়ায় বিলাসবহুল জিনিসপত্র রপ্তানি করত। যে সমুদ্রপথ ধরে মুণ্ডাদের পূর্বপুরুষরা হয়তো একদিন ওড়িশার উপকূলে এসে পৌঁছেছিলেন, ঠিক সেই একই সমুদ্রপথ ধরে বাংলার বণিকরা পুবদিকে বাণিজ্য করতে যেতেন।
-
-আজ থেকে ২,৪০০ বছর আগের বাংলা ছিল একটা আস্ত সামুদ্রিক সভ্যতা, বঙ্গোপসাগরের ওপারে যাদের গভীর যোগাযোগ ছিল। এই সিরিজের পরের দিকে যখন আমরা 'চম্পা' এবং দক্ষিণ-পূর্ব এশিয়ার রাজ্যগুলোর গল্পে পৌঁছাব, তখন এই বিষয়টা খুব কাজে লাগবে।
-
----
-
-### বিস্তৃত ভূগোলে রাঢ়
-
-বোলপুর স্টেশনে ট্রেন ঢোকার আগে আর একটা কথা বলে নিই।
-
-রাঢ়ের এই ল্যাটেরাইট মাটি শুধু সংকীর্ণ অর্থে 'বাংলার' নিজস্ব সম্পত্তি নয়। ভূতাত্ত্বিকভাবে এটা দক্ষিণের ওড়িশা মালভূমির সাথেই একটানা যুক্ত—সেই একই প্রিক্যাম্ব্রিয়ান বেসমেন্ট রক, একই ল্যাটেরাইটের ক্ষয়, আর সেই একই গেরুয়া-লাল মাটি। অজয় উপত্যকার তাম্রপ্রস্তর যুগের কৃষকরা যখন ধান বুনছিলেন, তখন তাদেরই তুতো ভাইরা—বা প্রতিবেশীরা, অথবা হয়তো ব্যবসার পার্টনাররা—আজকের ওড়িশার সুবর্ণরেখা উপত্যকায়, ভুবনেশ্বরের ওপরের মালভূমিতে বসে ঠিক একই কাজ করছিলেন। আধুনিক রাজ্যের সীমানা হয়তো আজ এই ল্যান্ডস্কেপটাকে ভাগ করে দিয়েছে, কিন্তু পরিবেশগত আর সাংস্কৃতিকভাবে এটা একটাই অখণ্ড ভূখণ্ড ছিল।
-
-মধ্য ওড়িশার শবর বা সাউরা (Sora/Saura) মানুষজন—যারা মুণ্ডা সম্প্রদায়ের খুব কাছের অস্ট্রোএশিয়াটিক ভাষী গোষ্ঠী—তারা হলো সেই আদি পৃথিবীর সমান্তরাল একটা সাবস্ট্রেট বা ভিত্তিমূল। তারা আজও সেখানে আছে। তাদের ভাষা আজও বেঁচে আছে। আর পূর্ব ভারতের সবচেয়ে বড় হিন্দু তীর্থক্ষেত্র—পুরীর জগন্নাথ মন্দিরে—যাঁরা গর্ভগৃহের সবচেয়ে গোপনীয় এবং পবিত্র আচারগুলো পালন করেন, সেই দৈতাপতি সেবায়তরা ঐতিহ্যগতভাবে শবর (উপজাতীয়) সম্প্রদায় থেকেই আসেন। উপমহাদেশের অন্যতম শ্রেষ্ঠ এক ব্রাহ্মণ্যবাদী তীর্থক্ষেত্রের একেবারে কেন্দ্রে, প্রাচীনতম ধর্মীয় অধিকারের অধিকারী মানুষগুলো আজও ওড়িশার সেই আর্য-পূর্ব ভিত্তিমূলের উত্তরাধিকার বহন করে চলেছেন।
-
-আসল কথাটা হলো: বাংলার সুপ্রাচীন ইতিহাস আসলে শুধু বাংলার একার ইতিহাস নয়। এটা হলো গোটা পূর্ব মালভূমির ইতিহাস—এমন একটা ল্যান্ডস্কেপ যা বর্তমানে ভারতের তিনটি রাজ্য এবং বাংলাদেশ জুড়ে বিস্তৃত। যেখানে অন্তত ৩,৬০০ বছর ধরে এমন কিছু মানুষ বসবাস করে আসছে, যাদের বংশধররা আজও আমাদের পাশেই আছে, এবং যাদের শব্দ, জিন আর কৃষিকাজের পদ্ধতি আজও আমাদের জীবনের অঙ্গ।
-
----
-
-### বোলপুরের হাটের সেই মানুষগুলো
-
-বোলপুরের সাপ্তাহিক হাটে আজও আপনি যে সাঁওতাল কৃষকদের দেখতে পান—যাঁরা হয়তো সবজি, ঝুড়ি বা মহুয়া ফুল বিক্রি করছেন—তাঁরা নিজেদের ভেতরে খুব প্রাচীন একটা জিনিস বয়ে বেড়াচ্ছেন। তাঁদের মুখের আদল, তাঁদের ভাষা (সাঁওতালি, যা আজ পণ্ডিত রঘুনাথ মুর্মুর ১৯২০-এর দশকে তৈরি করা 'অল চিকি' লিপিতে লেখা হয়), তাঁদের ধান চাষের পদ্ধতি: এ সবই পাণ্ডু রাজার ঢিবির সেই খোঁড়াখুঁড়িতে পাওয়া জিনিসগুলোরই একটানা প্রবাহ।
-
-তাঁরা কোনো মিউজিয়াম পিস নন। তাঁরা কোনো ধ্বংসাবশেষও নন। তাঁরা জলজ্যান্ত মানুষ, যাদের বর্তমানের একটা নিজস্ব জীবন আছে, আছে সমসাময়িক রাজনৈতিক লড়াই। সাঁওতালি মাধ্যমের স্কুলগুলো আজও অবহেলিত, জমির অধিকার নিয়ে আজও লড়াই চলছে, আর সাঁওতাল পরগনা তার বিদ্রোহ আর জমি হারানোর ইতিহাস বুকে নিয়েই আজকের দিনে দাঁড়িয়ে আছে। কিন্তু আক্ষরিক অর্থেই, তাঁরা হলেন সেই মানুষ যারা এখানে সবার আগে ছিলেন। যাঁদের কৃষিকাজের শব্দ বাংলা ভাষা নিজের বলে আপন করে নিয়েছে। যাঁদের বংশধারা বা জেনেটিক লিনিয়েজ আজও বাংলার দলিত আর নিম্নবর্ণের মানুষের শরীরে বয়ে চলেছে। যাঁদের সভ্যতা এই লাল মাটির নিচে সেই ঢিবিগুলো রেখে গিয়েছিল, যা একদিন প্রত্নতাত্ত্বিকরা খুঁজে বের করেছেন।
-
-বাংলা এমন একটা ভাষা যা পরবর্তীকালে আসা মানুষদের মুখে তৈরি, কিন্তু এর ভিতটা গড়ে দিয়ে গেছেন সেই মানুষগুলো, যারা আগে থেকেই এই মাটিতে ছিলেন। ট্রেন যে লাল মাটির ওপর দিয়ে ছুটে যায়, সেটা আসলে সেই ভিত। আর আমরা ঠিক কার ওপর, কোন মাটির ওপর দাঁড়িয়ে আছি—সেটা অন্তত আমাদের জানা উচিত।
-
----
-
-</div>
+<Bibliography keys={['dasgupta1962', 'narasimhan2019', 'reich2009', 'kuiper1991', 'sidwell2018', 'witzel1999substrate', 'waribateshwar']} lang="en" />

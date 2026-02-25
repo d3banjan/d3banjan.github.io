@@ -1,0 +1,30 @@
+---
+import { type CollectionEntry, getCollection, render } from 'astro:content';
+import BlogPost from '../../layouts/BlogPost.astro';
+
+export async function getStaticPaths() {
+	const posts = await getCollection('bn');
+	const now = new Date();
+	const published = import.meta.env.DEV ? posts : posts.filter((p) => p.data.pubDate <= now);
+	return published.map((post) => ({
+		params: { slug: post.id },
+		props: post,
+	}));
+}
+
+type Props = CollectionEntry<'bn'>;
+
+const post = Astro.props;
+const { Content } = await render(post);
+const SITE_URL = 'https://d3banjan.github.io';
+---
+
+<BlogPost
+	{...post.data}
+	id={post.id}
+	defaultLang="bn"
+	hreflangEn={`${SITE_URL}/blog/${post.id}/`}
+	hreflangBn={`${SITE_URL}/bn/${post.id}/`}
+>
+	<Content />
+</BlogPost>

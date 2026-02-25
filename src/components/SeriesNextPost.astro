@@ -1,15 +1,17 @@
 ---
-import { getPublishedPosts } from '../consts';
+import { getPublishedBnPosts, getPublishedPosts } from '../consts';
 
 interface Props {
 	currentId: string;
 	seriesName: string;
 	seriesOrder: number;
+	defaultLang?: 'en' | 'bn';
 }
 
-const { currentId, seriesName, seriesOrder } = Astro.props;
+const { currentId, seriesName, seriesOrder, defaultLang = 'en' } = Astro.props;
+const isBn = defaultLang === 'bn';
 
-const allPosts = await getPublishedPosts();
+const allPosts = isBn ? await getPublishedBnPosts() : await getPublishedPosts();
 const seriesPosts = allPosts
 	.filter((p) => p.data.series === seriesName)
 	.sort((a, b) => (a.data.seriesOrder ?? 0) - (b.data.seriesOrder ?? 0));
@@ -19,21 +21,23 @@ const next = currentIndex >= 0 && currentIndex < seriesPosts.length - 1
 	? seriesPosts[currentIndex + 1]
 	: null;
 const prev = currentIndex > 0 ? seriesPosts[currentIndex - 1] : null;
+
+const urlPrefix = isBn ? '/bn/' : '/blog/';
 ---
 
 {next && (
 	<p class="series-next">
 		<em>
-			<span class="title-en">Next in this series: <a href={`/blog/${next.id}/`}>{next.data.title}</a></span>
-			{next.data.titleBn && (
-				<span class="title-bn">পরের পর্ব: <a href={`/blog/${next.id}/`}>{next.data.titleBn}</a></span>
-			)}
+			{isBn
+				? <span>পরের পর্ব: <a href={`${urlPrefix}${next.id}/`}>{next.data.title}</a></span>
+				: <span>Next in this series: <a href={`${urlPrefix}${next.id}/`}>{next.data.title}</a></span>
+			}
 		</em>
 	</p>
 )}
 {!next && prev && (
 	<p class="series-next">
-		<em>This is the final post in this series.</em>
+		<em>{isBn ? 'এটি এই সিরিজের শেষ পর্ব।' : 'This is the final post in this series.'}</em>
 	</p>
 )}
 

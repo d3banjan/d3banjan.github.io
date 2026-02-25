@@ -1,0 +1,90 @@
+---
+import { CITATIONS, type Citation } from '../data/citations';
+
+interface Props {
+	keys: string[];
+	lang?: 'en' | 'bn';
+}
+
+const { keys, lang = 'en' } = Astro.props;
+const isBn = lang === 'bn';
+
+const citations = keys.map((k) => {
+	const c = CITATIONS[k];
+	if (!c) throw new Error(`Unknown citation key: "${k}"`);
+	return c;
+});
+
+function formatCitation(c: Citation, bn: boolean): { text: string; url?: string } {
+	const authors = bn ? c.authorsBn : c.authors;
+	const title = bn ? c.titleBn : c.title;
+	const venue = bn ? (c.venueBn ?? c.venue) : c.venue;
+	const note = bn ? (c.noteBn ?? c.note) : c.note;
+	const year = c.year;
+	const url = c.doi ? `https://doi.org/${c.doi}` : c.url;
+
+	let text = authors;
+	if (c.type === 'article') {
+		text += `. "${title}"`;
+		if (venue) text += `. *${venue}*`;
+	} else if (c.type === 'book' || c.type === 'primary') {
+		text += `. *${title}*`;
+	} else if (c.type === 'legal') {
+		text += `. *${title}*`;
+	}
+	if (year) text += ` (${year})`;
+	if (note) text += `. ${note}`;
+
+	return { text, url };
+}
+---
+
+<div class="bibliography">
+	<p class="bib-label">{isBn ? 'সূত্র' : 'Sources'}</p>
+	<ol class="bib-list">
+		{citations.map((c) => {
+			const { text, url } = formatCitation(c, isBn);
+			return (
+				<li set:html={
+					url
+						? text.replace(/\*([^*]+)\*/g, '<em>$1</em>') + ` <a href="${url}" target="_blank" rel="noopener">${c.doi ? `doi:${c.doi}` : '↗'}</a>`
+						: text.replace(/\*([^*]+)\*/g, '<em>$1</em>')
+				} />
+			);
+		})}
+	</ol>
+</div>
+
+<style>
+	.bibliography {
+		margin-top: 3em;
+		padding-top: 1.5em;
+		border-top: 1px solid rgb(var(--gray-light));
+		font-size: 0.88em;
+		color: rgb(var(--gray));
+	}
+	.bib-label {
+		font-weight: 700;
+		margin-bottom: 0.6em;
+		color: rgb(var(--gray-dark));
+	}
+	.bib-list {
+		list-style: none;
+		padding: 0;
+		margin: 0;
+	}
+	.bib-list li {
+		margin-bottom: 0.5em;
+		padding-left: 1.2em;
+		text-indent: -1.2em;
+		line-height: 1.5;
+	}
+	.bib-list a {
+		color: var(--accent);
+		text-decoration: none;
+		font-size: 0.85em;
+	}
+	.bib-list a:hover {
+		text-decoration: underline;
+	}
+</style>

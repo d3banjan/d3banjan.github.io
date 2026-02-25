@@ -10,11 +10,15 @@ interface Props {
 	title: string;
 	description: string;
 	image?: ImageMetadata;
+	/** Full absolute URL for the English version of this page (enables hreflang). */
+	hreflangEn?: string;
+	/** Full absolute URL for the Bengali version of this page (enables hreflang). */
+	hreflangBn?: string;
 }
 
 const canonicalURL = new URL(Astro.url.pathname, Astro.site);
 
-const { title, description, image = FallbackImage } = Astro.props;
+const { title, description, image = FallbackImage, hreflangEn, hreflangBn } = Astro.props;
 ---
 
 <!-- Global Metadata -->
@@ -45,6 +49,11 @@ const { title, description, image = FallbackImage } = Astro.props;
 
 <!-- Canonical URL -->
 <link rel="canonical" href={canonicalURL} />
+
+<!-- hreflang alternate links for bilingual posts -->
+{hreflangEn && <link rel="alternate" hreflang="en" href={hreflangEn} />}
+{hreflangBn && <link rel="alternate" hreflang="bn" href={hreflangBn} />}
+{hreflangEn && <link rel="alternate" hreflang="x-default" href={hreflangEn} />}
 
 <!-- Primary Meta Tags -->
 <title>{title}</title>

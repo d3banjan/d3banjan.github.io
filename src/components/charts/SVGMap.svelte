@@ -3,7 +3,7 @@
 	import Tooltip from './core/Tooltip.svelte';
 	import geoData from '../../data/map-geo.json';
 
-	type Extent = 'bengal' | 'bengal-wide' | 'subcontinent' | 'southeast-asia';
+	type Extent = 'bengal' | 'bengal-wide' | 'subcontinent' | 'southeast-asia' | 'maritime-bengal';
 	type LatLon = [number, number]; // [lat, lon]
 
 	interface PointFeature {
@@ -64,6 +64,7 @@
 		'bengal-wide': [19, 28, 80, 96],
 		subcontinent: [5, 37, 63, 98],
 		'southeast-asia': [3, 37, 63, 112],
+		'maritime-bengal': [-8, 28, 75, 132],
 	};
 
 	// Predefined named regions as approximate polygons [lat, lon][]

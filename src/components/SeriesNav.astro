@@ -1,15 +1,17 @@
 ---
-import { getPublishedPosts, SERIES_META } from '../consts';
+import { getPublishedBnPosts, getPublishedPosts, SERIES_META } from '../consts';
 
 interface Props {
 	currentId: string;
 	seriesName: string;
 	seriesOrder: number;
+	defaultLang?: 'en' | 'bn';
 }
 
-const { currentId, seriesName, seriesOrder } = Astro.props;
+const { currentId, seriesName, seriesOrder, defaultLang = 'en' } = Astro.props;
+const isBn = defaultLang === 'bn';
 
-const allPosts = await getPublishedPosts();
+const allPosts = isBn ? await getPublishedBnPosts() : await getPublishedPosts();
 const seriesPosts = allPosts
 	.filter((p) => p.data.series === seriesName)
 	.sort((a, b) => (a.data.seriesOrder ?? 0) - (b.data.seriesOrder ?? 0));
@@ -20,52 +22,40 @@ const next = currentIndex < seriesPosts.length - 1 ? seriesPosts[currentIndex + 
 
 const meta = SERIES_META[seriesName];
 const seriesUrl = meta ? `/series/${meta.slug}/` : null;
+const urlPrefix = isBn ? '/bn/' : '/blog/';
+const partLabel = isBn ? 'পর্ব' : 'Part';
+const ofLabel = isBn ? '-এর মধ্যে' : 'of';
+const inLabel = isBn ? '-এ' : 'in';
 ---
 
 <nav class="series-nav" aria-label="Series navigation">
 	<p class="series-header">
-		Part {seriesOrder} of {seriesPosts.length} in
+		{partLabel} {seriesOrder} {ofLabel} {seriesPosts.length} {inLabel}
 		{seriesUrl ? <a href={seriesUrl}><strong>{seriesName}</strong></a> : <strong>{seriesName}</strong>}
 	</p>
 
 	<ol class="series-toc">
-		{
-			seriesPosts.map((post) => (
-				<li>
-					{post.id === currentId ? (
-						<strong>
-							<span class="title-en">{post.data.title}</span>
-							{post.data.titleBn && <span class="title-bn">{post.data.titleBn}</span>}
-						</strong>
-					) : (
-						<a href={`/blog/${post.id}/`}>
-							<span class="title-en">{post.data.title}</span>
-							{post.data.titleBn && <span class="title-bn">{post.data.titleBn}</span>}
-						</a>
-					)}
-				</li>
-			))
-		}
+		{seriesPosts.map((post) => (
+			<li>
+				{post.id === currentId
+					? <strong>{post.data.title}</strong>
+					: <a href={`${urlPrefix}${post.id}/`}>{post.data.title}</a>
+				}
+			</li>
+		))}
 	</ol>
 
 	<div class="series-prevnext">
-		{
-			prev && (
-				<a href={`/blog/${prev.id}/`} class="prev">
-					&larr; <span class="title-en">{prev.data.title}</span>
-					{prev.data.titleBn && <span class="title-bn">{prev.data.titleBn}</span>}
-				</a>
-			)
-		}
-		{
-			next && (
-				<a href={`/blog/${next.id}/`} class="next">
-					<span class="title-en">{next.data.title}</span>
-					{next.data.titleBn && <span class="title-bn">{next.data.titleBn}</span>}
-					 &rarr;
-				</a>
-			)
-		}
+		{prev && (
+			<a href={`${urlPrefix}${prev.id}/`} class="prev">
+				&larr; {prev.data.title}
+			</a>
+		)}
+		{next && (
+			<a href={`${urlPrefix}${next.id}/`} class="next">
+				{next.data.title} &rarr;
+			</a>
+		)}
 	</div>
 </nav>
 

@@ -8,41 +8,52 @@ import Header from '../components/Header.astro';
 import TagList from '../components/TagList.astro';
 import SeriesNav from '../components/SeriesNav.astro';
 import SeriesNextPost from '../components/SeriesNextPost.astro';
+import { SERIES_META } from '../consts';
 
-type Props = CollectionEntry<'blog'>['data'] & { id: string };
+type Props = CollectionEntry<'blog'>['data'] & {
+	id: string;
+	defaultLang?: 'en' | 'bn';
+	hreflangEn?: string;
+	hreflangBn?: string;
+};
 
-const { title, titleBn, description, pubDate, updatedDate, heroImage, tags, series, seriesOrder, id } =
+const { title, description, pubDate, updatedDate, heroImage, tags, series, seriesOrder, id, defaultLang = 'en' } =
 	Astro.props;
+
+const SITE_URL = 'https://d3banjan.github.io';
+const slug = id;
+// hreflang: English posts link to their /bn/ counterpart; bn pages pass these from their page
+const hreflangEn = Astro.props.hreflangEn;
+const hreflangBn = Astro.props.hreflangBn;
+
+const seriesMeta = series ? SERIES_META[series] : undefined;
+const jsonLd = {
+	'@context': 'https://schema.org',
+	'@type': 'BlogPosting',
+	headline: title,
+	description,
+	datePublished: pubDate.toISOString(),
+	...(updatedDate ? { dateModified: updatedDate.toISOString() } : {}),
+	inLanguage: defaultLang === 'bn' ? 'bn' : 'en',
+	url: defaultLang === 'bn' ? `${SITE_URL}/bn/${slug}/` : `${SITE_URL}/blog/${slug}/`,
+	author: { '@type': 'Person', name: 'Debanjan Basu', url: SITE_URL },
+	...(seriesMeta
+		? {
+				isPartOf: {
+					'@type': 'Blog',
+					name: series,
+					'@id': `${SITE_URL}/series/${seriesMeta.slug}/`,
+				},
+			}
+		: {}),
+};
 ---
 
-<html lang="en">
+<html lang={defaultLang === 'bn' ? 'bn' : 'en'}>
 	<head>
-		<BaseHead title={title} description={description} />
+		<BaseHead title={title} description={description} hreflangEn={hreflangEn} hreflangBn={hreflangBn} />
+		<script type="application/ld+json" set:html={JSON.stringify(jsonLd)} />
 		{import.meta.env.DEV && <meta name="edit-source" content={`src/content/blog/${id}`} />}
-		<style is:global>
-			/* Bilingual toggle — content sections */
-			.lang-bn {
-				display: none;
-			}
-			body[data-lang='bn'] .lang-bn {
-				display: block;
-			}
-			body[data-lang='bn'] .lang-en {
-				display: none;
-			}
-
-			/* Bilingual toggle — titles */
-			.title-bn {
-				display: none;
-			}
-			body[data-lang='bn'] .title-bn {
-				display: inline;
-				font-family: 'Tiro Bangla', serif;
-			}
-			body[data-lang='bn'] .title-en {
-				display: none;
-			}
-		</style>
 		<style>
 			main {
 				width: calc(100% - 2em);
@@ -103,19 +114,16 @@ const { title, titleBn, description, pubDate, updatedDate, heroImage, tags, seri
 								)
 							}
 						</div>
-						<h1>
-							<span class="title-en">{title}</span>
-							{titleBn && <span class="title-bn">{titleBn}</span>}
-						</h1>
+						<h1>{title}</h1>
 						<TagList tags={tags} />
 						<hr />
 					</div>
 					{series && seriesOrder && (
-						<SeriesNav currentId={id} seriesName={series} seriesOrder={seriesOrder} />
+						<SeriesNav currentId={id} seriesName={series} seriesOrder={seriesOrder} defaultLang={defaultLang} />
 					)}
 					<slot />
 					{series && seriesOrder && (
-						<SeriesNextPost currentId={id} seriesName={series} seriesOrder={seriesOrder} />
+						<SeriesNextPost currentId={id} seriesName={series} seriesOrder={seriesOrder} defaultLang={defaultLang} />
 					)}
 				</div>
 			</article>
