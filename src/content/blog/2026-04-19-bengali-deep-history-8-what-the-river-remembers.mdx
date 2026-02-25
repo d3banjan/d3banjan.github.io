@@ -2,12 +2,45 @@
 title: "What the River Remembers"
 titleBn: "নদীর স্মৃতিচারণ"
 description: "\"The history of Bengal is written in water.\" A synthesis — genetic, linguistic, civilizational — of who the Bengali people are and what a modern democracy owes to a culture that survived for 10,000 years."
-pubDate: 2026-04-19
+pubDate: 2026-01-28
 series: "A Deep History of Bengali Culture"
 seriesOrder: 8
 ---
 
 import BilingualToggle from '../../components/BilingualToggle.svelte';
+import BarChart from '../../components/charts/BarChart.svelte';
+import SVGMap from '../../components/charts/SVGMap.svelte';
+
+export const aniAsiEn = [
+  { label: 'Punjab (NW India)', value: 72 },
+  { label: 'UP Brahmins', value: 68 },
+  { label: 'West Bengal Brahmins', value: 55 },
+  { label: 'West Bengal general', value: 42 },
+  { label: 'Bangladesh', value: 38 },
+  { label: 'Santali', value: 25 },
+]
+export const aniAsiBn = [
+  { label: 'পাঞ্জাব (উত্তর-পশ্চিম ভারত)', value: 72 },
+  { label: 'উত্তরপ্রদেশ ব্রাহ্মণ', value: 68 },
+  { label: 'পশ্চিমবঙ্গ ব্রাহ্মণ', value: 55 },
+  { label: 'পশ্চিমবঙ্গ সাধারণ', value: 42 },
+  { label: 'বাংলাদেশ', value: 38 },
+  { label: 'সাঁওতাল', value: 25 },
+]
+export const eatonMapEn = [
+  { type: 'region', name: 'anga', label: 'Older settled zone', fill: '#5b8def', opacity: 0.3 },
+  { type: 'region', name: 'vanga', label: 'Eastward frontier', fill: '#e07c39', opacity: 0.35 },
+  { type: 'route', points: [[25,83],[24,86],[23,88],[22,90],[22,92]], color: '#2da87e' },
+  { type: 'point', lat: 23.73, lon: 90.40, label: 'Dhaka', labelDir: 'e', detail: 'Mughal provincial capital' },
+  { type: 'point', lat: 24.88, lon: 88.13, label: 'Gaur', labelDir: 'n', detail: 'Bengal Sultanate capital' },
+]
+export const eatonMapBn = [
+  { type: 'region', name: 'anga', label: 'প্রাচীন জনবসতি অঞ্চল', fill: '#5b8def', opacity: 0.3 },
+  { type: 'region', name: 'vanga', label: 'পূর্বমুখী সীমান্ত', fill: '#e07c39', opacity: 0.35 },
+  { type: 'route', points: [[25,83],[24,86],[23,88],[22,90],[22,92]], color: '#2da87e' },
+  { type: 'point', lat: 23.73, lon: 90.40, label: 'ঢাকা', labelDir: 'e', detail: 'মুঘল প্রাদেশিক রাজধানী' },
+  { type: 'point', lat: 24.88, lon: 88.13, label: 'গৌড়', labelDir: 'n', detail: 'বাংলা সুলতানাতের রাজধানী' },
+]
 
 <BilingualToggle client:load />
 
@@ -38,6 +71,14 @@ Bengali Brahmins carry higher ANI (*Ancestral North Indian*, the Steppe ancestry
 
 This is not a hierarchy. It is a map of who was here first and who arrived when. All of it is Bengali.
 
+<BarChart
+  data={aniAsiEn}
+  title="ANI ancestry (%): west-to-east gradient"
+  horizontal={true}
+  format="percent"
+  client:load
+/>
+
 This layered history is the perfect mirror of Bengal's geography — the Ganges delta itself. Just as floodwaters deposit fertile new silt each year, history's currents have laid new cultural strata on this land. In the delta's logic, the newer upper silt is always most visible and valued, while the older layers are buried and forgotten beneath it. And yet the entire delta — the entire Bengali identity — rests on the foundation of those invisible, ancient sediments.
 
 ---
@@ -57,6 +98,14 @@ The populations who converted were not primarily disaffected Hindus fleeing cast
 Eaton's conclusion has a structural elegance: Islamic conversion in Bengal was the latest round of the same long process. For thousands of years, the expanding civilizational systems of South Asia — Brahmanical Hindu, then Buddhist, then Islamic — had been incorporating pre-Indo-Aryan frontier peoples into new social orders. Each time, the frontier moved east. Each time, new delta land appeared from the silt. Each time, the communities at the edge were absorbed, reorganized, renamed.
 
 The eastward shift of the main Ganges channel from the Bhāgīrathī to the Padma — accelerating from the 16th century — moved the zone of maximum agricultural productivity from western to eastern Bengal. This was not policy. It was hydrology. But it determined the shape of Bangladesh.
+
+<SVGMap
+  features={eatonMapEn}
+  title="Eaton's moving frontier: forest clearance and Islam in Bengal"
+  extent="bengal"
+  aspectRatio={0.75}
+  client:load
+/>
 
 ---
 
@@ -160,6 +209,14 @@ They will be right.
 
 বাঙালি ব্রাহ্মণদের জিনোমে ANI (Ancestral North Indian, অর্থাৎ ইন্দো-আর্যদের সাথে আসা সেই স্টেপস অঞ্চলের জিনগত ধারা)-এর ভাগ বেশি। অন্যদিকে বাংলার দলিত আর পূর্ববঙ্গের মানুষদের মধ্যে ASI (Ancestral South Indian, মানে আর্যদের আসার আগেকার আদিম দক্ষিণ এশীয় জিন) এবং সেই মুন্ডাদের O1b1a1a হ্যাপ্লোগ্রুপের ভাগটা বেশি। পূর্ববঙ্গের মুসলিম সম্প্রদায়গুলোর মধ্যে (যদিও অকাট্য প্রমাণ নিয়ে এখনো তর্ক চলছে), সম্ভবত প্রাক-ইন্দো-আর্য জিনের অনুপাত যেকোনো বাঙালি উপজাতির তুলনায় সবচেয়ে বেশি।
 
+<BarChart
+  data={aniAsiBn}
+  title="ANI পূর্বপুরুষ (%): পশ্চিম থেকে পূর্বে গ্রেডিয়েন্ট"
+  horizontal={true}
+  format="percent"
+  client:load
+/>
+
 **বাঙালির এই স্তরীভূত ইতিহাস আসলে তার ভৌগোলিক ঠিকানা—গঙ্গার বদ্বীপেরই নিখুঁত প্রতিচ্ছবি।**
 
 বন্যার জল যেমন প্রতি বছর উর্বর নতুন পলি রেখে যায়, ইতিহাসের স্রোতও ঠিক তেমনই নতুন সংস্কৃতির আস্তরণ ফেলে গেছে এই ভূখণ্ডে। বদ্বীপের নিয়মে ওপরের নতুন পলি সবসময় বেশি দৃশ্যমান ও কদরপ্রাপ্ত, আর তার নিচেই চাপা পড়ে বিস্মৃতির অতলে হারিয়ে যায় পুরনো স্তরগুলো। অথচ, সেই অদৃশ্য এবং বিস্মৃত প্রাচীন পলির ভিত্তির ওপরেই দাঁড়িয়ে আছে আজকের গোটা বদ্বীপ আর সম্পূর্ণ 'বাঙালি' সত্তা।
@@ -177,6 +234,14 @@ They will be right.
 ইটনের উপসংহারটার মধ্যে একটা দারুণ সৌন্দর্য আছে। বাংলায় ইসলামের বিস্তার কোনো বিচ্ছিন্ন ঘটনা নয়, বরং এটা ছিল হাজার হাজার বছর ধরে চলা একটা পুরনো প্রক্রিয়ারই নতুন রূপ। দক্ষিণ এশিয়ায় যুগের পর যুগ ধরে কখনো ব্রাহ্মণতান্ত্রিক হিন্দু, কখনো বৌদ্ধ, আর শেষে ইসলামিক সভ্যতাগুলো এই প্রাক-ইন্দো-আর্য প্রান্তিক মানুষদের নিজেদের নতুন সমাজব্যবস্থায় টেনে নিয়েছে। প্রতিবারই এই সীমানাটা একটু একটু করে পুবে সরেছে। প্রতিবারই পলি জমে নতুন জমি জেগেছে। আর প্রতিবারই একেবারে প্রান্তের মানুষগুলোকে আপন করে, নতুন করে সাজিয়ে, নতুন নাম দেওয়া হয়েছে।
 
 ষোড়শ শতাব্দী থেকে গঙ্গার মূল প্রবাহটা ভাগীরথী থেকে ক্রমশ সরে গিয়ে পদ্মার দিকে বইতে শুরু করে। এর ফলে কৃষির ভরকেন্দ্রটা পশ্চিম বাংলা থেকে পূর্ব বাংলায় সরে যায়। এটা কোনো রাজনৈতিক পলিসি ছিল না—এটা স্রেফ ভূগোলের খেলা\! কিন্তু এই খেলাটাই আজকের বাংলাদেশের মানচিত্র ঠিক করে দিয়েছে।
+
+<SVGMap
+  features={eatonMapBn}
+  title="ইটনের চলমান সীমান্ত: বাংলায় বন উচ্ছেদ ও ইসলাম"
+  extent="bengal"
+  aspectRatio={0.75}
+  client:load
+/>
 
 ### লালন এবং এক জীবন্ত সমন্বয়
 

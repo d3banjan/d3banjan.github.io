@@ -12,6 +12,8 @@
 		title?: string;
 		/** Row index to highlight (e.g. the "best" row) */
 		highlightRow?: number;
+		/** Multiple row indices to highlight */
+		highlightRows?: number[];
 	}
 
 	let {
@@ -19,7 +21,12 @@
 		rows,
 		title = '',
 		highlightRow = -1,
+		highlightRows = [],
 	}: Props = $props();
+
+	function isHighlighted(idx: number): boolean {
+		return idx === highlightRow || highlightRows.includes(idx);
+	}
 
 	let sortKey = $state('');
 	let sortAsc = $state(true);
@@ -81,7 +88,7 @@
 			<tbody>
 				{#each sortedRows() as row, ri}
 					{@const originalIndex = rows.indexOf(row)}
-					<tr class:highlight-row={originalIndex === highlightRow}>
+					<tr class:highlight-row={isHighlighted(originalIndex)}>
 						{#each columns as col}
 							<td class:highlight-col={col.highlight}>{row[col.key] ?? ''}</td>
 						{/each}
@@ -95,7 +102,7 @@
 	<div class="table-mobile">
 		{#each sortedRows() as row, ri}
 			{@const originalIndex = rows.indexOf(row)}
-			<div class="card" class:highlight-row={originalIndex === highlightRow}>
+			<div class="card" class:highlight-row={isHighlighted(originalIndex)}>
 				{#each columns as col}
 					<div class="card-field">
 						<span class="card-label">{col.label}</span>

@@ -2,10 +2,55 @@
 title: "A Word Older Than the Language That Carried It"
 titleBn: "বাংলাভাষার চেয়েও পুরনো এই ছড়া"
 description: "Saat Bhai Champa — Seven Brothers Champa. The most Sanskrit-sounding element of the story is probably the oldest non-Sanskrit thing in it."
-pubDate: 2026-04-05
+pubDate: 2026-02-05
 series: "A Deep History of Bengali Culture"
 seriesOrder: 6
 ---
+
+import SVGMap from '../../components/charts/SVGMap.svelte';
+import BilingualToggle from '../../components/BilingualToggle.svelte';
+import TimelineChart from '../../components/charts/TimelineChart.svelte';
+
+export const champaMapEn = [
+  { type: 'region', name: 'anga', label: 'Ancient Campā (Anga)', fill: '#e07c39', opacity: 0.4 },
+  { type: 'region', name: 'champa-vietnam', label: 'Champa (Vietnam)', fill: '#c44dbb', opacity: 0.4 },
+  { type: 'region', name: 'champasak', label: 'Champasak (Laos)', fill: '#2da87e', opacity: 0.4 },
+  { type: 'route', points: [[22,88],[15,88],[10,82],[8,80],[6,82],[8,96],[12,101],[15,108]], dashed: true, color: '#5b8def' },
+  { type: 'point', lat: 25.25, lon: 87.0, label: 'Bhagalpur', labelDir: 'n', detail: 'Ancient Campā (Anga)' },
+  { type: 'point', lat: 15.88, lon: 108.34, label: 'Hội An', labelDir: 'e', detail: 'Cham trading port' },
+  { type: 'point', lat: 22.57, lon: 88.36, label: 'Kolkata', labelDir: 'w' },
+];
+
+export const champaTimelineEn = [
+  { label: 'Champanagara (Anga/Bihar)', start: -600, end: 600, type: 'period', row: 0, detail: 'Ancient city in Anga kingdom; champak trees in Gangetic plain' },
+  { label: 'Buddhism spreads SE Asia', start: -250, end: 500, type: 'period', row: 1, detail: 'Ashoka missions; champak used in Buddhist ritual across South Asia' },
+  { label: 'Kingdom of Champa (Vietnam)', start: 192, end: 1832, type: 'period', row: 2, detail: 'Cham Hindu-Buddhist kingdom; coastal traders; champak in temple ritual' },
+  { label: 'Champasak (Laos)', start: 550, end: 1946, type: 'period', row: 3, detail: 'Southern Laos kingdom; Wat Phu temple complex; champak as sacred tree' },
+  { label: 'Bay of Bengal maritime peak', start: 700, end: 1200, type: 'period', row: 1, detail: 'Bengal-SE Asia trade routes at height; Pala dynasty contacts with Champa' },
+  { label: 'Vietnam conquers Champa', start: 1471, type: 'critical', row: 2, detail: 'Kingdom of Champa ends as independent state' },
+]
+export const champaTimelineBn = [
+  { label: 'চম্পানগর (অঙ্গ/বিহার)', start: -600, end: 600, type: 'period', row: 0, detail: 'অঙ্গ রাজ্যের প্রাচীন নগর; গাঙ্গেয় সমভূমিতে চম্পা গাছ' },
+  { label: 'বৌদ্ধ ধর্মের বিস্তার', start: -250, end: 500, type: 'period', row: 1, detail: 'অশোকের দূতদল; বৌদ্ধ আচারে চম্পা ফুলের ব্যবহার' },
+  { label: 'চম্পা রাজ্য (ভিয়েতনাম)', start: 192, end: 1832, type: 'period', row: 2, detail: 'চাম হিন্দু-বৌদ্ধ রাজ্য; সামুদ্রিক বাণিজ্যকেন্দ্র; মন্দিরে চম্পা' },
+  { label: 'চম্পাসক (লাওস)', start: 550, end: 1946, type: 'period', row: 3, detail: 'দক্ষিণ লাওসের রাজ্য; ওয়াত ফু মন্দির; পবিত্র চম্পা গাছ' },
+  { label: 'বঙ্গোপসাগরীয় বাণিজ্যের শীর্ষ', start: 700, end: 1200, type: 'period', row: 1, detail: 'বাংলা-দক্ষিণ-পূর্ব এশিয়া বাণিজ্যপথ; পাল রাজবংশের চম্পার সাথে যোগাযোগ' },
+  { label: 'ভিয়েতনাম কর্তৃক চম্পা বিজয়', start: 1471, type: 'critical', row: 2, detail: 'স্বাধীন রাজ্য হিসেবে চম্পার পরিসমাপ্তি' },
+]
+
+export const champaMapBn = [
+  { type: 'region', name: 'anga', label: 'প্রাচীন চম্পা (অঙ্গ)', fill: '#e07c39', opacity: 0.4 },
+  { type: 'region', name: 'champa-vietnam', label: 'চম্পা (ভিয়েতনাম)', fill: '#c44dbb', opacity: 0.4 },
+  { type: 'region', name: 'champasak', label: 'চম্পাসক (লাওস)', fill: '#2da87e', opacity: 0.4 },
+  { type: 'route', points: [[22,88],[15,88],[10,82],[8,80],[6,82],[8,96],[12,101],[15,108]], dashed: true, color: '#5b8def' },
+  { type: 'point', lat: 25.25, lon: 87.0, label: 'ভাগলপুর', labelDir: 'n', detail: 'প্রাচীন চম্পা (অঙ্গ)' },
+  { type: 'point', lat: 15.88, lon: 108.34, label: 'হয়-আন', labelDir: 'e', detail: 'চাম বন্দর নগর' },
+  { type: 'point', lat: 22.57, lon: 88.36, label: 'কলকাতা', labelDir: 'w' },
+];
+
+<BilingualToggle client:load />
+
+<div class="lang-en">
 
 সাত ভাই চম্পা (*Saat Bhai Champa*, "Seven Brothers Champa").
 
@@ -56,6 +101,24 @@ Succession anxiety. Clandestine assassination of heirs. The resilience of legiti
 ## Four Champas, One Word
 
 There are four distinct things that share this name, and their relationship to one another ranges from clear etymology to genuine mystery. I want to be honest about what is established and what is speculation.
+
+<SVGMap
+  title="The four Champas: a word carried by sea"
+  extent="southeast-asia"
+  features={champaMapEn}
+  aspectRatio={0.6}
+  client:load
+/>
+
+<TimelineChart
+  title="The four Champas across time"
+  events={champaTimelineEn}
+  minYear={-700}
+  maxYear={2000}
+  tickInterval={200}
+  aspectRatio={0.45}
+  client:load
+/>
 
 **The first Champa: the flower.**
 
@@ -113,6 +176,8 @@ The flower grows back. It outlasted the language that named it, and the empire t
 
 **Sources:** Dakshinaranjan Mitra Majumder, *Thakurmar Jhuli* (1907); Aitareya Brahmana (trans. A.B. Keith, 1920); F.B.J. Kuiper, *Aryans in the Rigveda* (1991); M. Witzel, "Substrate Languages in Old Indo-Aryan," *EJVS* (1999); Po Nagar inscriptions on Bengali merchants in Champa highlands; Wari-Bateshwar excavation reports, Jahangirnagar University. The Jataka-based founding narrative of Champa-Vietnam does not appear in the Jataka texts; treat that claim with caution.
 
+</div>
+
 <div class="lang-bn">
 
 সাত ভাই চম্পা (*Saat Bhai Champa*)।
@@ -162,6 +227,24 @@ The flower grows back. It outlasted the language that named it, and the empire t
 ### চারটে চম্পা, আর একটা শব্দ
 
 এই একই নামের ভাগীদার মোট চারটে আলাদা আলাদা জিনিস রয়েছে। এদের একে অপরের সাথে সম্পর্কটা কোথাও স্পষ্ট ব্যুৎপত্তিগত, আবার কোথাও একেবারে রহস্যে মোড়া। কোনটা প্রমাণিত সত্য আর কোনটা নিছকই জল্পনা, তা নিয়ে একটু সততা বজায় রাখা উচিত।
+
+<SVGMap
+  title="চারটি চম্পা: সমুদ্রপথে বাহিত একটি শব্দ"
+  extent="southeast-asia"
+  features={champaMapBn}
+  aspectRatio={0.6}
+  client:load
+/>
+
+<TimelineChart
+  title="চারটি চম্পা — সময়ের সাথে সাথে"
+  events={champaTimelineBn}
+  minYear={-700}
+  maxYear={2000}
+  tickInterval={200}
+  aspectRatio={0.45}
+  client:load
+/>
 
 **প্রথম চম্পা: ফুলটি।**
 

@@ -1,11 +1,109 @@
 ---
 title: "The Words That Don't Move"
-titleBn: "যে শব্দগুলো নড়ে না"
+titleBn: "যে শব্দগুলো বদলায় না"
 description: "Languages change unevenly. The words that resist replacement the longest are the ones lived in the body — farming, cooking, counting. Bengali is a palimpsest, and knowing which layer you're reading changes everything."
-pubDate: 2026-03-15
+pubDate: 2026-02-20
 series: "A Deep History of Bengali Culture"
 seriesOrder: 3
 ---
+
+import ComparisonTable from '../../components/charts/ComparisonTable.svelte';
+import SVGMap from '../../components/charts/SVGMap.svelte';
+import BilingualToggle from '../../components/BilingualToggle.svelte';
+
+export const strataTableBn = {
+  columns: [
+    { key: "layer", label: "স্তর" },
+    { key: "origin", label: "উৎস" },
+    { key: "examples", label: "উদাহরণ" },
+    { key: "stability", label: "স্থিতিশীলতা" },
+  ],
+  rows: [
+    { layer: "সাবস্ট্রেট (দেশি)", origin: "মুণ্ডা / অস্ট্রো-এশিয়াটিক", examples: "ঢেঁকি, হাঁড়ি, ডাঙা, ঝিঙে", stability: "সর্বোচ্চ — হেঁশেল ও শরীরের শব্দ" },
+    { layer: "ইন্দো-আর্য মূল", origin: "প্রাকৃতের হাত ধরে সংস্কৃত", examples: "মা, চোখ, জল, এক দুই তিন", stability: "অত্যন্ত বেশি — মৌলিক শব্দভাণ্ডার" },
+    { layer: "সংস্কৃত মর্যাদা-স্তর", origin: "সাহিত্যিক সংস্কৃত", examples: "ধর্ম, কর্ম, বৃক্ষ", stability: "বেশি — পুঁথিপত্রের ঐতিহ্য" },
+    { layer: "ফারসি-আরবি", origin: "সুলতানি / মুঘল আমল", examples: "দফতর, জমিদার, সিপাহি", stability: "মাঝারি — প্রশাসনিক স্তর" },
+    { layer: "পর্তুগিজ", origin: "ঔপনিবেশিক বাণিজ্য", examples: "আলমারি, বালতি, ফর্সা", stability: "কম-মাঝারি — গৃহস্থালির জিনিসপত্র" },
+    { layer: "ইংরেজি", origin: "ব্রিটিশ শাসন / বৈশ্বিক", examples: "মোবাইল, ইন্টারনেট, কম্পিউটার", stability: "সর্বনিম্ন — এখনও আসছে" },
+  ],
+};
+
+export const substrateMapEn = [
+  { type: 'region', name: 'chota-nagpur', fill: '#2da87e', opacity: 0.4, dashed: true },
+  { type: 'region', name: 'rarh', fill: '#e07c39', opacity: 0.3, dashed: true },
+  { type: 'region', name: 'santhal-parganas', fill: '#2da87e', opacity: 0.3, dashed: true },
+  { type: 'region', name: 'odisha', fill: '#d4a843', opacity: 0.2, dashed: true },
+  { type: 'point', lat: 23.35, lon: 85.33, label: 'Ranchi', labelDir: 'n', detail: 'Munda language centre today', color: '#2da87e' },
+  { type: 'point', lat: 22.8, lon: 86.18, label: 'Seraikela', labelDir: 's', detail: 'Ho language speakers', color: '#2da87e' },
+  { type: 'point', lat: 24.59, lon: 87.93, label: 'Dumka', labelDir: 'n', detail: 'Santali language centre', color: '#2da87e' },
+  { type: 'point', lat: 22.57, lon: 88.36, label: 'Kolkata', labelDir: 'e', color: '#555' },
+  { type: 'point', lat: 20.3, lon: 85.8, label: 'Bhubaneswar', labelDir: 's', color: '#555' },
+]
+export const substrateMapBn = [
+  { type: 'region', name: 'chota-nagpur', fill: '#2da87e', opacity: 0.4, dashed: true },
+  { type: 'region', name: 'rarh', fill: '#e07c39', opacity: 0.3, dashed: true },
+  { type: 'region', name: 'santhal-parganas', fill: '#2da87e', opacity: 0.3, dashed: true },
+  { type: 'region', name: 'odisha', fill: '#d4a843', opacity: 0.2, dashed: true },
+  { type: 'point', lat: 23.35, lon: 85.33, label: 'রাঁচি', labelDir: 'n', detail: 'আজকের মুন্ডা ভাষার কেন্দ্র', color: '#2da87e' },
+  { type: 'point', lat: 22.8, lon: 86.18, label: 'সেরাইকেলা', labelDir: 's', detail: 'হো ভাষার ভাষীরা', color: '#2da87e' },
+  { type: 'point', lat: 24.59, lon: 87.93, label: 'দুমকা', labelDir: 'n', detail: 'সাঁওতালি ভাষার কেন্দ্র', color: '#2da87e' },
+  { type: 'point', lat: 22.57, lon: 88.36, label: 'কলকাতা', labelDir: 'e', color: '#555' },
+  { type: 'point', lat: 20.3, lon: 85.8, label: 'ভুবনেশ্বর', labelDir: 's', color: '#555' },
+]
+export const swadeshColumns = [
+  { key: 'lang', label: 'Language / ভাষা' },
+  { key: 'family', label: 'Family' },
+  { key: 'n1', label: '1' },
+  { key: 'n2', label: '2' },
+  { key: 'n3', label: '3' },
+  { key: 'water', label: 'water' },
+  { key: 'fire', label: 'fire' },
+  { key: 'mother', label: 'mother' },
+  { key: 'hand', label: 'hand' },
+  { key: 'eye', label: 'eye' },
+];
+export const swadeshRows = [
+  { lang: 'Bengali', family: 'Indo-Aryan', n1: 'এক (ek)', n2: 'দুই (dui)', n3: 'তিন (tin)', water: 'জল (jol)', fire: 'আগুন (agun)', mother: 'মা (ma)', hand: 'হাত (hat)', eye: 'চোখ (chokh) / আঁখি (ankhi)' },
+  { lang: 'Sanskrit', family: 'Indo-Aryan', n1: 'eka', n2: 'dvi', n3: 'tri', water: 'jala', fire: 'agni', mother: 'mātṛ', hand: 'hasta', eye: 'cakṣu / akṣi' },
+  { lang: 'Hindi', family: 'Indo-Aryan', n1: 'ek', n2: 'do', n3: 'tīn', water: 'pānī', fire: 'āg', mother: 'mā', hand: 'hāth', eye: 'ānkh (akṣi) / nayan' },
+  { lang: 'Odia', family: 'Indo-Aryan', n1: 'eka', n2: 'dui', n3: 'tini', water: 'jala', fire: 'agni', mother: 'mā', hand: 'hāta', eye: 'āṅkhi (akṣi) / cakṣu' },
+  { lang: 'Santali', family: 'Austroasiatic (Munda)', n1: "mit'", n2: 'bar', n3: 'pe', water: 'dak', fire: 'sengel', mother: 'ayo', hand: 'bahu', eye: 'mẽt' },
+  { lang: 'Ho', family: 'Austroasiatic (Munda)', n1: "mɪʔ", n2: 'baria', n3: 'pia', water: 'daa', fire: 'siŋgel', mother: 'ayo', hand: 'ba', eye: 'met' },
+  { lang: 'Oraon / Kurukh', family: 'North Dravidian', n1: 'ondo', n2: 'irind', n3: 'muund', water: 'pani', fire: 'ci', mother: 'ayo', hand: 'ba', eye: 'ɳeʈ' },
+  { lang: 'Tibetan', family: 'Sino-Tibetan', n1: 'gcig', n2: 'gnyis', n3: 'gsum', water: 'chu', fire: 'me', mother: 'a-ma', hand: 'lag-pa', eye: 'mig' },
+  { lang: 'Burmese', family: 'Sino-Tibetan', n1: 'tiq', n2: 'hniq', n3: 'thounq', water: 'yei', fire: 'mi', mother: 'a-mé', hand: 'leq', eye: 'myeq' },
+  { lang: 'Vietnamese', family: 'Austroasiatic (Mon-Khmer)', n1: 'một', n2: 'hai', n3: 'ba', water: 'nước', fire: 'lửa', mother: 'mẹ', hand: 'tay', eye: 'mắt' },
+];
+
+export const swadeshColumnsBn = [
+  { key: 'lang', label: 'ভাষা' },
+  { key: 'family', label: 'ভাষাগোষ্ঠী' },
+  { key: 'n1', label: 'এক' },
+  { key: 'n2', label: 'দুই' },
+  { key: 'n3', label: 'তিন' },
+  { key: 'water', label: 'জল' },
+  { key: 'fire', label: 'আগুন' },
+  { key: 'mother', label: 'মা' },
+  { key: 'hand', label: 'হাত' },
+  { key: 'eye', label: 'চোখ' },
+];
+
+export const substrateLegend = [
+  { color: '#2da87e', label: 'Munda/Austroasiatic heartland', shape: 'rect', dashed: true },
+  { color: '#e07c39', label: 'Rāṛh — heavy substrate influence', shape: 'rect', dashed: true },
+  { color: '#d4a843', label: 'Odisha hills — contact zone', shape: 'rect', dashed: true },
+  { color: '#2da87e', label: 'Living Munda language centre', shape: 'circle' },
+]
+export const substrateLegendBn = [
+  { color: '#2da87e', label: 'মুন্ডা/অস্ট্রোএশিয়াটিক কেন্দ্র', shape: 'rect', dashed: true },
+  { color: '#e07c39', label: 'রাঢ় — গভীর সাবস্ট্রেট প্রভাব', shape: 'rect', dashed: true },
+  { color: '#d4a843', label: 'ওড়িশা পাহাড় — যোগাযোগ অঞ্চল', shape: 'rect', dashed: true },
+  { color: '#2da87e', label: 'জীবন্ত মুন্ডা ভাষার কেন্দ্র', shape: 'circle' },
+]
+
+<BilingualToggle client:load />
+
+<div class="lang-en">
 
 Count to ten in Bengali: এক দুই তিন চার পাঁচ ছয় সাত আট নয় দশ (*ek dui tin char panch chhoy shat at noy dosh*).
 
@@ -60,6 +158,15 @@ But the prestige layer is not where the story is.
 ## The Semi-Stable Layer: Where the Substrate Survives
 
 Now we reach the interesting territory. There is a set of Bengali words that are *not* Indo-Aryan, *not* Persian, *not* anything with a clean traceable etymology — and they cluster in very specific semantic domains.
+
+<SVGMap
+  title="Where the immovable words come from: Munda language zones"
+  features={substrateMapEn}
+  legend={substrateLegend}
+  extent="bengal-wide"
+  aspectRatio={0.7}
+  client:load
+/>
 
 The first domain is **agricultural subsistence and food production**. This is where the words from the first post live: ঢেঁকি (*dheki*, "rice-husking lever"), হাঁড়ি (*hari*, "earthen pot"), ঝিঙে (*jhinge*, "ridge gourd"), ডাঙা (*danga*, "raised ground above flood level"). These words have probable Munda-language cognates and no convincing Sanskrit etymology. They survived because they were learned not from texts or teachers but from doing — from watching the ঢেঁকি work at dawn, from cooking in the হাঁড়ি every day, from knowing which ডাঙা to head for when the river came.
 
@@ -164,9 +271,47 @@ The words that don't move — ঢেঁকি (*dheki*), ডাঙা (*danga*),
 
 They are the words that have been patiently waiting for someone to ask about them.
 
+<ComparisonTable
+  title="Vocabulary Stratigraphy: Six Layers of Bengali"
+  columns={[
+    { key: "layer", label: "Layer" },
+    { key: "origin", label: "Origin" },
+    { key: "examples", label: "Examples" },
+    { key: "stability", label: "Stability" },
+  ]}
+  rows={[
+    { layer: "Substrate (Deshi)", origin: "Munda / Austroasiatic", examples: "ঢেঁকি, হাঁড়ি, ডাঙা, ঝিঙে", stability: "Highest — kitchen & body words" },
+    { layer: "Indo-Aryan core", origin: "Sanskrit via Prakrit", examples: "মা, চোখ, জল, এক দুই তিন", stability: "Very high — basic vocabulary" },
+    { layer: "Sanskrit prestige", origin: "Literary Sanskrit", examples: "ধর্ম, কর্ম, বৃক্ষ", stability: "High — textual tradition" },
+    { layer: "Persian-Arabic", origin: "Sultanate / Mughal", examples: "দফতর, জমিদার, সিপাহি", stability: "Medium — administrative layer" },
+    { layer: "Portuguese", origin: "Colonial trade", examples: "আলমারি, বালতি, ফর্সা", stability: "Low-medium — domestic objects" },
+    { layer: "English", origin: "British rule / global", examples: "মোবাইল, ইন্টারনেট, কম্পিউটার", stability: "Lowest — still arriving" },
+  ]}
+  highlightRow={0}
+  client:load
+/>
+
+---
+
+## Swadesh List Comparison: Numbers and Core Vocabulary
+
+The numbers confirm the Indo-Aryan inheritance cleanly. But look down the *water*, *fire*, and *mother* columns — the eastern languages (highlighted) share forms that diverge sharply from both Sanskrit and the western Indo-Aryan branch.
+
+<ComparisonTable
+  title="Core Swadesh vocabulary across eastern Indian language families"
+  columns={swadeshColumns}
+  rows={swadeshRows}
+  highlightRows={[4, 5, 6]}
+  client:load
+/>
+
+*Rows 5–7 (Santali, Ho, Oraon — highlighted) are Austroasiatic and Dravidian — the substrate languages that shaped Bengali before and during the Indo-Aryan contact period. Tibetan, Burmese, and Vietnamese are included for wider comparison: Tibeto-Burman languages contributed Bengali's classifier system; Vietnamese shares Austroasiatic roots with Santali and Ho.*
+
 ---
 
 **Sources:** Suniti Kumar Chatterji, *The Origin and Development of the Bengali Language* (1926); Colin Masica, *The Indo-Aryan Languages* (1991); Franklin Southworth, *Linguistic Archaeology of South Asia* (2005); George van Driem, *Languages of the Himalayas* (2001) on Tibeto-Burman contact.
+
+</div>
 
 <div class="lang-bn">
 
@@ -219,6 +364,15 @@ They are the words that have been patiently waiting for someone to ask about the
 ### আধা-স্থিতিশীল স্তর: যেখানে সাবস্ট্রেট বা পুরোনো বনিয়াদ আজও বেঁচে আছে
 
 এবার আমরা ঢুকে পড়লাম দেশি-শব্দের তল্লাটে। বাংলা ভাষায় এমন একগুচ্ছ শব্দ আছে যেগুলো না ইন্দো-আর্য, না ফারসি, না অন্য কোনো ভাষা থেকে পরিষ্কারভাবে ধার করা, যাদের কোনো সুস্পষ্ট ব্যুৎপত্তি বা বুৎপত্তিগত শেকড় খোঁজা যায় না। আর মজার ব্যাপার হলো, এই শব্দগুলো ভাষার খুব নির্দিষ্ট কিছু কোণায় ঘাপটি মেরে বসে আছে।
+
+<SVGMap
+  title="স্থির শব্দগুলো কোথা থেকে এসেছে: মুন্ডা ভাষা অঞ্চল"
+  features={substrateMapBn}
+  legend={substrateLegendBn}
+  extent="bengal-wide"
+  aspectRatio={0.7}
+  client:load
+/>
 
 প্রথম জগৎটা হলো **কৃষিকাজ আর অন্নসংস্থানের**। আগের পর্বের সেই শব্দগুলো এই জগতেই বাস করে: ঢেঁকি (*dheki*), হাঁড়ি (*hari*), ঝিঙে (*jhinge*), ডাঙা (*danga*)। এই শব্দগুলোর সঙ্গে মুণ্ডা ভাষার শব্দের বিস্তর মিল, আর কোনো বিশ্বাসযোগ্য সংস্কৃত ব্যুৎপত্তি এদের নেই। এরা টিকে গেছে তার কারণ, এই শব্দগুলো কোনো পণ্ডিতমশাইয়ের পাঠশালা বা পুঁথিপত্র থেকে শেখা হয়নি, শেখা হয়েছে হাতেকলমে কাজ করতে গিয়ে—ভোরবেলা ঢেঁকির পাড় দেওয়া দেখে, রোজ হাঁড়িতে রান্না করতে করতে, আর নদীর জল বাড়লে কোন ডাঙায় গিয়ে প্রাণ বাঁচাতে হবে, সেটা জেনে।
 
@@ -320,6 +474,30 @@ They are the words that have been patiently waiting for someone to ask about the
 যে শব্দগুলো থেকে গেছে  — ঢেঁকি (*dheki*), ডাঙা (*danga*), হাঁড়ি (*hari*), ঝমঝম (*jhom jhom*) — এগুলো হলো একেবারে সবচেয়ে পুরোনো স্তর। এগুলোই হলো ভিত, রাঢ় অঞ্চলের সিংভূম ক্রেটোনের মতো। "বাংলা" বলে আমরা যা কিছু চিনি, সেসব আসার বহু আগে থেকেই এই শব্দগুলো এখানে ছিল।
 
 এই শব্দগুলোই অনন্ত ধৈর্য্যে অপেক্ষা করে আছে, কবে কেউ এদের কথা এসে জিজ্ঞেস করবে।
+
+<ComparisonTable
+  title="শব্দভাণ্ডারের ভূতাত্ত্বিক স্তর: বাংলার ছয়টি স্তর"
+  columns={strataTableBn.columns}
+  rows={strataTableBn.rows}
+  highlightRow={0}
+  client:load
+/>
+
+---
+
+## সোয়াদেশ তালিকা তুলনা: সংখ্যা ও মূল শব্দভাণ্ডার
+
+সংখ্যাগুলো ইন্দো-আর্য উত্তরাধিকারকে নিশ্চিতভাবেই প্রমাণ করে। কিন্তু *জল*, *আগুন*, এবং *মা*-র ঘরগুলো দেখুন — পূর্বের ভাষাগুলো (হাইলাইট করা) এমন শব্দরূপ ধারণ করে যা সংস্কৃত এবং পশ্চিমী ইন্দো-আর্য শাখা উভয়ের থেকেই স্পষ্টভাবে আলাদা।
+
+<ComparisonTable
+  title="পূর্ব ভারতের ভাষাগোষ্ঠীতে মূল সোয়াদেশ শব্দভাণ্ডার"
+  columns={swadeshColumnsBn}
+  rows={swadeshRows}
+  highlightRows={[4, 5, 6]}
+  client:load
+/>
+
+*৫–৭ নম্বর সারির ভাষাগুলো (সাঁওতালি, হো, ওরাওন — হাইলাইট করা) অস্ট্রো-এশিয়াটিক ও দ্রাবিড় — ইন্দো-আর্য সংযোগের আগে ও পরে বাংলার গঠনে যে সাবস্ট্রেট ভাষাগুলোর ভূমিকা ছিল। তুলনার জন্য তিব্বতি, বর্মি ও ভিয়েতনামিও যোগ করা হয়েছে: তিব্বতি-বর্মান ভাষা থেকে বাংলায় নির্দেশক প্রত্যয়ের ব্যবস্থা এসেছে; ভিয়েতনামি সাঁওতালি ও হো-র মতোই অস্ট্রো-এশিয়াটিক পরিবারের সদস্য।*
 
 **সূত্র:** Suniti Kumar Chatterji, *The Origin and Development of the Bengali Language* (1926); Colin Masica, *The Indo-Aryan Languages* (1991); Franklin Southworth, *Linguistic Archaeology of South Asia* (2005); George van Driem, *Languages of the Himalayas* (2001) on Tibeto-Burman contact.
 

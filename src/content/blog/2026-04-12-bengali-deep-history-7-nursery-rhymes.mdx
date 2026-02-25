@@ -1,13 +1,48 @@
 ---
 title: "Hidden in Plain Sight"
-titleBn: "সর্বসমক্ষেই বিস্মৃত"
+titleBn: "যে ফুল ধরা দেয় না"
 description: "আগডুম বাগডুম. You clapped hands to it as a child. The words seemed like pure joyful sound. They aren't."
-pubDate: 2026-04-12
+pubDate: 2026-02-01
 series: "A Deep History of Bengali Culture"
 seriesOrder: 7
 ---
 
 import BilingualToggle from '../../components/BilingualToggle.svelte';
+import TimelineChart from '../../components/charts/TimelineChart.svelte';
+import SVGMap from '../../components/charts/SVGMap.svelte';
+
+export const bargiMapEn = [
+  { type: 'region', name: 'bargi-territory', label: 'Maratha territory', fill: '#c44dbb', opacity: 0.35 },
+  { type: 'region', name: 'bengal', label: 'Bengal', fill: '#e07c39', opacity: 0.25 },
+  { type: 'point', lat: 21.15, lon: 79.09, label: 'Nagpur', labelDir: 'n', detail: 'Bhonsle Maratha base', color: '#c44dbb' },
+  { type: 'point', lat: 22.42, lon: 87.32, label: 'Midnapore', labelDir: 'n', detail: 'Raided 1742', color: '#e05555' },
+  { type: 'point', lat: 24.18, lon: 88.27, label: 'Murshidabad', labelDir: 'n', detail: "Nawab's capital", color: '#e05555' },
+  { type: 'route', points: [[21,79],[21,82],[22,84],[22,87],[24,88]], color: '#c0392b' },
+]
+export const bargiMapBn = [
+  { type: 'region', name: 'bargi-territory', label: 'মারাঠা অঞ্চল', fill: '#c44dbb', opacity: 0.35 },
+  { type: 'region', name: 'bengal', label: 'বঙ্গ', fill: '#e07c39', opacity: 0.25 },
+  { type: 'point', lat: 21.15, lon: 79.09, label: 'নাগপুর', labelDir: 'n', detail: 'ভোঁসলে মারাঠা ঘাঁটি', color: '#c44dbb' },
+  { type: 'point', lat: 22.42, lon: 87.32, label: 'মেদিনীপুর', labelDir: 'n', detail: '১৭৪২ সালে আক্রান্ত', color: '#e05555' },
+  { type: 'point', lat: 24.18, lon: 88.27, label: 'মুর্শিদাবাদ', labelDir: 'n', detail: 'নবাবের রাজধানী', color: '#e05555' },
+  { type: 'route', points: [[21,79],[21,82],[22,84],[22,87],[24,88]], color: '#c0392b' },
+]
+
+export const rhymesEn = [
+  { label: "Ay Brishti Jhepe", start: -1500, end: 2000, type: "period", row: 0, detail: "Rain-calling chant — pre-Indo-Aryan agricultural ritual; oldest layer; still sung by children" },
+  { label: "Dom & Bagdi cavalry era", start: 750, end: 1200, type: "period", row: 1, detail: "Pala and Sena empires; Dom and Bagdi as elite infantry and cavalry" },
+  { label: "Agadom Bagadom encodes cavalry memory", start: 1200, end: 1871, type: "period", row: 1, detail: "Martial culture hidden in a children's hand-clapping game" },
+  { label: "Criminal Tribes Act", start: 1871, type: "critical", row: 1, detail: "Dom and Bagdi designated hereditary criminals; explicit memory banned" },
+  { label: "Khoka Ghumolo (Bargi raids → present)", start: 1741, end: 2000, type: "critical", row: 3, detail: "Maratha raids 1741–1751 encoded in a lullaby still sung today" },
+]
+
+export const rhymesBn = [
+  { label: "আয় বৃষ্টি ঝেঁপে", start: -1500, end: 2000, type: "period", row: 0, detail: "বৃষ্টি-ডাকার মন্ত্র — প্রাক-ইন্দো-আর্য কৃষি-আচার; প্রাচীনতম স্তর; আজও শিশুরা গায়" },
+  { label: "ডোম ও বাগদীর অশ্বারোহী যুগ", start: 750, end: 1200, type: "period", row: 1, detail: "পাল ও সেন সাম্রাজ্য; ডোম ও বাগদী রাজকীয় সেনাবাহিনীতে" },
+  { label: "আগডুম বাগডুম — স্মৃতি লুকানো হলো", start: 1200, end: 1871, type: "period", row: 1, detail: "বীরত্বের ইতিহাস ঢুকল শিশুর হাততালির খেলায়" },
+  { label: "ক্রিমিনাল ট্রাইবস আইন", start: 1871, type: "critical", row: 1, detail: "ডোম ও বাগদী 'জন্মগত অপরাধী' ঘোষিত; প্রকাশ্য উদযাপন নিষিদ্ধ" },
+  { label: "খোকা ঘুমলো (বর্গী হানা → বর্তমান)", start: 1741, end: 2000, type: "critical", row: 3, detail: "বর্গী হানা ১৭৪১–৫১, ঘুমপাড়ানি গানে ধরা — আজও গাওয়া হয়" },
+]
 
 <BilingualToggle client:load />
 
@@ -91,6 +126,24 @@ The lullaby is a document of that terror. The rice is gone — the raidershave t
 What makes *Khoka Ghumolo* remarkable is the bitter irony of its framing. It is a lullaby. Its function is to soothe a child to sleep. Its content is a description of complete material ruin, invasion, the impossibility of paying taxes, and the desperate optimism of planting garlic when everything else is gone. Historical violence compressed into a bedtime rhythm. The child falls asleep to the cadence of their own community's catastrophe.
 
 This is the eighteenth-century layer of Bengali folk memory. *Agadom Bagadom* is potentially medieval or ancient — encoded in the pre-colonial martial culture of the Dom and Bagdi communities that stretch back through the Pala and Sena empires. *Khoka Ghumolo* is precisely dated: the Bargi raids were 1741–1751. Two rhymes, two depths in the same archive.
+
+<SVGMap
+  title="The Bargi raids: Maratha cavalry in Bengal (1741–1751)"
+  extent="subcontinent"
+  aspectRatio={0.65}
+  features={bargiMapEn}
+  client:load
+/>
+
+<TimelineChart
+  title="Three Rhymes, Three Depths of Time"
+  tickInterval={500}
+  minYear={-2000}
+  maxYear={2000}
+  aspectRatio={0.45}
+  events={rhymesEn}
+  client:load
+/>
 
 ---
 
@@ -229,6 +282,24 @@ The most resilient archive in Bengal is not in the British Library. It is in the
 ভেবে দেখুন তো, কী অদ্ভুত একটা বৈপরীত্য\! এটা একটা ঘুমপাড়ানি গান। এর কাজ হলো একটা কচি বাচ্চাকে শান্ত করে ঘুম পাড়ানো। আর এর ভেতরে কী লেখা আছে? চূড়ান্ত ধ্বংস, আক্রমণ, খাজনা মেটানোর চরম অসহায়তা, আর সবকিছু শেষ হয়ে যাওয়ার পর রসুন বোনার একটা মরিয়া চেষ্টা। ইতিহাসের চরমতম হিংসা সংকুচিত হয়ে ঢুকে গেছে একটা ঘুমের ছন্দে। নিজের সম্প্রদায়ের সবচেয়ে ভয়ংকর বিপর্যয়ের গল্প শুনতে শুনতে একটা বাচ্চা ঘুমিয়ে পড়ছে।
 
 এটা হলো বাঙালি লোকস্মৃতির অষ্টাদশ শতাব্দীর স্তর। 'আগডুম বাগডুম' হয়তো মধ্যযুগীয় বা প্রাচীন—ডোম ও বাগদী সম্প্রদায়ের প্রাক-ঔপনিবেশিক সামরিক সংস্কৃতির কোড, যা পাল ও সেন সাম্রাজ্য অবধি পিছিয়ে যায়। আর 'খোকা ঘুমলো'র একটা নির্দিষ্ট সময়কাল আছে: বর্গী হানা হয়েছিল ১৭৪১-১৭৫১ সালের মধ্যে। একই আর্কাইভে দুটো ছড়া, ইতিহাসের দুটো আলাদা গভীরতা।
+
+<SVGMap
+  title="বর্গীর হামলা: মারাঠা অশ্বারোহী বাহিনী বাংলায় (১৭৪১–১৭৫১)"
+  extent="subcontinent"
+  aspectRatio={0.65}
+  features={bargiMapBn}
+  client:load
+/>
+
+<TimelineChart
+  title="তিনটি ছড়া, সময়ের তিনটি গভীরতা"
+  tickInterval={500}
+  minYear={-2000}
+  maxYear={2000}
+  aspectRatio={0.45}
+  events={rhymesBn}
+  client:load
+/>
 
 ---
 

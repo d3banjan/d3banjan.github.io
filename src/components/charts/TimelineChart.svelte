@@ -17,6 +17,8 @@
 		title?: string;
 		minYear?: number;
 		maxYear?: number;
+		tickInterval?: number;
+		aspectRatio?: number;
 	}
 
 	let {
@@ -24,6 +26,8 @@
 		title = '',
 		minYear,
 		maxYear,
+		tickInterval = 1,
+		aspectRatio,
 	}: Props = $props();
 
 	let hoveredIndex = $state(-1);
@@ -61,7 +65,7 @@
 	}
 </script>
 
-<ChartContainer {title} aspectRatio={0.3} minHeight={180}>
+<ChartContainer {title} aspectRatio={aspectRatio ?? 0.3} minHeight={180}>
 	{#snippet children({ width, height })}
 		{@const [yearMin, yearMax] = computeMinMax()}
 		{@const rows = assignRows()}
@@ -69,7 +73,8 @@
 		{@const chartWidth = width - margin.left - margin.right}
 		{@const yearSpan = yearMax - yearMin || 1}
 		{@const xScale = (year: number) => margin.left + ((year - yearMin) / yearSpan) * chartWidth}
-		{@const years = Array.from({ length: Math.ceil(yearMax) - Math.floor(yearMin) + 1 }, (_, i) => Math.floor(yearMin) + i)}
+		{@const allYears = Array.from({ length: Math.ceil(yearMax) - Math.floor(yearMin) + 1 }, (_, i) => Math.floor(yearMin) + i)}
+		{@const years = allYears.filter(y => (y - Math.floor(yearMin)) % tickInterval === 0)}
 		<div class="timeline-scroll">
 			<svg width={Math.max(width, events.length * 80)} {height} role="img" aria-label={title}>
 				<!-- Year grid -->
