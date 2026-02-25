@@ -34,4 +34,9 @@ export const SERIES_META: Record<string, { slug: string; description: string }> 
 		description:
 			"How reunification, austerity, broken funding, and low wages created BVG's crisis — and what proven European models show about the way out.",
 	},
+	'A Deep History of Bengali Culture': {
+		slug: 'bengali-deep-history',
+		description:
+			'আদি বাঙালি ইত্যাদি — A personal journey through the deep history of the Bengali language: the people, migrations, and forgotten civilizations folded into the words we use every day.',
+	},
 };

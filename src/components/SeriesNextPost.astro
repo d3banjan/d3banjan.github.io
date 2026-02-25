@@ -23,7 +23,12 @@ const prev = currentIndex > 0 ? seriesPosts[currentIndex - 1] : null;
 
 {next && (
 	<p class="series-next">
-		<em>Next in this series: <a href={`/blog/${next.id}/`}>{next.data.title}</a></em>
+		<em>
+			<span class="title-en">Next in this series: <a href={`/blog/${next.id}/`}>{next.data.title}</a></span>
+			{next.data.titleBn && (
+				<span class="title-bn">পরের পর্ব: <a href={`/blog/${next.id}/`}>{next.data.titleBn}</a></span>
+			)}
+		</em>
 	</p>
 )}
 {!next && prev && (

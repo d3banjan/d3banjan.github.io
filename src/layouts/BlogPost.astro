@@ -11,15 +11,16 @@ import SeriesNextPost from '../components/SeriesNextPost.astro';
 
 type Props = CollectionEntry<'blog'>['data'] & { id: string };
 
-const { title, description, pubDate, updatedDate, heroImage, tags, series, seriesOrder, id } =
+const { title, titleBn, description, pubDate, updatedDate, heroImage, tags, series, seriesOrder, id } =
 	Astro.props;
 ---
 
 <html lang="en">
 	<head>
 		<BaseHead title={title} description={description} />
+		{import.meta.env.DEV && <meta name="edit-source" content={`src/content/blog/${id}`} />}
 		<style is:global>
-			/* Bilingual toggle */
+			/* Bilingual toggle — content sections */
 			.lang-bn {
 				display: none;
 			}
@@ -27,6 +28,18 @@ const { title, description, pubDate, updatedDate, heroImage, tags, series, serie
 				display: block;
 			}
 			body[data-lang='bn'] .lang-en {
+				display: none;
+			}
+
+			/* Bilingual toggle — titles */
+			.title-bn {
+				display: none;
+			}
+			body[data-lang='bn'] .title-bn {
+				display: inline;
+				font-family: 'Tiro Bangla', serif;
+			}
+			body[data-lang='bn'] .title-en {
 				display: none;
 			}
 		</style>
@@ -90,7 +103,10 @@ const { title, description, pubDate, updatedDate, heroImage, tags, series, serie
 								)
 							}
 						</div>
-						<h1>{title}</h1>
+						<h1>
+							<span class="title-en">{title}</span>
+							{titleBn && <span class="title-bn">{titleBn}</span>}
+						</h1>
 						<TagList tags={tags} />
 						<hr />
 					</div>
