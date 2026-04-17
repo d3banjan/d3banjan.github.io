@@ -1,0 +1,204 @@
+---
+import BaseHead from '../components/BaseHead.astro';
+import Footer from '../components/Footer.astro';
+import FormattedDate from '../components/FormattedDate.astro';
+import Header from '../components/Header.astro';
+import { getPublishedPosts, SERIES_META } from '../consts';
+
+const ML_SERIES = [
+	'Compressing MoE Without Lying To Yourself',
+	'Falsifying LoRA Alignment Geometry',
+	'A Survey of Symmetries Compression Must Respect',
+	'Type-Stub Security Gates for ML Deserialization',
+	'Notes on a Methodology Transition',
+];
+
+const posts = await getPublishedPosts();
+
+const mlSeriesData = ML_SERIES.map((name) => {
+	const meta = SERIES_META[name];
+	const group = posts
+		.filter((p) => p.data.series === name)
+		.sort((a, b) => (a.data.seriesOrder ?? 0) - (b.data.seriesOrder ?? 0));
+	return { name, meta, posts: group };
+}).filter((s) => s.posts.length > 0);
+---
+
+<!doctype html>
+<html lang="en">
+	<head>
+		<BaseHead
+			title="Research — Debanjan Basu"
+			description="ML research: MoE compression with Lean 4 formal bounds, LoRA alignment geometry, symmetry-respecting compression, and falsifiable empirical methodology."
+		/>
+		<style>
+			main {
+				width: 720px;
+				max-width: calc(100% - 2em);
+				margin: auto;
+				padding: 3em 1em;
+			}
+			h2 {
+				border-bottom: 2px solid var(--accent);
+				padding-bottom: 0.3em;
+				margin-top: 2em;
+				margin-bottom: 0.8em;
+			}
+			.paper-card {
+				padding: 1.2em 1.4em;
+				background: rgba(var(--gray-light), 0.15);
+				border-left: 3px solid var(--accent);
+				border-radius: 0 6px 6px 0;
+				margin-bottom: 1.2em;
+			}
+			.paper-card h3 {
+				margin: 0 0 0.3em 0;
+				font-size: 1.1em;
+			}
+			.paper-card p {
+				margin: 0 0 0.7em 0;
+				font-size: 0.9em;
+				color: rgb(var(--gray));
+			}
+			.paper-links {
+				display: flex;
+				flex-wrap: wrap;
+				gap: 0.6em;
+			}
+			.paper-links a {
+				font-size: 0.82em;
+				font-weight: 600;
+				padding: 0.25em 0.7em;
+				border: 1px solid var(--accent);
+				border-radius: 3px;
+				color: var(--accent);
+				text-decoration: none;
+			}
+			.paper-links a:hover {
+				background: var(--accent);
+				color: white;
+			}
+			.series-block {
+				margin-bottom: 2em;
+			}
+			.series-desc {
+				font-size: 0.9em;
+				color: rgb(var(--gray));
+				margin-bottom: 0.8em;
+			}
+			.post-list {
+				list-style: none;
+				padding: 0;
+				margin: 0;
+			}
+			.post-list li {
+				padding: 0.3em 0;
+				border-bottom: 1px solid rgba(var(--gray-light), 0.4);
+				font-size: 0.9em;
+			}
+			.post-list li:last-child {
+				border-bottom: none;
+			}
+			.post-list a {
+				color: rgb(var(--black));
+				text-decoration: none;
+			}
+			.post-list a:hover {
+				color: var(--accent);
+			}
+			.post-date {
+				font-size: 0.8em;
+				color: rgb(var(--gray));
+				margin-left: 0.4em;
+			}
+			.series-link {
+				display: inline-block;
+				margin-top: 0.5em;
+				font-size: 0.85em;
+				color: var(--accent);
+				text-decoration: none;
+			}
+			.series-link:hover { text-decoration: underline; }
+		</style>
+	</head>
+	<body>
+		<Header />
+		<main>
+			<h1>Research</h1>
+			<p>
+				Independent ML research on neural network compression, formal verification with Lean 4,
+				and empirical methodology that can falsify its own claims. Current focus: MoE weight
+				quantization with machine-checked invariants.
+			</p>
+
+			<h2>Papers</h2>
+
+			<div class="paper-card">
+				<h3>Phase-Collapse Defragmentation: Provable Bounds on 1-bit KV-Cache Quantization in MoE</h3>
+				<p>
+					Moment-ratio gauge construction that determines — from weight statistics alone, before
+					inference — whether 1-bit KV-cache quantization is achievable for a given layer.
+					MoEGauge and JensenFloor theorems proved in Lean 4 with zero sorries.
+					Evaluated on OLMoE-1B-7B.
+				</p>
+				<div class="paper-links">
+					<a href="https://moe-gauge-paper.pages.dev/" target="_blank">Microsite + Lean source</a>
+					<a href="/series/moe-compression/">Blog series</a>
+				</div>
+			</div>
+
+			<div class="paper-card">
+				<h3>Falsifying LoRA Alignment Geometry: srank as Overfitting Signature in DPO Fine-Tuning</h3>
+				<p>
+					Pre-registered study of whether DPO fine-tuning leaves a geometrically distinct
+					fingerprint in LoRA weight updates. Two claims killed: the orthogonal-complement
+					hypothesis (directional violation) and cross-probe srank (length-bias artifact).
+					Interactive microsite with d3 exploration widgets.
+				</p>
+				<div class="paper-links">
+					<a href="https://lazy-rudder-paper.pages.dev/" target="_blank">Microsite + Lean source</a>
+					<a href="/series/lora-alignment-geometry/">Blog series</a>
+				</div>
+			</div>
+
+			<div class="paper-card">
+				<h3>A Survey of Symmetries Compression Must Respect</h3>
+				<p>
+					Living catalogue of algebraic invariants — RoPE, SignPhase, BoundedArithmetic,
+					DenseSparse, dormancy — that any compression scheme must preserve to avoid silent
+					correctness failures. Lean 4 coverage across 152/161 symmetry claims.
+				</p>
+				<div class="paper-links">
+					<a href="https://symmetry-survey-paper.pages.dev/" target="_blank">Microsite + Lean source</a>
+					<a href="/series/symmetry-survey/">Blog series</a>
+				</div>
+			</div>
+
+			<h2>Methodology</h2>
+			<p>
+				The empirical methodology used across these projects — pre-registration, kill ladders,
+				τ-baselines, theorem-screened experiments — is documented as a standalone series.
+				It borrows from clinical trial design and applies it to solo ML research.
+			</p>
+
+			<h2>Blog series</h2>
+
+			{mlSeriesData.map(({ name, meta, posts }) => (
+				<div class="series-block">
+					<h3><a href={`/series/${meta.slug}/`}>{name}</a></h3>
+					<p class="series-desc">{meta.description}</p>
+					<ul class="post-list">
+						{posts.map((p) => (
+							<li>
+								<a href={`/blog/${p.id}/`}>{p.data.title}</a>
+								<span class="post-date"><FormattedDate date={p.data.pubDate} /></span>
+							</li>
+						))}
+					</ul>
+					<a class="series-link" href={`/series/${meta.slug}/`}>View series →</a>
+				</div>
+			))}
+		</main>
+		<Footer />
+	</body>
+</html>

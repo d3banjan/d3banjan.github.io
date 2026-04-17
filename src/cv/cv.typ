@@ -62,9 +62,11 @@ Independent ML researcher specialising in neural network compression, formal ver
 (Lean 4 / Mathlib), and empirical methodology for falsifiable ML claims. Currently
 investigating MoE weight quantization with Lean-verified invariants across Gemma-4,
 DeepSeek-MoE, and OLMoE architectures. Six years of production Python and data
-engineering. Physics background from the Indian Institute of Science Education and
-Research (IISER) Kolkata; doctoral research in computational condensed matter physics at
-TU Clausthal under Prof. Peter E. Blöchl (inventor of the PAW method).
+engineering; the compression research grew out of first-hand exposure to inference cost
+at scale — KV-cache memory pressure on long-context agent runs, throughput constraints
+under concurrent workloads. Physics background from the Indian Institute of Science
+Education and Research (IISER) Kolkata; doctoral research in computational condensed
+matter physics at TU Clausthal under Prof. Peter E. Blöchl (inventor of the PAW method).
 
 // ── research ─────────────────────────────────────────────────────────────────
 #section("Research")
@@ -146,12 +148,12 @@ Basu, D. Low Stable-Rank Structure in LoRA-DPO Adapters on Pythia 70M–1B: Empi
 )[
   #list(
     tight: true,
+    [Built LLM agent observability with Arize Phoenix; trajectory analysis for debugging agent failures in production],
     [Led greenfield GenAI agent projects: LLM-based prediction pipelines and automated web data extraction],
-    [Built LLM agent observability with Arize Phoenix; trajectory analysis for agent debugging],
+    [First-hand exposure to inference cost at scale: KV-cache memory pressure on long-context agent runs, throughput vs. latency under concurrent workloads — the concrete constraints that motivated compression research],
     [Achieved 5–10× pipeline speedups via Dask distributed processing, Celery task queues, and vectorised operations],
     [Built and maintained Django data platform; large-scale JSON ingestion and web crawlers],
     [Deployed agents with Docker on VPS; S3/MinIO storage; GitLab CI/CD],
-    [Mentored junior developers; conducted code reviews],
   )
 ]
 

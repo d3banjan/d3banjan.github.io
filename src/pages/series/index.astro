@@ -44,12 +44,17 @@ for (const post of posts) {
 			<h1>Series</h1>
 			<div class="series-grid">
 				{
-					Object.keys(SERIES_META).map((name) => {
-						const group = seriesGroups.get(name) ?? [];
-						return group.length > 0 ? (
-							<SeriesCard seriesName={name} posts={group} />
-						) : null;
-					})
+					Object.keys(SERIES_META)
+						.filter((name) => (seriesGroups.get(name) ?? []).length > 0)
+						.sort((a, b) => {
+							const latestA = Math.max(...(seriesGroups.get(a) ?? []).map((p) => p.data.pubDate.valueOf()));
+							const latestB = Math.max(...(seriesGroups.get(b) ?? []).map((p) => p.data.pubDate.valueOf()));
+							return latestB - latestA;
+						})
+						.map((name) => {
+							const group = seriesGroups.get(name) ?? [];
+							return <SeriesCard seriesName={name} posts={group} />;
+						})
 				}
 			</div>
 		</main>

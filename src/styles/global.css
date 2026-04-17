@@ -162,6 +162,54 @@ figcaption {
 	gap: 1.5rem;
 	margin: 2rem 0;
 }
+
+/* Display math must never split across a float */
+.katex-display {
+	clear: both;
+}
+
+/* Floating term-aside: definitions that wrap with prose */
+.term-aside {
+	float: right;
+	clear: right;
+	width: 220px;
+	margin: 0 0 1.5em 1.8em;
+	padding: 0.9em 1.1em;
+	background: rgba(var(--gray-light), 0.25);
+	border-left: 3px solid var(--accent);
+	border-radius: 0 4px 4px 0;
+	font-size: 0.82em;
+	line-height: 1.5;
+}
+.term-aside dt {
+	font-weight: 700;
+	color: var(--accent);
+	margin-top: 0.6em;
+}
+.term-aside dt:first-child {
+	margin-top: 0;
+}
+.term-aside dd {
+	margin: 0.15em 0 0 0;
+	color: rgb(var(--gray-dark));
+}
+.term-aside .aside-more {
+	display: block;
+	margin-top: 0.7em;
+	font-size: 0.9em;
+	color: var(--accent);
+	text-decoration: none;
+}
+.term-aside .aside-more:hover {
+	text-decoration: underline;
+}
+@media (max-width: 640px) {
+	.term-aside {
+		float: none;
+		width: auto;
+		margin: 1em 0;
+	}
+}
 .figure-pair figure {
 	margin: 0;
 }

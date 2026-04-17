@@ -1,8 +1,8 @@
 ---
 import BaseHead from '../components/BaseHead.astro';
 import Footer from '../components/Footer.astro';
+import FormattedDate from '../components/FormattedDate.astro';
 import Header from '../components/Header.astro';
-import SeriesCard from '../components/SeriesCard.astro';
 import { getPublishedPosts, SERIES_META, SITE_DESCRIPTION, SITE_TITLE } from '../consts';
 
 const posts = await getPublishedPosts();
@@ -21,6 +21,17 @@ for (const post of posts) {
 }
 
 standalonePosts.sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf());
+
+// Sort series newest-first by date of latest post
+const sortedSeries = Object.keys(SERIES_META)
+	.filter((name) => (seriesGroups.get(name) ?? []).length > 0)
+	.sort((a, b) => {
+		const latestA = Math.max(...(seriesGroups.get(a) ?? []).map((p) => p.data.pubDate.valueOf()));
+		const latestB = Math.max(...(seriesGroups.get(b) ?? []).map((p) => p.data.pubDate.valueOf()));
+		return latestB - latestA;
+	});
+
+const ARTICLES_INITIAL = 4;
 ---
 
 <!doctype html>
@@ -52,37 +63,215 @@ standalonePosts.sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf
 				padding-bottom: 0.3em;
 				margin-bottom: 1em;
 			}
-			.topics {
-				display: grid;
-				grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+
+			/* ── Carousel ── */
+			.wia-outer {
+				position: relative;
+			}
+			.wia-scroll {
+				display: flex;
+				flex-direction: row;
+				overflow-x: auto;
+				scroll-snap-type: x mandatory;
+				scrollbar-width: none;
 				gap: 1em;
-				margin-top: 1em;
+				padding-bottom: 0.5em;
 			}
-			.topic {
-				padding: 1em;
-				background: rgba(var(--gray-light), 0.1);
-				border-radius: 4px;
+			.wia-scroll::-webkit-scrollbar {
+				display: none;
 			}
-			.topic h3 {
-				margin: 0 0 0.5em 0;
+			.wia-scroll.expanded {
+				flex-direction: column;
+				overflow-x: visible;
+				scroll-snap-type: none;
+				gap: 1em;
+			}
+			.wia-card {
+				scroll-snap-align: start;
+				flex: 0 0 100%;
+				width: 100%;
+				box-sizing: border-box;
+				padding: 1.5em;
+				background: rgba(var(--gray-light), 0.15);
+				border-radius: 8px;
+				border-left: 3px solid var(--accent);
+			}
+			.card-kind {
+				font-size: 0.72em;
+				font-weight: 700;
+				letter-spacing: 0.08em;
+				text-transform: uppercase;
 				color: var(--accent);
-				font-size: 1em;
+				margin: 0 0 0.4em 0;
 			}
-			.topic p {
-				margin: 0;
-				font-size: 0.95em;
-				color: rgb(var(--gray));
+			.card-title {
+				margin: 0 0 0.4em 0;
+				font-size: 1.15em;
 			}
-			.topic h3 a {
-				color: var(--accent);
+			.card-title a {
+				color: rgb(var(--black));
 				text-decoration: none;
 			}
-			.topic h3 a:hover {
-				text-decoration: underline;
-			}
-			.topic p a {
+			.card-title a:hover {
 				color: var(--accent);
 			}
+			.card-desc {
+				margin: 0 0 0.8em 0;
+				font-size: 0.9em;
+				color: rgb(var(--gray));
+			}
+			.card-posts {
+				list-style: none;
+				padding: 0;
+				margin: 0 0 0.6em 0;
+			}
+			.card-posts li {
+				padding: 0.25em 0;
+				border-bottom: 1px solid rgba(var(--gray-light), 0.4);
+				font-size: 0.9em;
+			}
+			.card-posts li:last-child {
+				border-bottom: none;
+			}
+			.card-posts a {
+				color: rgb(var(--black));
+				text-decoration: none;
+			}
+			.card-posts a:hover {
+				color: var(--accent);
+			}
+			.post-date {
+				font-size: 0.8em;
+				color: rgb(var(--gray));
+				margin-left: 0.4em;
+			}
+			.card-more-link {
+				display: inline-block;
+				font-size: 0.85em;
+				color: var(--accent);
+				text-decoration: none;
+				margin-top: 0.3em;
+			}
+			.card-more-link:hover {
+				text-decoration: underline;
+			}
+
+			/* Picker pill strip */
+			.wia-picker {
+				display: flex;
+				flex-wrap: wrap;
+				gap: 0.5em;
+				margin-bottom: 1em;
+			}
+			.wia-scroll.expanded ~ * .wia-picker,
+			.wia-picker.hidden {
+				display: none;
+			}
+			.wia-pill {
+				background: none;
+				border: 1px solid rgba(var(--gray-light), 0.5);
+				border-radius: 2em;
+				padding: 0.3em 0.9em;
+				font-size: 0.8em;
+				font-weight: 600;
+				cursor: pointer;
+				color: rgb(var(--gray));
+				transition: border-color 0.15s, color 0.15s, background 0.15s;
+				white-space: nowrap;
+				letter-spacing: 0.02em;
+			}
+			.wia-pill:hover {
+				border-color: var(--accent);
+				color: var(--accent);
+			}
+			.wia-pill.active {
+				background: var(--accent);
+				border-color: var(--accent);
+				color: white;
+			}
+
+			/* Nav dots + arrows */
+			.wia-nav {
+				display: flex;
+				align-items: center;
+				justify-content: center;
+				gap: 0.5em;
+				margin-top: 0.8em;
+			}
+			.wia-scroll.expanded ~ .wia-nav {
+				display: none;
+			}
+			.wia-dot {
+				width: 8px;
+				height: 8px;
+				border-radius: 50%;
+				background: rgba(var(--gray-light), 0.6);
+				border: none;
+				cursor: pointer;
+				padding: 0;
+				transition: background 0.2s;
+			}
+			.wia-dot.active {
+				background: var(--accent);
+			}
+			.wia-arrow {
+				background: none;
+				border: 1px solid rgba(var(--gray-light), 0.5);
+				border-radius: 50%;
+				width: 28px;
+				height: 28px;
+				cursor: pointer;
+				font-size: 1em;
+				line-height: 1;
+				color: rgb(var(--gray));
+				display: flex;
+				align-items: center;
+				justify-content: center;
+				flex-shrink: 0;
+				transition: border-color 0.2s, color 0.2s;
+			}
+			.wia-arrow:hover {
+				border-color: var(--accent);
+				color: var(--accent);
+			}
+
+			/* Expand toggle */
+			.wia-expand-btn {
+				display: block;
+				margin: 0.8em auto 0;
+				background: none;
+				border: 1px solid rgba(var(--gray-light), 0.5);
+				border-radius: 4px;
+				padding: 0.35em 1em;
+				font-size: 0.85em;
+				cursor: pointer;
+				color: rgb(var(--gray));
+				transition: border-color 0.2s, color 0.2s;
+			}
+			.wia-expand-btn:hover {
+				border-color: var(--accent);
+				color: var(--accent);
+			}
+
+			/* Articles expand-in-card */
+			.articles-expand-btn {
+				background: none;
+				border: none;
+				padding: 0;
+				font-size: 0.85em;
+				color: var(--accent);
+				cursor: pointer;
+				text-decoration: underline;
+				margin-top: 0.3em;
+			}
+			.articles-overflow {
+				display: none;
+			}
+			.articles-overflow.visible {
+				display: block;
+			}
+
+			/* CTA */
 			.cta {
 				margin-top: 2em;
 			}
@@ -141,9 +330,11 @@ standalonePosts.sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf
 					across Gemma-4, DeepSeek-MoE, and OLMoE architectures.
 				</p>
 				<p>
-					Before this: six years of production Python and data engineering. Before that: doctoral
-					research in computational condensed matter physics at TU Clausthal under
-					Prof. Peter E. Blöchl, and a BS–MS in physics from IISER Kolkata.
+					Before this: six years of production Python and data engineering; the compression
+					research grew out of first-hand exposure to inference cost at scale — KV-cache memory
+					pressure on long-context agent runs, throughput constraints under concurrent workloads.
+					Before that: doctoral research in computational condensed matter physics at TU Clausthal
+					under Prof. Peter E. Blöchl, and a BS–MS in physics from IISER Kolkata.
 				</p>
 				<p>
 					What I carry from physics is a way of seeing: find the minimal description that captures
@@ -155,68 +346,101 @@ standalonePosts.sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf
 			</section>
 
 			<section>
-				<h2>Series</h2>
-				<div class="topics">
-					{
-						Object.keys(SERIES_META).map((name) => {
-							const group = seriesGroups.get(name) ?? [];
-							return group.length > 0 ? (
-								<SeriesCard seriesName={name} posts={group} />
-							) : null;
-						})
-					}
-				</div>
-			</section>
+				<h2>What I write about</h2>
+				<div class="wia-outer">
+					<div class="wia-picker" id="wia-picker">
+						{sortedSeries.map((name, i) => (
+							<button class={'wia-pill' + (i === 0 ? ' active' : '')} data-index={String(i)}>
+								{name}
+							</button>
+						))}
+						{standalonePosts.length > 0 && (
+							<button class="wia-pill" data-index={String(sortedSeries.length)}>
+								Articles
+							</button>
+						)}
+					</div>
+					<div class="wia-scroll" id="wia-scroll">
+						{
+							sortedSeries.map((name) => {
+								const group = seriesGroups.get(name) ?? [];
+								const meta = SERIES_META[name];
+								const sorted = [...group].sort(
+									(a, b) => (a.data.seriesOrder ?? 0) - (b.data.seriesOrder ?? 0),
+								);
+								return (
+									<div class="wia-card">
+										<p class="card-kind">Series · {sorted.length} posts</p>
+										<h3 class="card-title">
+											<a href={`/series/${meta.slug}/`}>{name}</a>
+										</h3>
+										<p class="card-desc">{meta.description}</p>
+										<ul class="card-posts">
+											{sorted.map((p) => (
+												<li>
+													<a href={`/blog/${p.id}/`}>{p.data.title}</a>
+													<span class="post-date">
+														<FormattedDate date={p.data.pubDate} />
+													</span>
+												</li>
+											))}
+										</ul>
+									</div>
+								);
+							})
+						}
 
-			{
-				standalonePosts.length > 0 && (
-					<section>
-						<h2>Standalone Posts</h2>
-						<div class="topics">
-							{standalonePosts.map((post) => (
-								<div class="topic">
-									<h3>
-										<a href={`/blog/${post.id}/`}>{post.data.title}</a>
-									</h3>
-									<p>{post.data.description}</p>
+						{
+							standalonePosts.length > 0 && (
+								<div class="wia-card">
+									<p class="card-kind">
+										Articles · {standalonePosts.length} standalone
+									</p>
+									<h3 class="card-title">Articles</h3>
+									<p class="card-desc">
+										One-off posts on engineering, methodology, statistics, and whatever demands
+										to be written.
+									</p>
+									<ul class="card-posts" id="articles-initial">
+										{standalonePosts.slice(0, ARTICLES_INITIAL).map((p) => (
+											<li>
+												<a href={`/blog/${p.id}/`}>{p.data.title}</a>
+												<span class="post-date">
+													<FormattedDate date={p.data.pubDate} />
+												</span>
+											</li>
+										))}
+									</ul>
+									{standalonePosts.length > ARTICLES_INITIAL && (
+										<>
+											<ul class="card-posts articles-overflow" id="articles-overflow">
+												{standalonePosts.slice(ARTICLES_INITIAL).map((p) => (
+													<li>
+														<a href={`/blog/${p.id}/`}>{p.data.title}</a>
+														<span class="post-date">
+															<FormattedDate date={p.data.pubDate} />
+														</span>
+													</li>
+												))}
+											</ul>
+											<button class="articles-expand-btn" id="articles-expand">
+												+{standalonePosts.length - ARTICLES_INITIAL} more
+											</button>
+										</>
+									)}
+									<a href="/blog/" class="card-more-link">View all posts →</a>
 								</div>
-							))}
-						</div>
-					</section>
-				)
-			}
+							)
+						}
+					</div>
 
-			<section>
-				<h2>What I Write About</h2>
-				<div class="topics">
-					<div class="topic">
-						<h3>ML Research</h3>
-						<p>
-							Neural network compression, quantization theory, LoRA adapter geometry,
-							MoE routing, and formal verification of ML invariants with Lean 4.
-						</p>
+					<div class="wia-nav" id="wia-nav">
+						<button class="wia-arrow" id="wia-prev" aria-label="Previous">&#8249;</button>
+						<div id="wia-dots" style="display:flex;gap:0.5em;"></div>
+						<button class="wia-arrow" id="wia-next" aria-label="Next">&#8250;</button>
 					</div>
-					<div class="topic">
-						<h3>Empirical Methodology</h3>
-						<p>
-							Pre-registration, trap cells, τ-hardened baselines, and kill-fast protocols
-							for honest compression research. How to try to break your own ideas.
-						</p>
-					</div>
-					<div class="topic">
-						<h3>Engineering</h3>
-						<p>
-							Production Python, distributed systems, agent observability,
-							and the development environment setup that makes all of it possible.
-						</p>
-					</div>
-					<div class="topic">
-						<h3>Other Wanderings</h3>
-						<p>
-							Ancient history, Bengali deep history, travels to places where the past
-							feels tangible, and whatever else demands to be written.
-						</p>
-					</div>
+
+					<button class="wia-expand-btn" id="wia-expand">Show all ↓</button>
 				</div>
 			</section>
 
@@ -240,17 +464,93 @@ standalonePosts.sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf
 		<Footer />
 
 		<script>
-			// Obfuscated email - decoded only on user interaction
+			// ── Contact reveal ──
 			const e = [100,101,98,97,110,106,97,110,46,98,97,115,117,46,100,115,64,103,109,97,105,108,46,99,111,109];
-
-			document.getElementById('reveal-contact')?.addEventListener('click', function() {
+			document.getElementById('reveal-contact')?.addEventListener('click', function () {
 				const email = String.fromCharCode(...e);
 				const container = document.getElementById('contact-info');
 				if (container) {
-					container.innerHTML = `<p style="margin: 0;"><strong>Email:</strong> <a href="mailto:${email}">${email}</a></p>`;
+					container.innerHTML = `<p style="margin:0"><strong>Email:</strong> <a href="mailto:${email}">${email}</a></p>`;
 					container.classList.add('visible');
 					this.style.display = 'none';
 				}
+			});
+
+			// ── Carousel ──
+			const scroll = document.getElementById('wia-scroll') as HTMLElement;
+			const dotsContainer = document.getElementById('wia-dots') as HTMLElement;
+			const picker = document.getElementById('wia-picker') as HTMLElement;
+			const expandBtn = document.getElementById('wia-expand') as HTMLButtonElement;
+			const prevBtn = document.getElementById('wia-prev') as HTMLButtonElement;
+			const nextBtn = document.getElementById('wia-next') as HTMLButtonElement;
+			const nav = document.getElementById('wia-nav') as HTMLElement;
+
+			const cards = Array.from(scroll?.children ?? []) as HTMLElement[];
+			const pills = Array.from(picker?.querySelectorAll('.wia-pill') ?? []) as HTMLButtonElement[];
+			const total = cards.length;
+			let currentIndex = 0;
+
+			// Build bottom dots (small, supplementary)
+			const dots: HTMLButtonElement[] = [];
+			cards.forEach((_, i) => {
+				const dot = document.createElement('button');
+				dot.className = 'wia-dot' + (i === 0 ? ' active' : '');
+				dot.setAttribute('aria-label', `Go to card ${i + 1}`);
+				dot.addEventListener('click', () => scrollToCard(i));
+				dotsContainer?.appendChild(dot);
+				dots.push(dot);
+			});
+
+			// Wire picker pills
+			pills.forEach((pill) => {
+				pill.addEventListener('click', () => {
+					const i = parseInt(pill.dataset.index ?? '0', 10);
+					scrollToCard(i);
+				});
+			});
+
+			function setActive(i: number) {
+				dots.forEach((d, j) => d.classList.toggle('active', j === i));
+				pills.forEach((p, j) => p.classList.toggle('active', j === i));
+			}
+
+			function scrollToCard(i: number) {
+				if (!scroll) return;
+				const cardWidth = scroll.offsetWidth + parseFloat(getComputedStyle(scroll).gap || '0');
+				scroll.scrollTo({ left: i * cardWidth, behavior: 'smooth' });
+				currentIndex = i;
+				setActive(i);
+			}
+
+			prevBtn?.addEventListener('click', () => scrollToCard(Math.max(0, currentIndex - 1)));
+			nextBtn?.addEventListener('click', () => scrollToCard(Math.min(total - 1, currentIndex + 1)));
+
+			scroll?.addEventListener('scroll', () => {
+				if (!scroll) return;
+				const cardWidth = scroll.offsetWidth || 1;
+				const i = Math.round(scroll.scrollLeft / cardWidth);
+				if (i !== currentIndex) {
+					currentIndex = i;
+					setActive(i);
+				}
+			});
+
+			// Expand / collapse
+			let expanded = false;
+			expandBtn?.addEventListener('click', () => {
+				expanded = !expanded;
+				scroll?.classList.toggle('expanded', expanded);
+				if (nav) nav.style.display = expanded ? 'none' : 'flex';
+				if (picker) picker.style.display = expanded ? 'none' : 'flex';
+				expandBtn.textContent = expanded ? 'Show as carousel ↑' : 'Show all ↓';
+			});
+
+			// ── Articles expand ──
+			const artExpand = document.getElementById('articles-expand') as HTMLButtonElement | null;
+			const artOverflow = document.getElementById('articles-overflow') as HTMLElement | null;
+			artExpand?.addEventListener('click', () => {
+				const open = artOverflow?.classList.toggle('visible');
+				if (artExpand) artExpand.textContent = open ? 'Show less' : `+${artOverflow?.children.length} more`;
 			});
 		</script>
 	</body>
