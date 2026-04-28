@@ -18,7 +18,7 @@ export async function getPublishedBnPosts() {
 }
 
 export const SITE_TITLE = 'Debanjan Basu';
-export const SITE_DESCRIPTION = 'Senior Software Engineer - ML & Data Systems. Blog and portfolio.';
+export const SITE_DESCRIPTION = 'Independent ML researcher. Neural network compression, Lean 4 formal verification, falsifiable empirical methodology. Physics background. Berlin.';
 
 export const SERIES_META: Record<string, { slug: string; description: string }> = {
 	'Production Django Task Queue': {

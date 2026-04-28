@@ -72,6 +72,58 @@ import { SITE_TITLE, SITE_DESCRIPTION } from '../consts';
 				color: #64748b;
 				font-style: italic;
 			}
+			.job-supervisor {
+				color: #64748b;
+				font-size: 0.9em;
+				margin-top: 0.1em;
+			}
+			.paper {
+				margin-bottom: 1.5em;
+				padding-left: 1em;
+				border-left: 3px solid var(--accent);
+			}
+			.paper h3 {
+				margin: 0 0 0.3em 0;
+				font-size: 1em;
+			}
+			.paper h3 a {
+				color: inherit;
+				text-decoration: none;
+			}
+			.paper h3 a:hover {
+				color: var(--accent);
+				text-decoration: underline;
+			}
+			.paper-meta {
+				color: var(--accent);
+				font-size: 0.85em;
+				margin-bottom: 0.4em;
+			}
+			.paper-links {
+				font-size: 0.85em;
+				color: #64748b;
+			}
+			.paper-links a {
+				color: var(--accent);
+				margin-right: 0.8em;
+			}
+			.methodology {
+				margin-bottom: 1.5em;
+				padding-left: 1em;
+				border-left: 3px solid #94a3b8;
+			}
+			.methodology h3 {
+				margin: 0 0 0.3em 0;
+				font-size: 1em;
+			}
+			.methodology h3 a {
+				color: inherit;
+				text-decoration: none;
+			}
+			.methodology h3 a:hover {
+				color: var(--accent);
+				text-decoration: underline;
+			}
 			.skills-grid {
 				display: grid;
 				grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
@@ -85,11 +137,36 @@ import { SITE_TITLE, SITE_DESCRIPTION } from '../consts';
 				color: #64748b;
 				margin: 0;
 			}
+			.skill-highlight {
+				color: var(--accent);
+				font-weight: 600;
+			}
 			.languages-list {
 				color: #64748b;
 			}
 			.languages-list span {
 				color: var(--accent);
+			}
+			.pub-entry {
+				margin-bottom: 0.8em;
+				padding-left: 1em;
+				text-indent: -1em;
+				color: #64748b;
+			}
+			.pub-entry a {
+				color: var(--accent);
+			}
+			.links-grid {
+				display: flex;
+				flex-wrap: wrap;
+				gap: 1em;
+			}
+			.links-grid a {
+				color: var(--accent);
+				text-decoration: none;
+			}
+			.links-grid a:hover {
+				text-decoration: underline;
 			}
 		</style>
 	</head>
@@ -97,11 +174,12 @@ import { SITE_TITLE, SITE_DESCRIPTION } from '../consts';
 		<Header />
 		<main>
 			<h1>Debanjan Basu</h1>
-			<p class="subtitle">Senior Software Engineer - ML & Data Systems</p>
+			<p class="subtitle">Independent ML Researcher · Formal Methods · Production Engineering</p>
 			<p class="contact">
 				debanjan.basu.ds@gmail.com · Berlin, Germany<br />
 				<a href="https://linkedin.com/in/debanjan-basu">LinkedIn</a> ·
 				<a href="https://github.com/d3banjan">GitHub</a> ·
+				<a href="https://huggingface.co/d3banjan">HuggingFace</a> ·
 				<a href="https://medium.com/@debanjanbasu">Medium</a>
 			</p>
 			<a href="/cv.pdf" class="download-cv" download>Download CV (PDF)</a>
@@ -109,11 +187,129 @@ import { SITE_TITLE, SITE_DESCRIPTION } from '../consts';
 			<section>
 				<h2>Profile</h2>
 				<p>
-					Software engineer with 6+ years building production data systems and web applications.
-					Strong Python expertise with background in data science and ML (time series forecasting, predictive modeling).
-					Recently focused on GenAI agent development and trajectory analysis.
-					Delivered 5-10x performance gains on data pipelines.
-					Physics background in computational methods.
+					Independent ML researcher specializing in neural network compression, formal verification
+					(Lean 4 / Mathlib), and empirical methodology for falsifiable ML claims. Currently
+					investigating MoE weight quantization with Lean-verified invariants across Gemma-4,
+					DeepSeek-MoE, and OLMoE architectures. Six years of production Python and data
+					engineering. Physics background from the Indian Institute of Science Education and Research
+					(IISER) Kolkata; doctoral research in computational condensed matter physics at TU
+					Clausthal under Prof. Peter E. Blöchl (inventor of the PAW method).
+				</p>
+			</section>
+
+			<section>
+				<h2>Research</h2>
+
+				<p style="color: #64748b; margin-bottom: 1.2em; font-size: 0.95em;">
+					Independent research, Oct 2025 – present.
+				</p>
+
+				<div class="paper">
+					<h3>
+						<a href="https://d3banjan.github.io/lazy-rudder-paper">
+							Phase-Collapse Defragmentation: A Moment-Ratio Framework for 1-Bit KV-Cache
+							Quantization in MoE Transformers
+						</a>
+					</h3>
+					<p class="paper-meta">2026 · arXiv submission pending</p>
+					<ul>
+						<li>
+							Learned orthogonal rotation lifts moment-ratio cosine β from SRHT floor (0.80) to
+							0.92–0.97 across four architectures (Gemma-4 e2b/e4b/26B-MoE, DeepSeek-MoE-16B,
+							OLMoE-1B-7B)
+						</li>
+						<li>
+							Discovered Stiefel frustration: MoE expert banks resist single-rotation alignment at
+							β ≈ 0.83
+						</li>
+						<li>
+							74 Lean 4 theorems proved (Mathlib); includes convergence bounds and quadratic
+							last-mile hardness
+						</li>
+					</ul>
+					<p class="paper-links">
+						<a href="https://d3banjan.github.io/lazy-rudder-paper">Microsite</a>
+						<a href="https://github.com/d3banjan">Repo</a>
+					</p>
+				</div>
+
+				<div class="paper">
+					<h3>
+						<a href="https://moe-gauge-paper.pages.dev">
+							Low Stable-Rank Structure in LoRA-DPO Adapters on Pythia 70M–1B: Empirical Scaling
+							and Formal Invariants
+						</a>
+					</h3>
+					<p class="paper-meta">2026 · arXiv submission pending</p>
+					<ul>
+						<li>Stable rank ≈ 3.6 floor across 4× width scaling under fixed LoRA-DPO recipe</li>
+						<li>Geometry–behavior decoupling: γ-overlap does not predict reward margin</li>
+						<li>
+							Lean-verified: <code>stableRank_smul_invariant</code>,
+							<code>rsLoraUpdate_frob_bounded</code>
+						</li>
+						<li>All adapter checkpoints released on HuggingFace (~1.9 GB)</li>
+					</ul>
+					<p class="paper-links">
+						<a href="https://moe-gauge-paper.pages.dev">Microsite</a>
+						<a href="https://github.com/d3banjan">Repo</a>
+						<a href="https://huggingface.co/d3banjan">HuggingFace checkpoints</a>
+					</p>
+				</div>
+
+				<div class="paper">
+					<h3>
+						<a href="https://symmetry-survey-paper.pages.dev">
+							Symmetry Survey for Verified Neural Compilation
+						</a>
+					</h3>
+					<p class="paper-meta">2026 · in progress</p>
+					<ul>
+						<li>
+							Catalog of transformer weight symmetries (RoPE-commuting rotations, sign/phase gauges,
+							parabolic stabilizers) with Lean 4 companion
+						</li>
+					</ul>
+					<p class="paper-links">
+						<a href="https://symmetry-survey-paper.pages.dev">Microsite</a>
+					</p>
+				</div>
+
+				<div class="methodology">
+					<h3><a href="https://compression-ladder-paper.pages.dev/">The Compression Falsification Ladder</a> — empirical methodology</h3>
+					<ul>
+						<li>
+							Pre-registered protocols: SHA-locked configs, trap-cell adversarial validation,
+							τ-hardened random baselines, kill-fast sequential design
+						</li>
+						<li>
+							Applied to 10+ compression rungs on OLMoE-1B-7B; 7 clean kills, 1 deepen-strict
+							result (per-channel INT4), 1 impact-rung in flight
+						</li>
+					</ul>
+				</div>
+			</section>
+
+			<section>
+				<h2>Publications</h2>
+
+				<p style="font-weight: 600; margin-bottom: 0.5em;">Peer-reviewed</p>
+				<p class="pub-entry">
+					Basu, D. &amp; Blöchl, P.E. (2016). Phonon dynamics and thermoelectric transport in
+					thermoelectric materials. <em>Physica Status Solidi A</em>.
+					<a href="https://doi.org/10.1002/pssa.201532488" target="_blank">
+						DOI: 10.1002/pssa.201532488
+					</a>
+				</p>
+
+				<p style="font-weight: 600; margin-bottom: 0.5em; margin-top: 1em;">Preprints (2026)</p>
+				<p class="pub-entry">
+					Basu, D. Phase-Collapse Defragmentation: A Moment-Ratio Framework for 1-Bit KV-Cache
+					Quantization in MoE Transformers. arXiv (pending).
+				</p>
+				<p class="pub-entry">
+					Basu, D. Low Stable-Rank Structure in LoRA-DPO Adapters on Pythia 70M–1B: Empirical
+					Scaling and Formal Invariants. arXiv (pending).
 				</p>
 			</section>
 
@@ -122,16 +318,16 @@ import { SITE_TITLE, SITE_DESCRIPTION } from '../consts';
 
 				<div class="job">
 					<div class="job-header">
-						<span class="job-title">Senior Python Developer</span>
-						<span class="job-dates">Aug 2020 - Present</span>
+						<span class="job-title">Senior ML &amp; Data Engineer</span>
+						<span class="job-dates">Aug 2020 – Jul 2026</span>
 					</div>
 					<p class="job-company">Nexern GmbH, Berlin</p>
 					<ul>
-						<li>Built and maintained Django application for affiliate marketing: SEO link management, web crawlers, and ingestion of large-scale JSON reports</li>
-						<li>Led greenfield GenAI agent projects: betting odds prediction and automated web scraping pipelines</li>
-						<li>Developed LLM agents using Google ADK; observability with Arize Phoenix for trajectory analysis</li>
-						<li>Achieved 5-10x speedups via Dask distributed processing, Celery task queues, vectorized operations</li>
-						<li>Deployed ADK agents with Docker on VPS; S3/MinIO storage; GitLab CI/CD</li>
+						<li>Led greenfield GenAI agent projects: LLM-based prediction pipelines and automated web data extraction</li>
+						<li>Built LLM agent observability with Arize Phoenix; trajectory analysis for agent debugging</li>
+						<li>Achieved 5–10× pipeline speedups via Dask distributed processing, Celery task queues, and vectorized operations</li>
+						<li>Built and maintained Django data platform; large-scale JSON ingestion and web crawlers</li>
+						<li>Deployed agents with Docker on VPS; S3/MinIO storage; GitLab CI/CD</li>
 						<li>Mentored junior developers; conducted code reviews</li>
 					</ul>
 				</div>
@@ -139,11 +335,11 @@ import { SITE_TITLE, SITE_DESCRIPTION } from '../consts';
 				<div class="job">
 					<div class="job-header">
 						<span class="job-title">Data Scientist</span>
-						<span class="job-dates">May 2018 - Jul 2020</span>
+						<span class="job-dates">May 2018 – Jul 2020</span>
 					</div>
 					<p class="job-company">KUGU Home GmbH, Berlin</p>
 					<ul>
-						<li>Developed predictive heat models (Fourier equation) and time series forecasting with TensorFlow/XGBoost</li>
+						<li>Developed physics-informed heat models (Fourier equation) and time series forecasting with TensorFlow/XGBoost</li>
 						<li>Built online changepoint detection for anomaly detection in IoT boiler systems</li>
 						<li>Co-developed IoT pipeline for hundreds of devices; deployed to OpenStack via Ansible</li>
 						<li>Ensured GDPR compliance in data handling workflows</li>
@@ -152,13 +348,16 @@ import { SITE_TITLE, SITE_DESCRIPTION } from '../consts';
 
 				<div class="job">
 					<div class="job-header">
-						<span class="job-title">Research Assistant</span>
-						<span class="job-dates">Aug 2012 - Oct 2016</span>
+						<span class="job-title">Doctoral Researcher (Physics)</span>
+						<span class="job-dates">Aug 2012 – Oct 2016</span>
 					</div>
-					<p class="job-company">TU Clausthal, Clausthal</p>
+					<p class="job-company">TU Clausthal (Institute for Theoretical Physics) &amp; University of Göttingen</p>
+					<p class="job-supervisor">Supervisor: Prof. Peter E. Blöchl</p>
 					<ul>
-						<li>Extended molecular dynamics codebase (Fortran/C); developed novel phonon band algorithm</li>
-						<li>Tutored ab-initio modeling; published in peer-reviewed journals</li>
+						<li>Investigated phonon dynamics and thermoelectric transport via classical molecular dynamics</li>
+						<li>Extended MD codebase (Fortran/C): force constant extraction, phonon bandstructure calculation, thermal transport properties</li>
+						<li>Published in <em>Physica Status Solidi A</em> (DOI: 10.1002/pssa.201532488)</li>
+						<li>Tutored ab-initio electronic structure methods</li>
 					</ul>
 				</div>
 			</section>
@@ -167,24 +366,26 @@ import { SITE_TITLE, SITE_DESCRIPTION } from '../consts';
 				<h2>Skills</h2>
 				<div class="skills-grid">
 					<div class="skill-category">
+						<h3>Research &amp; Formal Methods</h3>
+						<p>
+							<span class="skill-highlight">Lean 4</span>, Mathlib, PyTorch,
+							HuggingFace Transformers/Accelerate, LoRA/PEFT,
+							quantization (GPTQ, INT4/INT8), SVD/spectral methods
+						</p>
+					</div>
+					<div class="skill-category">
 						<h3>Languages</h3>
-						<p>Python, C, CUDA, Rust, Fortran</p>
+						<p>
+							Python, <span class="skill-highlight">Lean 4</span>, Fortran, C, CUDA, Rust
+						</p>
 					</div>
 					<div class="skill-category">
 						<h3>ML / Deep Learning</h3>
-						<p>PyTorch, TensorFlow, scikit-learn, XGBoost</p>
+						<p>PyTorch, TensorFlow, scikit-learn, XGBoost, Dask</p>
 					</div>
 					<div class="skill-category">
-						<h3>LLM / GenAI</h3>
-						<p>Google ADK, Arize Phoenix</p>
-					</div>
-					<div class="skill-category">
-						<h3>Data Engineering</h3>
-						<p>Dask, Celery, Polars, PostgreSQL</p>
-					</div>
-					<div class="skill-category">
-						<h3>Cloud / DevOps</h3>
-						<p>AWS (S3, EC2), Docker, Kubernetes, GitLab CI, Ansible</p>
+						<h3>Infrastructure</h3>
+						<p>Docker, Kubernetes, AWS (S3, EC2), GitLab CI, Ansible, PostgreSQL</p>
 					</div>
 				</div>
 			</section>
@@ -193,10 +394,17 @@ import { SITE_TITLE, SITE_DESCRIPTION } from '../consts';
 				<h2>Education</h2>
 				<div class="job">
 					<div class="job-header">
-						<span class="job-title">B.S-M.S in Physics</span>
-						<span class="job-dates">2007 - 2012</span>
+						<span class="job-title">Doctoral research (not completed)</span>
+						<span class="job-dates">2012 – 2016</span>
 					</div>
-					<p class="job-company">IISER Kolkata</p>
+					<p class="job-company">University of Göttingen / TU Clausthal</p>
+				</div>
+				<div class="job">
+					<div class="job-header">
+						<span class="job-title">B.S.–M.S. in Physics</span>
+						<span class="job-dates">2007 – 2012</span>
+					</div>
+					<p class="job-company">Indian Institute of Science Education and Research (IISER) Kolkata</p>
 				</div>
 			</section>
 
@@ -208,6 +416,18 @@ import { SITE_TITLE, SITE_DESCRIPTION } from '../consts';
 					Hindi <span>(native)</span> ·
 					Bengali <span>(native)</span>
 				</p>
+			</section>
+
+			<section>
+				<h2>Links</h2>
+				<div class="links-grid">
+					<a href="https://github.com/d3banjan" target="_blank">GitHub: d3banjan</a>
+					<a href="https://huggingface.co/d3banjan" target="_blank">HuggingFace: d3banjan</a>
+					<a href="https://d3banjan.github.io/lazy-rudder-paper" target="_blank">Paper: KV-Cache Quantization</a>
+					<a href="https://moe-gauge-paper.pages.dev" target="_blank">Paper: LoRA-DPO Stable Rank</a>
+					<a href="https://symmetry-survey-paper.pages.dev" target="_blank">Paper: Symmetry Survey</a>
+					<a href="https://compression-ladder-paper.pages.dev/" target="_blank">Methodology: Compression Falsification Ladder</a>
+				</div>
 			</section>
 		</main>
 		<Footer />
