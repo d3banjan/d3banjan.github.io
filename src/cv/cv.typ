@@ -73,7 +73,7 @@ TU Clausthal under Prof. Peter E. Blöchl (inventor of the PAW method).
 
 #paper-entry(
   "Phase-Collapse Defragmentation: A Moment-Ratio Framework for 1-Bit KV-Cache Quantization in MoE Transformers",
-  "https://d3banjan.github.io/lazy-rudder-paper",
+  "https://moe-gauge-paper.pages.dev",
   "2026",
   note: "arXiv submission pending",
 )[
@@ -87,7 +87,7 @@ TU Clausthal under Prof. Peter E. Blöchl (inventor of the PAW method).
 
 #paper-entry(
   "Low Stable-Rank Structure in LoRA-DPO Adapters on Pythia 70M–1B: Empirical Scaling and Formal Invariants",
-  "https://moe-gauge-paper.pages.dev",
+  "https://d3banjan.github.io/lazy-rudder-paper",
   "2026",
   note: "arXiv submission pending",
 )[
