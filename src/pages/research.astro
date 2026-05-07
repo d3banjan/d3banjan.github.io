@@ -5,23 +5,22 @@ import FormattedDate from '../components/FormattedDate.astro';
 import Header from '../components/Header.astro';
 import { getPublishedPosts, SERIES_META } from '../consts';
 
-const ML_SERIES = [
-	'Compressing MoE Without Lying To Yourself',
-	'Falsifying LoRA Alignment Geometry',
-	'A Survey of Symmetries Compression Must Respect',
-	'Type-Stub Security Gates for ML Deserialization',
-	'Notes on a Methodology Transition',
-];
-
 const posts = await getPublishedPosts();
 
-const mlSeriesData = ML_SERIES.map((name) => {
-	const meta = SERIES_META[name];
-	const group = posts
-		.filter((p) => p.data.series === name)
-		.sort((a, b) => (a.data.seriesOrder ?? 0) - (b.data.seriesOrder ?? 0));
-	return { name, meta, posts: group };
-}).filter((s) => s.posts.length > 0);
+const researchSeriesData = Object.entries(SERIES_META)
+	.filter(([, meta]) => meta.category === 'research')
+	.map(([name, meta]) => {
+		const group = posts
+			.filter((p) => p.data.series === name)
+			.sort((a, b) => (a.data.seriesOrder ?? 0) - (b.data.seriesOrder ?? 0));
+		return { name, meta, posts: group };
+	})
+	.filter((s) => s.posts.length > 0)
+	.sort((a, b) => {
+		const latestA = Math.max(...a.posts.map((p) => p.data.pubDate.valueOf()));
+		const latestB = Math.max(...b.posts.map((p) => p.data.pubDate.valueOf()));
+		return latestB - latestA;
+	});
 ---
 
 <!doctype html>
@@ -175,17 +174,19 @@ const mlSeriesData = ML_SERIES.map((name) => {
 			</div>
 
 			<h2>Methodology</h2>
-			<p>
-				The empirical methodology used across these projects — pre-registration, kill ladders,
-				τ-baselines, theorem-screened experiments — is documented as a standalone series.
-				It borrows from clinical trial design and applies it to solo ML research.
-			</p>
+				<p>
+					The empirical methodology used across these projects — pre-registration, kill ladders,
+					τ-baselines, theorem-screened experiments — is documented as a standalone series.
+					It borrows from clinical trial design and applies it to solo ML research. Start with
+					<a href="/series/methodology-transition/">Notes on a Methodology Transition</a> or the
+					<a href="https://compression-ladder-paper.pages.dev/">Compression Falsification Ladder</a>.
+				</p>
 
-			<h2>Blog series</h2>
+				<h2>Blog series</h2>
 
-			{mlSeriesData.map(({ name, meta, posts }) => (
-				<div class="series-block">
-					<h3><a href={`/series/${meta.slug}/`}>{name}</a></h3>
+				{researchSeriesData.map(({ name, meta, posts }) => (
+					<div class="series-block">
+						<h3><a href={`/series/${meta.slug}/`}>{name}</a></h3>
 					<p class="series-desc">{meta.description}</p>
 					<ul class="post-list">
 						{posts.map((p) => (

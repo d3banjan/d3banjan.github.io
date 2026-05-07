@@ -15,63 +15,101 @@ const posts = (await getPublishedPosts()).sort(
 <!doctype html>
 <html lang="en">
 	<head>
-		<BaseHead title={SITE_TITLE} description={SITE_DESCRIPTION} />
-		<style>
-			main {
-				width: 960px;
-			}
-			ul {
-				display: flex;
-				flex-wrap: wrap;
-				gap: 2rem;
-				list-style-type: none;
-				margin: 0;
-				padding: 0;
-			}
-			ul li {
-				width: calc(50% - 1rem);
-			}
-			ul li * {
-				text-decoration: none;
-				transition: 0.2s ease;
-			}
-			ul li:first-child {
-				width: 100%;
-				margin-bottom: 1rem;
-				text-align: center;
-			}
-			ul li:first-child img {
-				width: 100%;
-			}
-			ul li:first-child .title {
-				font-size: 2.369rem;
-			}
-			ul li img {
-				margin-bottom: 0.5rem;
-				border-radius: 12px;
-			}
-			ul li a {
-				display: block;
-			}
-			.title {
-				margin: 0;
-				color: rgb(var(--black));
+			<BaseHead title={SITE_TITLE} description={SITE_DESCRIPTION} />
+			<style>
+				main {
+					width: 960px;
+					max-width: calc(100% - 2em);
+					margin: auto;
+					padding: 3em 1em;
+				}
+				.landing-intro {
+					max-width: 720px;
+					margin-bottom: 2em;
+				}
+				.category-grid {
+					display: grid;
+					grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+					gap: 1em;
+					margin: 1.5em 0 2.5em;
+				}
+				.category-card {
+					padding: 1em;
+					border-left: 3px solid var(--accent);
+					background: rgba(var(--gray-light), 0.15);
+					border-radius: 0 6px 6px 0;
+					text-decoration: none;
+					color: rgb(var(--black));
+				}
+				.category-card:hover {
+					box-shadow: var(--box-shadow);
+				}
+				.category-card h2 {
+					font-size: 1.1em;
+					margin: 0 0 0.3em;
+				}
+				.category-card p {
+					font-size: 0.9em;
+					color: rgb(var(--gray));
+					margin: 0;
+				}
+				.archive-heading {
+					border-bottom: 2px solid var(--accent);
+					padding-bottom: 0.3em;
+					margin: 0 0 1em;
+				}
+				.archive-list {
+					display: flex;
+					flex-wrap: wrap;
+					gap: 2rem;
+					list-style-type: none;
+					margin: 0;
+					padding: 0;
+				}
+				.archive-list li {
+					width: calc(50% - 1rem);
+				}
+				.archive-list li * {
+					text-decoration: none;
+					transition: 0.2s ease;
+				}
+				.archive-list li:first-child {
+					width: 100%;
+					margin-bottom: 1rem;
+					text-align: center;
+				}
+				.archive-list li:first-child img {
+					width: 100%;
+				}
+				.archive-list li:first-child .title {
+					font-size: 2.369rem;
+				}
+				.archive-list li img {
+					margin-bottom: 0.5rem;
+					border-radius: 12px;
+				}
+				.archive-list li a {
+					display: block;
+				}
+				.title {
+					margin: 0;
+					color: rgb(var(--black));
 				line-height: 1;
 			}
 			.date {
-				margin: 0;
-				color: rgb(var(--gray));
-			}
-			ul li a:hover h4,
-			ul li a:hover .date {
-				color: rgb(var(--accent));
-			}
-			ul a:hover img {
-				box-shadow: var(--box-shadow);
-			}
-			.series-badge {
-				display: inline-block;
-				font-size: 0.75em;
+					margin: 0;
+					color: rgb(var(--gray));
+				}
+				.archive-list li a:hover h4,
+				.archive-list li a:hover .date {
+					color: rgb(var(--accent));
+				}
+				.archive-list a:hover img {
+					box-shadow: var(--box-shadow);
+				}
+				.series-badge {
+					display: inline-block;
+					font-size: 0.75em;
 				padding: 0.15em 0.5em;
 				background: var(--accent);
 				color: white;
@@ -84,32 +122,54 @@ const posts = (await getPublishedPosts()).sort(
 			}
 			.post-tags {
 				margin-top: 0.4em;
-			}
-			@media (max-width: 720px) {
-				ul {
-					gap: 0.5em;
 				}
-				ul li {
-					width: 100%;
-					text-align: center;
+				@media (max-width: 720px) {
+					.archive-list {
+						gap: 0.5em;
+					}
+					.archive-list li {
+						width: 100%;
+						text-align: center;
+					}
+					.archive-list li:first-child {
+						margin-bottom: 0;
+					}
+					.archive-list li:first-child .title {
+						font-size: 1.563em;
+					}
 				}
-				ul li:first-child {
-					margin-bottom: 0;
-				}
-				ul li:first-child .title {
-					font-size: 1.563em;
-				}
-			}
-		</style>
-	</head>
-	<body>
-		<Header />
-		<main>
-			<section>
-				<ul>
-					{
-						posts.map((post) => {
-							const seriesMeta = post.data.series ? SERIES_META[post.data.series] : null;
+			</style>
+		</head>
+		<body>
+			<Header />
+			<main>
+				<section class="landing-intro">
+					<h1>Blog</h1>
+					<p>
+						Everything in reverse chronological order: research notes, engineering writeups,
+						Bengali history, Berlin transit, and working notes that do not need a narrower shelf.
+					</p>
+				</section>
+				<nav class="category-grid" aria-label="Writing categories">
+					<a class="category-card" href="/research/">
+						<h2>Research</h2>
+						<p>ML compression, Lean 4, formal methods, and empirical methodology.</p>
+					</a>
+					<a class="category-card" href="/engineering/">
+						<h2>Engineering</h2>
+						<p>Production Python, Django, developer tooling, security gates, and Linux workflow.</p>
+					</a>
+					<a class="category-card" href="/series/">
+						<h2>Series</h2>
+						<p>Browse writing by multi-post arcs and long-running projects.</p>
+					</a>
+				</nav>
+				<section>
+					<h2 class="archive-heading">All posts</h2>
+					<ul class="archive-list">
+						{
+							posts.map((post) => {
+								const seriesMeta = post.data.series ? SERIES_META[post.data.series] : null;
 							return (
 								<li>
 									<a href={`/blog/${post.id}/`}>
