@@ -1,0 +1,159 @@
+---
+import BaseHead from '../components/BaseHead.astro';
+import Footer from '../components/Footer.astro';
+import FormattedDate from '../components/FormattedDate.astro';
+import Header from '../components/Header.astro';
+import TagList from '../components/TagList.astro';
+import { ENGINEERING_TAGS, getPublishedPosts, SERIES_META } from '../consts';
+
+const posts = await getPublishedPosts();
+
+const engineeringSeriesData = Object.entries(SERIES_META)
+	.filter(([, meta]) => meta.category === 'engineering')
+	.map(([name, meta]) => {
+		const group = posts
+			.filter((p) => p.data.series === name)
+			.sort((a, b) => (a.data.seriesOrder ?? 0) - (b.data.seriesOrder ?? 0));
+		return { name, meta, posts: group };
+	})
+	.filter((s) => s.posts.length > 0)
+	.sort((a, b) => {
+		const latestA = Math.max(...a.posts.map((p) => p.data.pubDate.valueOf()));
+		const latestB = Math.max(...b.posts.map((p) => p.data.pubDate.valueOf()));
+		return latestB - latestA;
+	});
+
+const standaloneEngineeringPosts = posts
+	.filter((p) => !p.data.series && p.data.tags.some((tag) => ENGINEERING_TAGS.has(tag)))
+	.sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf());
+---
+
+<!doctype html>
+<html lang="en">
+	<head>
+		<BaseHead
+			title="Engineering — Debanjan Basu"
+			description="Production engineering notes: Python, Django, agent tooling, Linux workflow, security gates, and developer infrastructure."
+		/>
+		<style>
+			main {
+				width: 720px;
+				max-width: calc(100% - 2em);
+				margin: auto;
+				padding: 3em 1em;
+			}
+			h2 {
+				border-bottom: 2px solid var(--accent);
+				padding-bottom: 0.3em;
+				margin-top: 2em;
+				margin-bottom: 0.8em;
+			}
+			.series-block {
+				margin-bottom: 2em;
+			}
+			.series-block h3 {
+				margin-bottom: 0.3em;
+			}
+			.series-desc,
+			.post-desc {
+				font-size: 0.9em;
+				color: rgb(var(--gray));
+			}
+			.series-desc {
+				margin-bottom: 0.8em;
+			}
+			.post-list {
+				list-style: none;
+				padding: 0;
+				margin: 0;
+			}
+			.post-list li {
+				padding: 0.3em 0;
+				border-bottom: 1px solid rgba(var(--gray-light), 0.4);
+				font-size: 0.9em;
+			}
+			.post-list li:last-child {
+				border-bottom: none;
+			}
+			.post-list a {
+				color: rgb(var(--black));
+				text-decoration: none;
+			}
+			.post-list a:hover {
+				color: var(--accent);
+			}
+			.post-date {
+				font-size: 0.8em;
+				color: rgb(var(--gray));
+				margin-left: 0.4em;
+			}
+			.series-link {
+				display: inline-block;
+				margin-top: 0.5em;
+				font-size: 0.85em;
+				color: var(--accent);
+				text-decoration: none;
+			}
+			.series-link:hover {
+				text-decoration: underline;
+			}
+			.standalone-post {
+				margin-bottom: 1.4em;
+			}
+			.standalone-post h3 {
+				margin-bottom: 0.2em;
+			}
+			.standalone-post h3 a {
+				color: rgb(var(--black));
+				text-decoration: none;
+			}
+			.standalone-post h3 a:hover {
+				color: var(--accent);
+			}
+		</style>
+	</head>
+	<body>
+		<Header />
+		<main>
+			<h1>Engineering</h1>
+			<p>
+				Production systems and developer infrastructure: Python, Django, task queues, agent
+				tooling, security gates, Linux workflow, and the operational details that make software
+				hold together.
+			</p>
+
+			<h2>Series</h2>
+
+			{engineeringSeriesData.map(({ name, meta, posts }) => (
+				<div class="series-block">
+					<h3><a href={`/series/${meta.slug}/`}>{name}</a></h3>
+					<p class="series-desc">{meta.description}</p>
+					<ul class="post-list">
+						{posts.map((p) => (
+							<li>
+								<a href={`/blog/${p.id}/`}>{p.data.title}</a>
+								<span class="post-date"><FormattedDate date={p.data.pubDate} /></span>
+							</li>
+						))}
+					</ul>
+					<a class="series-link" href={`/series/${meta.slug}/`}>View series &rarr;</a>
+				</div>
+			))}
+
+			{standaloneEngineeringPosts.length > 0 && (
+				<>
+					<h2>Standalone notes</h2>
+					{standaloneEngineeringPosts.map((post) => (
+						<article class="standalone-post">
+							<h3><a href={`/blog/${post.id}/`}>{post.data.title}</a></h3>
+							<p class="post-date"><FormattedDate date={post.data.pubDate} /></p>
+							<p class="post-desc">{post.data.description}</p>
+							<TagList tags={post.data.tags} />
+						</article>
+					))}
+				</>
+			)}
+		</main>
+		<Footer />
+	</body>
+</html>
