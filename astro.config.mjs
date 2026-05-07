@@ -21,6 +21,5 @@ export default defineConfig({
 	},
 	redirects: {
 		'/software/2016/04/18/recordmydesktop-notes': '/',
-		'/sitemap.xml': '/sitemap-index.xml',
 	},
 });
