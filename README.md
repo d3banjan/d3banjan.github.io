@@ -12,6 +12,8 @@ Research artifacts live in their own repos and microsites, not in this one.
 - **LoRA-DPO Stable Rank** — srank geometry, Lean-verified invariants, adapter checkpoints (~1.9 GB on HuggingFace): [d3banjan.github.io/lazy-rudder-paper](https://d3banjan.github.io/lazy-rudder-paper)
 - **Symmetry Survey** — algebraic invariants for compression: [symmetry-survey-paper.pages.dev](https://symmetry-survey-paper.pages.dev)
 
+Hardware used in published runs: RTX 3060 12GB · CUDA 12.x · Linux
+
 ## Engineering surface
 
 - **LLM agent observability** with Arize Phoenix — trajectory analysis for production agent debugging. Write-up: [/series/methodology-transition/](https://d3banjan.github.io/series/methodology-transition/)
