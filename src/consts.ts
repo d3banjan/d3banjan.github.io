@@ -18,7 +18,7 @@ export async function getPublishedBnPosts() {
 }
 
 export const SITE_TITLE = 'Debanjan Basu';
-export const SITE_DESCRIPTION = 'Independent ML researcher. Neural network compression, Lean 4 formal verification, falsifiable empirical methodology. Physics background. Berlin.';
+export const SITE_DESCRIPTION = 'ML systems engineer. LLM agent observability (Arize Phoenix), distributed data pipelines (Dask, Celery), independent research in neural network compression and Lean 4 formal verification. Berlin.';
 
 export type ContentCategory = 'research' | 'engineering' | 'blog';
 

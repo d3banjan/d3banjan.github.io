@@ -46,7 +46,7 @@
 // ── header ───────────────────────────────────────────────────────────────────
 #text(size: 22pt, weight: "bold")[Debanjan Basu]
 #v(0.1em)
-#text(size: 11pt, fill: accent)[Independent ML Researcher · Formal Methods · Production Engineering]
+#text(size: 11pt, fill: accent)[Research Engineer / ML Systems Engineer · LLM Infrastructure · Observability]
 #v(0.3em)
 #text(size: 9.5pt, fill: luma(80))[
   debanjan.basu.ds\@gmail.com · Berlin, Germany ·
@@ -58,15 +58,80 @@
 // ── profile ──────────────────────────────────────────────────────────────────
 #section("Profile")
 
-Independent ML researcher specialising in neural network compression, formal verification
-(Lean 4 / Mathlib), and empirical methodology for falsifiable ML claims. Currently
-investigating MoE weight quantization with Lean-verified invariants across Gemma-4,
-DeepSeek-MoE, and OLMoE architectures. Six years of production Python and data
-engineering; the compression research grew out of first-hand exposure to inference cost
-at scale — KV-cache memory pressure on long-context agent runs, throughput constraints
-under concurrent workloads. Physics background from the Indian Institute of Science
-Education and Research (IISER) Kolkata; doctoral research in computational condensed
-matter physics at TU Clausthal under Prof. Peter E. Blöchl (inventor of the PAW method).
+ML systems engineer building LLM agent infrastructure: Arize Phoenix observability and
+trajectory analysis for production agent debugging, distributed pipelines (Dask, Celery)
+achieving 5–10× speedups on internal data workloads, operational exposure to KV-cache
+memory pressure and throughput–latency tradeoffs on long-context agent runs. Independent
+research track in neural network compression (falsifiable empirical methodology) and Lean 4
+formal verification — grounded in real hardware constraints (RTX 3060 12GB), where KV-cache
+pressure is tangible. Physics background from IISER Kolkata; doctoral research in
+computational condensed matter physics at TU Clausthal under Prof. Peter E. Blöchl
+(inventor of the PAW method).
+
+// ── experience ───────────────────────────────────────────────────────────────
+#section("Experience")
+
+#job(
+  "Senior ML & Data Engineer",
+  "Nexern GmbH, Berlin",
+  "Aug 2020 – Jul 2026",
+)[
+  #list(
+    tight: true,
+    [Built LLM agent observability with Arize Phoenix; trajectory analysis for debugging agent failures in production],
+    [Achieved 5–10× pipeline speedups via Dask distributed processing, Celery task queues, and vectorised operations],
+    [Operational exposure to KV-cache memory pressure and throughput–latency tradeoffs on long-context agent runs],
+    [Led greenfield GenAI agent projects: LLM-based prediction pipelines and automated web data extraction],
+    [Built and maintained Django data platform; large-scale JSON ingestion and web crawlers],
+    [Deployed agents with Docker on VPS; S3/MinIO storage; GitLab CI/CD],
+  )
+]
+
+#job(
+  "Data Scientist",
+  "KUGU Home GmbH, Berlin",
+  "May 2018 – Jul 2020",
+)[
+  #list(
+    tight: true,
+    [Developed physics-informed heat models (Fourier equation) and time series forecasting with TensorFlow/XGBoost],
+    [Built online changepoint detection for anomaly detection in IoT boiler systems],
+    [Co-developed IoT pipeline for hundreds of devices; deployed to OpenStack via Ansible],
+    [Ensured GDPR compliance in data handling workflows],
+  )
+]
+
+#job(
+  "Doctoral Researcher (Physics)",
+  "TU Clausthal (Institute for Theoretical Physics) & University of Göttingen",
+  "Aug 2012 – Oct 2016",
+  extra: "Supervisor: Prof. Peter E. Blöchl",
+)[
+  #list(
+    tight: true,
+    [Investigated phonon dynamics and thermoelectric transport via classical molecular dynamics],
+    [Extended MD codebase (Fortran/C): force constant extraction, phonon bandstructure calculation, thermal transport properties],
+    [Published in _Physica Status Solidi A_ (DOI: 10.1002/pssa.201532488)],
+    [Tutored ab-initio electronic structure methods],
+  )
+]
+
+// ── skills ───────────────────────────────────────────────────────────────────
+#section("Skills")
+
+#grid(
+  columns: (1fr, 1fr),
+  column-gutter: 1.5em,
+  row-gutter: 0.4em,
+  [*ML Systems / Infrastructure*],
+  [*LLM Observability / Evals*],
+  [Python, Django, Docker, Kubernetes, AWS (S3, EC2), GitLab CI/CD, Ansible, PostgreSQL, S3/MinIO],
+  [#text(fill: accent, weight: "bold")[Arize Phoenix], trajectory analysis, agent debugging, TensorFlow, scikit-learn, XGBoost],
+  [*Distributed Data*],
+  [*Research & Formal Methods*],
+  [Dask, Celery, vectorised ops, large-scale JSON ingestion, web crawlers],
+  [#text(fill: accent, weight: "bold")[Lean 4] / Mathlib, PyTorch, HuggingFace Transformers/Accelerate, LoRA/PEFT, quantisation (GPTQ, INT4/INT8), SVD/spectral methods, CUDA, Fortran, C, Rust],
+)
 
 // ── research ─────────────────────────────────────────────────────────────────
 #section("Research")
@@ -137,71 +202,6 @@ Basu, D. & Blöchl, P.E. (2016). Phonon dynamics and thermoelectric transport in
 Basu, D. Phase-Collapse Defragmentation: A Moment-Ratio Framework for 1-Bit KV-Cache Quantization in MoE Transformers. _arXiv_ (pending).
 
 Basu, D. Low Stable-Rank Structure in LoRA-DPO Adapters on Pythia 70M–1B: Empirical Scaling and Formal Invariants. _arXiv_ (pending).
-
-// ── experience ───────────────────────────────────────────────────────────────
-#section("Experience")
-
-#job(
-  "Senior ML & Data Engineer",
-  "Nexern GmbH, Berlin",
-  "Aug 2020 – Jul 2026",
-)[
-  #list(
-    tight: true,
-    [Built LLM agent observability with Arize Phoenix; trajectory analysis for debugging agent failures in production],
-    [Led greenfield GenAI agent projects: LLM-based prediction pipelines and automated web data extraction],
-    [First-hand exposure to inference cost at scale: KV-cache memory pressure on long-context agent runs, throughput vs. latency under concurrent workloads — the concrete constraints that motivated compression research],
-    [Achieved 5–10× pipeline speedups via Dask distributed processing, Celery task queues, and vectorised operations],
-    [Built and maintained Django data platform; large-scale JSON ingestion and web crawlers],
-    [Deployed agents with Docker on VPS; S3/MinIO storage; GitLab CI/CD],
-  )
-]
-
-#job(
-  "Data Scientist",
-  "KUGU Home GmbH, Berlin",
-  "May 2018 – Jul 2020",
-)[
-  #list(
-    tight: true,
-    [Developed physics-informed heat models (Fourier equation) and time series forecasting with TensorFlow/XGBoost],
-    [Built online changepoint detection for anomaly detection in IoT boiler systems],
-    [Co-developed IoT pipeline for hundreds of devices; deployed to OpenStack via Ansible],
-    [Ensured GDPR compliance in data handling workflows],
-  )
-]
-
-#job(
-  "Doctoral Researcher (Physics)",
-  "TU Clausthal (Institute for Theoretical Physics) & University of Göttingen",
-  "Aug 2012 – Oct 2016",
-  extra: "Supervisor: Prof. Peter E. Blöchl",
-)[
-  #list(
-    tight: true,
-    [Investigated phonon dynamics and thermoelectric transport via classical molecular dynamics],
-    [Extended MD codebase (Fortran/C): force constant extraction, phonon bandstructure calculation, thermal transport properties],
-    [Published in _Physica Status Solidi A_ (DOI: 10.1002/pssa.201532488)],
-    [Tutored ab-initio electronic structure methods],
-  )
-]
-
-// ── skills ───────────────────────────────────────────────────────────────────
-#section("Skills")
-
-#grid(
-  columns: (1fr, 1fr),
-  column-gutter: 1.5em,
-  row-gutter: 0.4em,
-  [*Research & Formal Methods*],
-  [*Languages*],
-  [#text(fill: accent, weight: "bold")[Lean 4], Mathlib, PyTorch, HuggingFace Transformers/Accelerate, LoRA/PEFT, quantisation (GPTQ, INT4/INT8), SVD/spectral methods],
-  [Python, #text(fill: accent, weight: "bold")[Lean 4], Fortran, C, CUDA, Rust],
-  [*ML / Deep Learning*],
-  [*Infrastructure*],
-  [PyTorch, TensorFlow, scikit-learn, XGBoost, Dask],
-  [Docker, Kubernetes, AWS (S3, EC2), GitLab CI, Ansible, PostgreSQL],
-)
 
 // ── education ────────────────────────────────────────────────────────────────
 #section("Education")

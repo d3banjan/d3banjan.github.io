@@ -1,62 +1,37 @@
-# Astro Starter Kit: Blog
+# Debanjan Basu — ML Systems Engineer
+
+LLM agent observability, distributed pipelines, neural network compression research.
+Source for [d3banjan.github.io](https://d3banjan.github.io).
+
+## Experiment artifacts (external)
+
+Research artifacts live in their own repos and microsites, not in this one.
+
+- **Compression Falsification Ladder** — methodology and rungs: [compression-ladder-paper.pages.dev](https://compression-ladder-paper.pages.dev)
+- **KV-Cache Quantization in MoE** — moment-ratio framework, Lean 4 proofs: [moe-gauge-paper.pages.dev](https://moe-gauge-paper.pages.dev)
+- **LoRA-DPO Stable Rank** — srank geometry, Lean-verified invariants, adapter checkpoints (~1.9 GB on HuggingFace): [d3banjan.github.io/lazy-rudder-paper](https://d3banjan.github.io/lazy-rudder-paper)
+- **Symmetry Survey** — algebraic invariants for compression: [symmetry-survey-paper.pages.dev](https://symmetry-survey-paper.pages.dev)
+
+## Engineering surface
+
+- **LLM agent observability** with Arize Phoenix — trajectory analysis for production agent debugging. Write-up: [/series/methodology-transition/](https://d3banjan.github.io/series/methodology-transition/)
+- **Distributed pipelines** — Dask, Celery; 5–10× speedup on internal data workloads
+- **Agent security** — type-stub gates for ML deserialization: [/series/falcon-security/](https://d3banjan.github.io/series/falcon-security/)
+
+## Research methodology
+
+Series: [/series/methodology-transition/](https://d3banjan.github.io/series/methodology-transition/)
+External companion: [compression-ladder-paper.pages.dev](https://compression-ladder-paper.pages.dev)
+
+## Site dev
+
+Built with [Astro](https://astro.build). Requires [Bun](https://bun.sh).
 
 ```sh
-npm create astro@latest -- --template blog
+bun install
+bun run dev      # localhost:4321
+bun run build    # ./dist/
+bun run preview
 ```
 
-> 🧑‍🚀 **Seasoned astronaut?** Delete this file. Have fun!
-
-Features:
-
-- ✅ Minimal styling (make it your own!)
-- ✅ 100/100 Lighthouse performance
-- ✅ SEO-friendly with canonical URLs and OpenGraph data
-- ✅ Sitemap support
-- ✅ RSS Feed support
-- ✅ Markdown & MDX support
-
-## 🚀 Project Structure
-
-Inside of your Astro project, you'll see the following folders and files:
-
-```text
-├── public/
-├── src/
-│   ├── components/
-│   ├── content/
-│   ├── layouts/
-│   └── pages/
-├── astro.config.mjs
-├── README.md
-├── package.json
-└── tsconfig.json
-```
-
-Astro looks for `.astro` or `.md` files in the `src/pages/` directory. Each page is exposed as a route based on its file name.
-
-There's nothing special about `src/components/`, but that's where we like to put any Astro/React/Vue/Svelte/Preact components.
-
-The `src/content/` directory contains "collections" of related Markdown and MDX documents. Use `getCollection()` to retrieve posts from `src/content/blog/`, and type-check your frontmatter using an optional schema. See [Astro's Content Collections docs](https://docs.astro.build/en/guides/content-collections/) to learn more.
-
-Any static assets, like images, can be placed in the `public/` directory.
-
-## 🧞 Commands
-
-All commands are run from the root of the project, from a terminal:
-
-| Command                   | Action                                           |
-| :------------------------ | :----------------------------------------------- |
-| `npm install`             | Installs dependencies                            |
-| `npm run dev`             | Starts local dev server at `localhost:4321`      |
-| `npm run build`           | Build your production site to `./dist/`          |
-| `npm run preview`         | Preview your build locally, before deploying     |
-| `npm run astro ...`       | Run CLI commands like `astro add`, `astro check` |
-| `npm run astro -- --help` | Get help using the Astro CLI                     |
-
-## 👀 Want to learn more?
-
-Check out [our documentation](https://docs.astro.build) or jump into our [Discord server](https://astro.build/chat).
-
-## Credit
-
-This theme is based off of the lovely [Bear Blog](https://github.com/HermanMartinus/bearblog/).
+CV is compiled from `src/cv/cv.typ` via [Typst](https://typst.app) and served at `/cv.pdf`.
