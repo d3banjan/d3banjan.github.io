@@ -58,15 +58,17 @@
 // ── profile ──────────────────────────────────────────────────────────────────
 #section("Profile")
 
-ML systems engineer building LLM agent infrastructure: Arize Phoenix observability and
-trajectory analysis for production agent debugging, distributed pipelines (Dask, Celery)
-achieving 5–10× speedups on internal data workloads, operational exposure to KV-cache
-memory pressure and throughput–latency tradeoffs on long-context agent runs. Independent
-research track in neural network compression (falsifiable empirical methodology) and Lean 4
-formal verification — grounded in real hardware constraints (RTX 3060 12GB), where KV-cache
-pressure is tangible. Physics background from IISER Kolkata; doctoral research in
-computational condensed matter physics at TU Clausthal under Prof. Peter E. Blöchl
-(inventor of the PAW method).
+ML systems engineer with independent research bridging post-training methods, formal
+verification, and empirical methodology for safety-relevant claims. LoRA-DPO scaling work
+on Pythia 70M–1B documents geometry–behaviour decoupling: γ-overlap doesn't predict reward
+margin, suggesting behavioral interventions don't necessarily reorganize underlying
+representations — a structural finding with implications for evaluating alignment techniques.
+Lean 4 invariants formalize the empirical scaling (74 theorems across two papers, all in
+Mathlib). Pre-registered adversarial validation methodology — trap-cell design, kill-fast
+sequential testing — applied across MoE compression rungs. Six years production ML
+engineering at Nexern: LLM agent observability with Arize Phoenix, distributed pipelines,
+deployment infrastructure. Physics background (IISER Kolkata BS-MS; doctoral research under
+Peter Blöchl at TU Clausthal).
 
 // ── experience ───────────────────────────────────────────────────────────────
 #section("Experience")

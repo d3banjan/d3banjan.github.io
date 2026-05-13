@@ -83,6 +83,18 @@ export const SERIES_META: Record<string, { slug: string; description: string; ca
 		description:
 			'Moving from selectionist ML research (run many probes, kill the bad ones) to physicist-mode research (theorem first, two parameters per probe, universality over coverage). A live chronicle.',
 	},
+	'Job Search Journal': {
+		slug: 'job-search-journal',
+		category: 'blog',
+		description:
+			'Daily log of the RE/MTS job search: decisions made, applications sent, outreach, and what changed each day. Berlin → frontier labs.',
+	},
+	'ML Systems Reference': {
+		slug: 'ml-systems-reference',
+		category: 'engineering',
+		description:
+			'Concise explainers on distributed training, LLM infrastructure, and ML systems — written to consolidate interview prep and demonstrate depth.',
+	},
 };
 
 export const ENGINEERING_TAGS = new Set([
