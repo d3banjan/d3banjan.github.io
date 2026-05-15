@@ -63,6 +63,41 @@ const ARTICLES_INITIAL = 4;
 				padding-bottom: 0.3em;
 				margin-bottom: 1em;
 			}
+			.start-here-grid {
+				display: grid;
+				grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+				gap: 1em;
+			}
+			.start-here-item {
+				padding: 1em 1.1em;
+				background: rgba(var(--gray-light), 0.12);
+				border-left: 3px solid var(--accent);
+				border-radius: 0 6px 6px 0;
+			}
+			.start-here-item p {
+				margin: 0;
+			}
+			.start-here-kicker {
+				color: var(--accent);
+				font-size: 0.75em;
+				font-weight: 700;
+				letter-spacing: 0.08em;
+				text-transform: uppercase;
+			}
+			.start-here-title {
+				display: block;
+				margin: 0.25em 0 0.35em;
+				color: rgb(var(--black));
+				font-weight: 700;
+				text-decoration: none;
+			}
+			.start-here-title:hover {
+				color: var(--accent);
+			}
+			.start-here-desc {
+				color: rgb(var(--gray));
+				font-size: 0.9em;
+			}
 
 			/* ── Carousel ── */
 			.wia-outer {
@@ -293,24 +328,8 @@ const ARTICLES_INITIAL = 4;
 				border: 1px solid var(--accent);
 				color: var(--accent);
 			}
-			.contact-reveal {
+			.contact-link {
 				color: var(--accent);
-				cursor: pointer;
-				text-decoration: underline;
-				background: none;
-				border: none;
-				font: inherit;
-				padding: 0;
-			}
-			.contact-info {
-				margin-top: 1em;
-				padding: 1em;
-				background: rgba(var(--gray-light), 0.1);
-				border-radius: 4px;
-				display: none;
-			}
-			.contact-info.visible {
-				display: block;
 			}
 		</style>
 	</head>
@@ -339,6 +358,39 @@ const ARTICLES_INITIAL = 4;
 					adversarial validation methodology — trap-cell design, kill-fast sequential testing —
 					formalized as the <a href="https://compression-ladder-paper.pages.dev/">Compression Falsification Ladder</a>.
 				</p>
+			</section>
+
+			<section>
+				<h2>Start here</h2>
+				<div class="start-here-grid">
+					<div class="start-here-item">
+						<p class="start-here-kicker">Paper artifact</p>
+						<a class="start-here-title" href="https://moe-gauge-paper.pages.dev/">
+							Phase-Collapse Defragmentation
+						</a>
+						<p class="start-here-desc">
+							Moment-ratio bounds, MoE KV-cache quantization, and zero-sorry Lean source.
+						</p>
+					</div>
+					<div class="start-here-item">
+						<p class="start-here-kicker">Methodology</p>
+						<a class="start-here-title" href="https://compression-ladder-paper.pages.dev/">
+							The Compression Falsification Ladder
+						</a>
+						<p class="start-here-desc">
+							Pre-registration, τ-baselines, trap cells, and kill-fast empirical design.
+						</p>
+					</div>
+					<div class="start-here-item">
+						<p class="start-here-kicker">Negative results</p>
+						<a class="start-here-title" href="/blog/2026-04-22-lora-adversarial-passes/">
+							Adversarial Passes That Retracted Two Claims
+						</a>
+						<p class="start-here-desc">
+							What survived when the LoRA-DPO geometry story was forced to attack itself.
+						</p>
+					</div>
+				</div>
 			</section>
 
 			<section>
@@ -446,10 +498,7 @@ const ARTICLES_INITIAL = 4;
 					I'm always interested in conversations about AI systems, physics-informed machine learning,
 					or elegant solutions to hard problems.
 				</p>
-				<button class="contact-reveal" id="reveal-contact">Click to reveal contact details</button>
-				<div class="contact-info" id="contact-info">
-					<noscript>Email: debanjan.basu.ds [at] gmail [dot] com</noscript>
-				</div>
+				<p><a class="contact-link" href="mailto:debanjan.basu.ds@gmail.com">debanjan.basu.ds@gmail.com</a></p>
 			</section>
 
 			<div class="cta">
@@ -460,18 +509,6 @@ const ARTICLES_INITIAL = 4;
 		<Footer />
 
 		<script>
-			// ── Contact reveal ──
-			const e = [100,101,98,97,110,106,97,110,46,98,97,115,117,46,100,115,64,103,109,97,105,108,46,99,111,109];
-			document.getElementById('reveal-contact')?.addEventListener('click', function () {
-				const email = String.fromCharCode(...e);
-				const container = document.getElementById('contact-info');
-				if (container) {
-					container.innerHTML = `<p style="margin:0"><strong>Email:</strong> <a href="mailto:${email}">${email}</a></p>`;
-					container.classList.add('visible');
-					this.style.display = 'none';
-				}
-			});
-
 			// ── Carousel ──
 			const scroll = document.getElementById('wia-scroll') as HTMLElement;
 			const dotsContainer = document.getElementById('wia-dots') as HTMLElement;

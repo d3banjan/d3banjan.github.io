@@ -144,7 +144,7 @@ Peter Blöchl at TU Clausthal).
   "Phase-Collapse Defragmentation: A Moment-Ratio Framework for 1-Bit KV-Cache Quantization in MoE Transformers",
   "https://moe-gauge-paper.pages.dev",
   "2026",
-  note: "arXiv submission pending",
+  note: "preprint microsite with Lean source",
 )[
   #list(
     tight: true,
@@ -158,7 +158,7 @@ Peter Blöchl at TU Clausthal).
   "Low Stable-Rank Structure in LoRA-DPO Adapters on Pythia 70M–1B: Empirical Scaling and Formal Invariants",
   "https://d3banjan.github.io/lazy-rudder-paper",
   "2026",
-  note: "arXiv submission pending",
+  note: "preprint microsite with Lean source",
 )[
   #list(
     tight: true,
@@ -199,11 +199,11 @@ Peter Blöchl at TU Clausthal).
 Basu, D. & Blöchl, P.E. (2016). Phonon dynamics and thermoelectric transport in thermoelectric materials. _Physica Status Solidi A_. #link("https://doi.org/10.1002/pssa.201532488")[DOI: 10.1002/pssa.201532488]
 
 #v(0.3em)
-*Preprints (2026)*
+*Preprints and research artifacts (2026)*
 #v(0.15em)
-Basu, D. Phase-Collapse Defragmentation: A Moment-Ratio Framework for 1-Bit KV-Cache Quantization in MoE Transformers. _arXiv_ (pending).
+Basu, D. Phase-Collapse Defragmentation: A Moment-Ratio Framework for 1-Bit KV-Cache Quantization in MoE Transformers. #link("https://moe-gauge-paper.pages.dev")[Microsite with Lean source].
 
-Basu, D. Low Stable-Rank Structure in LoRA-DPO Adapters on Pythia 70M–1B: Empirical Scaling and Formal Invariants. _arXiv_ (pending).
+Basu, D. Low Stable-Rank Structure in LoRA-DPO Adapters on Pythia 70M–1B: Empirical Scaling and Formal Invariants. #link("https://d3banjan.github.io/lazy-rudder-paper")[Microsite with Lean source].
 
 // ── education ────────────────────────────────────────────────────────────────
 #section("Education")
