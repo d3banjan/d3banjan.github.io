@@ -1,5 +1,4 @@
 ---
-import { Image } from 'astro:assets';
 import BaseHead from '../../components/BaseHead.astro';
 import Footer from '../../components/Footer.astro';
 import FormattedDate from '../../components/FormattedDate.astro';
@@ -10,190 +9,155 @@ import { getPublishedPosts, SERIES_META, SITE_DESCRIPTION, SITE_TITLE } from '..
 const posts = (await getPublishedPosts()).sort(
 	(a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf(),
 );
+
+// Map each series name to its sorted posts (oldest to newest)
+const seriesPostsMap = new Map<string, typeof posts>();
+for (const p of posts) {
+	if (p.data.series) {
+		const list = seriesPostsMap.get(p.data.series) ?? [];
+		list.push(p);
+		seriesPostsMap.set(p.data.series, list);
+	}
+}
+
+for (const [, list] of seriesPostsMap.entries()) {
+	list.sort((a, b) => (a.data.seriesOrder ?? 0) - (b.data.seriesOrder ?? 0));
+}
 ---
 
 <!doctype html>
 <html lang="en">
 	<head>
-			<BaseHead title={SITE_TITLE} description={SITE_DESCRIPTION} />
-			<style>
-				main {
-					width: 960px;
-					max-width: calc(100% - 2em);
-					margin: auto;
-					padding: 3em 1em;
-				}
-				.landing-intro {
-					max-width: 720px;
-					margin-bottom: 2em;
-				}
-				.category-grid {
-					display: grid;
-					grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-					gap: 1em;
-					margin: 1.5em 0 2.5em;
-				}
-				.category-card {
-					padding: 1em;
-					border-left: 3px solid var(--accent);
-					background: rgba(var(--gray-light), 0.15);
-					border-radius: 0 6px 6px 0;
-					text-decoration: none;
-					color: rgb(var(--black));
-				}
-				.category-card:hover {
-					box-shadow: var(--box-shadow);
-				}
-				.category-card h2 {
-					font-size: 1.1em;
-					margin: 0 0 0.3em;
-				}
-				.category-card p {
-					font-size: 0.9em;
-					color: rgb(var(--gray));
-					margin: 0;
-				}
-				.archive-heading {
-					border-bottom: 2px solid var(--accent);
-					padding-bottom: 0.3em;
-					margin: 0 0 1em;
-				}
-				.archive-list {
-					display: flex;
-					flex-wrap: wrap;
-					gap: 2rem;
-					list-style-type: none;
-					margin: 0;
-					padding: 0;
-				}
-				.archive-list li {
-					width: calc(50% - 1rem);
-				}
-				.archive-list li * {
-					text-decoration: none;
-					transition: 0.2s ease;
-				}
-				.archive-list li:first-child {
-					width: 100%;
-					margin-bottom: 1rem;
-					text-align: center;
-				}
-				.archive-list li:first-child img {
-					width: 100%;
-				}
-				.archive-list li:first-child .title {
-					font-size: 2.369rem;
-				}
-				.archive-list li img {
-					margin-bottom: 0.5rem;
-					border-radius: 12px;
-				}
-				.archive-list li a {
-					display: block;
-				}
-				.title {
-					margin: 0;
-					color: rgb(var(--black));
-				line-height: 1;
+		<BaseHead title={SITE_TITLE} description={SITE_DESCRIPTION} />
+		<style>
+			main {
+				width: 960px;
+				max-width: calc(100% - 2em);
+				margin: auto;
+				padding: 3em 1em;
 			}
-			.date {
-					margin: 0;
-					color: rgb(var(--gray));
-				}
-				.archive-list li a:hover h4,
-				.archive-list li a:hover .date {
-					color: rgb(var(--accent));
-				}
-				.archive-list a:hover img {
-					box-shadow: var(--box-shadow);
-				}
-				.series-badge {
-					display: inline-block;
-					font-size: 0.75em;
-				padding: 0.15em 0.5em;
-				background: var(--accent);
-				color: white;
-				border-radius: 1em;
+			.landing-intro {
+				max-width: 720px;
+				margin-bottom: 2em;
+			}
+			.category-grid {
+				display: grid;
+				grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+				gap: 1em;
+				margin: 1.5em 0 2.5em;
+			}
+			.category-card {
+				padding: 1em;
+				border-left: 3px solid var(--accent);
+				background: rgba(var(--gray-light), 0.15);
+				border-radius: 0 6px 6px 0;
 				text-decoration: none;
-				margin-top: 0.3em;
+				color: rgb(var(--black));
+				transition: transform 0.2s ease, box-shadow 0.2s ease;
 			}
-			.series-badge:hover {
-				opacity: 0.9;
+			.category-card:hover {
+				transform: translateY(-1px);
+				box-shadow: var(--box-shadow);
 			}
-			.post-tags {
-				margin-top: 0.4em;
-				}
-				@media (max-width: 720px) {
-					.archive-list {
-						gap: 0.5em;
-					}
-					.archive-list li {
-						width: 100%;
-						text-align: center;
-					}
-					.archive-list li:first-child {
-						margin-bottom: 0;
-					}
-					.archive-list li:first-child .title {
-						font-size: 1.563em;
-					}
-				}
-			</style>
-		</head>
-		<body>
-			<Header />
-			<main>
-				<section class="landing-intro">
-					<h1>Blog</h1>
-					<p>
-						Everything in reverse chronological order: research notes, engineering writeups,
-						Bengali history, Berlin transit, and working notes that do not need a narrower shelf.
-					</p>
-				</section>
-				<nav class="category-grid" aria-label="Writing categories">
-					<a class="category-card" href="/research/">
-						<h2>Research</h2>
-						<p>ML compression, LLM agent systems, Lean 4, and falsifiable empirical methodology.</p>
-					</a>
-					<a class="category-card" href="/engineering/">
-						<h2>Engineering</h2>
-						<p>Production Python, Django, developer tooling, security gates, and Linux workflow.</p>
-					</a>
-					<a class="category-card" href="/series/">
-						<h2>Series</h2>
-						<p>Browse writing by multi-post arcs and long-running projects.</p>
-					</a>
-				</nav>
-				<section>
-					<h2 class="archive-heading">All posts</h2>
-					<ul class="archive-list">
+			.category-card h2 {
+				font-size: 1.1em;
+				margin: 0 0 0.3em;
+			}
+			.category-card p {
+				font-size: 0.9em;
+				color: rgb(var(--gray));
+				margin: 0;
+			}
+			.archive-heading {
+				border-bottom: 2px solid var(--accent);
+				padding-bottom: 0.3em;
+				margin: 0 0 1.5em;
+			}
+		</style>
+	</head>
+	<body class="theme-home">
+		<Header />
+		<main>
+			<section class="landing-intro">
+				<h1>Blog</h1>
+				<p>
+					Everything in reverse chronological order: research notes, engineering writeups,
+					Bengali history, Berlin transit, and working notes that do not need a narrower shelf.
+				</p>
+			</section>
+			<nav class="category-grid" aria-label="Writing categories">
+				<a class="category-card" href="/research/">
+					<h2>Research</h2>
+					<p>ML compression, LLM agent systems, Lean 4, and falsifiable empirical methodology.</p>
+				</a>
+				<a class="category-card" href="/engineering/">
+					<h2>Engineering</h2>
+					<p>Production Python, Django, developer tooling, security gates, and Linux workflow.</p>
+				</a>
+			</nav>
+			<section>
+				<h2 class="archive-heading">All posts</h2>
+				<div class="timeline-container">
+					<div class="timeline-spine"></div>
+					<div class="timeline-feed">
 						{
-							posts.map((post) => {
-								const seriesMeta = post.data.series ? SERIES_META[post.data.series] : null;
-							return (
-								<li>
-									<a href={`/blog/${post.id}/`}>
-										{post.data.heroImage && (
-											<Image width={720} height={360} src={post.data.heroImage} alt="" />
-										)}
-										<h4 class="title">{post.data.title}</h4>
-										<p class="date">
-											<FormattedDate date={post.data.pubDate} />
-										</p>
-									</a>
-									{seriesMeta && (
-										<a href={`/series/${seriesMeta.slug}/`} class="series-badge">
-											{post.data.series}
-										</a>
-									)}
-									<div class="post-tags">
-										<TagList tags={post.data.tags} />
+							posts.map((post, i) => {
+								const hasSeries = post.data.series && SERIES_META[post.data.series];
+								const seriesMeta = hasSeries ? SERIES_META[post.data.series!] : null;
+								
+								// Calculate series progression
+								let indexInSeries = 0;
+								let totalInSeries = 0;
+								if (hasSeries) {
+									const list = seriesPostsMap.get(post.data.series!);
+									indexInSeries = list ? list.findIndex((p) => p.id === post.id) + 1 : 0;
+									totalInSeries = list ? list.length : 0;
+								}
+
+								// Check if consecutive posts in timeline are in same series to connect them
+								const currentSeries = post.data.series;
+								const nextInSameSeries = currentSeries && i < posts.length - 1 && posts[i + 1].data.series === currentSeries;
+								
+								// Determine side and theme classes
+								const isSeries = !!seriesMeta;
+								const itemClass = isSeries ? 'series' : 'single';
+								const categoryClass = seriesMeta 
+									? (seriesMeta.category === 'blog' ? 'home' : seriesMeta.category)
+									: 'home';
+								
+								return (
+									<div class={`timeline-item ${itemClass} theme-${categoryClass}`}>
+										<div class="timeline-node"></div>
+										<div class="timeline-card-wrapper">
+											{nextInSameSeries && <div class="series-connection"></div>}
+											<div class="timeline-card">
+												{isSeries && (
+													<div class="series-progression">
+														Series · Post {indexInSeries}/{totalInSeries}
+													</div>
+												)}
+												<h4 class="title">
+													<a href={`/blog/${post.id}/`} class="title-link">
+														{post.data.title}
+													</a>
+												</h4>
+												<p class="date">
+													<FormattedDate date={post.data.pubDate} />
+												</p>
+												<p class="description">
+													{post.data.description}
+												</p>
+												<div class="post-tags">
+													<TagList tags={post.data.tags} />
+												</div>
+											</div>
+										</div>
 									</div>
-								</li>
-							);
-						})
-					}
-				</ul>
+								);
+							})
+						}
+					</div>
+				</div>
 			</section>
 		</main>
 		<Footer />

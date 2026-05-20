@@ -1,0 +1,39 @@
+---
+title: "Multi-Head Foldability: Scaling Verified Compilation"
+description: "Lifting single-head RoPE proofs to multi-head bundles and residual wrappers in the Verified Neural Compilation project."
+pubDate: 2026-05-03
+series: "Verified Neural Compilation"
+seriesOrder: 2
+tags: ["research", "lean", "rope", "attention"]
+---
+
+Once you've characterized the [RoPE commutant](/blog/2026-05-13-rope-commutant-classification/) for a single attention head, the next question is obvious: does the symmetry survive the "messy" reality of a full Transformer block?
+
+This post covers the lift from 2D blocks to multi-head bundles and residual connections, recently formalized in `LeanMining/VerifiedNeuralCompilation/Symmetry.lean`.
+
+---
+
+## Lifting the Intertwiner: `headwise_lift`
+
+The core result is **`multiHead_folded_qkvo_attention_block_invariant_of_commutes`**. It proves that a shared orthogonal rotation $R$ can be lifted across a finite bundle of heads.
+
+But a Transformer head doesn't exist in a vacuum. It sits inside a residual stream. This is where most "paper proofs" of architectural symmetry fall apart—they ignore the addition step.
+
+## The Residual Wrapper
+
+We've machine-checked the **`residual_multiHead_folded_qkvo_attention_block_invariant_of_commutes`** theorem. It proves that the entire attention-plus-residual structure is invariant under these commutative rotations.
+
+Further, we've formalized a "Transformer Shell":
+*   `transformerShellRopeBlockOutput_invariant_of_commutes`: Proves that the transformation survives a more faithful wrapper, including the final projection and the skip-connection.
+
+**Intuition**: The residual stream is a shared coordinate system. If you rotate the heads in a way that respects the RoPE schedule, and you rotate the residual stream consistently, the "add" operation doesn't see the rotation. The physics of the model remains identical.
+
+---
+
+## Why this isn't "Pattern Matching"
+
+As we noted in our [stable rank work](/blog/2026-04-18-lora-srank-overfitting/), it's easy to see a geometric pattern and assume it's a deep structural feature. But the **Verified Neural Compilation** track is about moving beyond "suggestive" results.
+
+By using Lean 4 to prove the `transformerShell` invariance, we ensure that our zero-cost rewrites aren't just "mostly correct" approximations that will break on long-context edge cases. They are **structural identities**.
+
+Next: [The Impossibility of Key-Only Routing](/blog/2026-05-17-moe-key-only-routing-impossibility/), where we find the boundary of what *cannot* be folded.

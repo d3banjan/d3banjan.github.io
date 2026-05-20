@@ -41,11 +41,13 @@
 
 	const margin = { top: 20, right: 20, bottom: 40, left: 10 };
 
-	function getMaxValue() {
+	function getMinMax(): [number, number] {
 		const vals = data.map((d) => d.value);
 		if (references.length) vals.push(...references.map((r) => r.value));
-		return Math.max(...vals);
+		vals.push(0);
+		return [Math.min(...vals), Math.max(...vals)];
 	}
+
 
 	function getLabels() {
 		if (groups) {
@@ -63,9 +65,10 @@
 
 <ChartContainer {title} aspectRatio={horizontal ? 0.5 : 0.6} minHeight={data.length > 4 ? 300 : 200}>
 	{#snippet children({ width, height })}
-		{@const maxVal = getMaxValue()}
+		{@const [minVal, maxVal] = getMinMax()}
 		{@const labels = getLabels()}
-		{@const ticks = niceScale(0, maxVal)}
+		{@const ticks = niceScale(minVal, maxVal)}
+		{@const niceMin = ticks[0]}
 		{@const niceMax = ticks[ticks.length - 1]}
 		{@const groupKeys = groups ? groups.map((g) => g.key) : [undefined]}
 		{@const groupCount = groupKeys.length}
@@ -73,7 +76,7 @@
 			{@const labelWidth = Math.min(width * 0.3, 160)}
 			{@const barAreaWidth = width - labelWidth - margin.right}
 			{@const barHeight = Math.min(36, (height - margin.top - margin.bottom) / labels.length - 4)}
-			{@const scaleX = linearScale(0, niceMax, 0, barAreaWidth)}
+			{@const scaleX = linearScale(niceMin, niceMax, 0, barAreaWidth)}
 			<svg {width} {height} role="img" aria-label={title}>
 				<!-- Grid lines -->
 				{#each ticks as tick}
@@ -111,9 +114,9 @@
 								onmouseleave={() => { hoveredIndex = -1; }}
 							>
 								<rect
-									x={labelWidth}
+									x={labelWidth + scaleX(Math.min(0, datum.value))}
 									y={barY}
-									width={barW}
+									width={Math.abs(scaleX(datum.value) - scaleX(0))}
 									height={subBarHeight - 2}
 									fill={color}
 									rx="2"
@@ -173,7 +176,7 @@
 			{@const chartLeft = margin.left + 50}
 			{@const barAreaWidth = width - chartLeft - margin.right}
 			{@const barWidth = Math.min(60, barAreaWidth / labels.length / groupCount - 4)}
-			{@const scaleY = linearScale(0, niceMax, height - margin.bottom, margin.top)}
+			{@const scaleY = linearScale(niceMin, niceMax, height - margin.bottom, margin.top)}
 			<svg {width} {height} role="img" aria-label={title}>
 				<!-- Grid lines -->
 				{#each ticks as tick}
@@ -214,9 +217,9 @@
 							>
 								<rect
 									x={barX}
-									y={barY}
+									y={Math.min(scaleY(0), scaleY(datum.value))}
 									width={barWidth}
-									height={barH}
+									height={Math.abs(scaleY(datum.value) - scaleY(0))}
 									fill={color}
 									rx="2"
 									opacity={hoveredIndex === -1 || hoveredIndex === i * groupCount + gi ? 1 : 0.4}

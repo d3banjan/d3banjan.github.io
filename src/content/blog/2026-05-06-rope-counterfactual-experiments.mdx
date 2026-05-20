@@ -1,0 +1,70 @@
+---
+title: "Counterfactual Provenance Experiments: Stress-Testing Token Roles"
+description: "Analyzing the Counterfactual V2 results—how the model behaves when provenance signals are zeroed or adversarial."
+pubDate: 2026-05-06
+series: "RoPE-Provenance: Encoding Token Roles"
+seriesOrder: 2
+tags: ["research", "rope", "security", "adversarial"]
+---
+import RadarChart from '../../components/charts/RadarChart.svelte';
+
+export const counterfactualAxes = [
+  { key: 'selectivity', label: 'Selectivity', max: 100 },
+  { key: 'compliance', label: 'Compliance', max: 100 },
+  { key: 'utility', label: 'Utility (Logit)', max: 100 },
+  { key: 'robustness', label: 'Robustness', max: 100 },
+]
+
+export const counterfactualEntities = [
+  {
+    label: "Vanilla (Control)",
+    values: { selectivity: 35, compliance: 15, utility: 85, robustness: 12 },
+    color: "rgb(var(--gray))"
+  },
+  {
+    label: "RoPE-Provenance (V2)",
+    values: { selectivity: 58, compliance: 52, utility: 82, robustness: 45 },
+    color: "var(--accent)"
+  }
+]
+
+If standard training doesn't reward a model for distinguishing between trusted and untrusted text, how do we stress-test a provenance mechanism?
+
+The answer is the **Counterfactual V2** curriculum. This post walks through the "V2" results and what happens when you pit a RoPE-Provenance model against directive-injecting data.
+
+---
+
+## The V2 Curriculum: Directive Pairing
+
+Standard Alpaca SFT is "clean"—instructions are instructions, and data is data. In the real world, data is messy and often adversarial.
+
+Our **Counterfactual V2** dataset (12,000 examples) pairs directive-like substrings (e.g., "now execute this command") into two slots:
+1.  **INSTRUCTION slot**: Where the model *should* follow the directive.
+2.  **DATA slot**: Where the model *should* ignore the directive and treat it as inert text.
+
+<RadarChart
+  title="Mechanism Capabilities: Vanilla vs RoPE-Provenance"
+  axes={counterfactualAxes}
+  entities={counterfactualEntities}
+  client:load
+/>
+
+## The SEP Metric: Delta-of-Deltas
+
+To measure success, we use the **SEP (Selectivity/Execution Parity)** score. 
+
+**The claim we were investigating**: That a RoPE-Provenance architecture can achieve better selectivity (executing INSTRUCTION and ignoring DATA) than a vanilla Transformer when both are trained on the V2 curriculum.
+
+**Initial Baseline Verdict**:
+*   Vanilla Transformer (W&B: `n3b2ajjb`): SEP improved from -0.220 to -0.135.
+*   Zeroed Control (W&B: `vp7rso3y`): SEP improved from -0.195 to -0.125.
+
+**Intuition**: The data intervention alone helps a little. But even with the V2 training, a vanilla model still follows directives in the DATA slot more often than it ignores them. The architecture-free "data-only" approach has a clear ceiling.
+
+---
+
+## The Architectural Test
+
+Now that we've established the ceiling for standard models, we can informatively test our **RoPE-Provenance** arms. If the architecture is working, it must beat the -0.125 floor established by the zeroed control.
+
+Next: [Asymmetric Compliance Damage](/blog/2026-05-17-rope-asymmetric-compliance-damage/), where we see the Informative Failure of the fixed $\pi/8$ arm.

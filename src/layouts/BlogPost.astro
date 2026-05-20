@@ -8,6 +8,7 @@ import Header from '../components/Header.astro';
 import TagList from '../components/TagList.astro';
 import SeriesNav from '../components/SeriesNav.astro';
 import SeriesNextPost from '../components/SeriesNextPost.astro';
+import BilingualToggle from '../components/BilingualToggle.svelte';
 import { SERIES_META } from '../consts';
 
 type Props = CollectionEntry<'blog'>['data'] & {
@@ -128,6 +129,13 @@ const jsonLd = {
 				</div>
 			</article>
 		</main>
+		{hreflangEn && hreflangBn && (
+			<BilingualToggle
+				client:load
+				lang={defaultLang}
+				href={defaultLang === 'en' ? `/bn/${id}/` : `/blog/${id}/`}
+			/>
+		)}
 		<Footer />
 		<style>
 			.mermaid {

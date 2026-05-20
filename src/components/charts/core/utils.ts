@@ -57,21 +57,24 @@ export const CHART_COLORS = ['#e07c39', '#2da87e', '#c44dbb', '#d4a843', '#5b8de
 
 /** Generate evenly spaced tick values between min and max */
 export function niceScale(min: number, max: number, ticks: number = 5): number[] {
-	const range = max - min || 1;
+	const realMin = Math.min(min, max);
+	const realMax = Math.max(min, max);
+	const range = realMax - realMin || 1;
 	const roughStep = range / (ticks - 1);
-	const magnitude = Math.pow(10, Math.floor(Math.log10(roughStep)));
-	const residual = roughStep / magnitude;
+	const magnitude = Math.pow(10, Math.floor(Math.log10(Math.abs(roughStep))));
+	const residual = Math.abs(roughStep) / magnitude;
 	let niceStep: number;
 	if (residual <= 1.5) niceStep = 1 * magnitude;
 	else if (residual <= 3) niceStep = 2 * magnitude;
 	else if (residual <= 7) niceStep = 5 * magnitude;
 	else niceStep = 10 * magnitude;
 
-	const niceMin = Math.floor(min / niceStep) * niceStep;
-	const niceMax = Math.ceil(max / niceStep) * niceStep;
+	const niceMin = Math.floor(realMin / niceStep) * niceStep;
+	const niceMax = Math.ceil(realMax / niceStep) * niceStep;
 	const result: number[] = [];
 	for (let v = niceMin; v <= niceMax + niceStep * 0.01; v += niceStep) {
 		result.push(Math.round(v * 1e6) / 1e6);
 	}
 	return result;
 }
+

@@ -1,0 +1,56 @@
+---
+title: "The Pre-W Learnable Role-Angle Mechanism: RoPE-Provenance"
+description: "Moving beyond fixed π/2 offsets to learnable provenance rotations and the 'pre-W' transport interpretation."
+pubDate: 2026-04-26
+series: "RoPE-Provenance: Encoding Token Roles"
+seriesOrder: 1
+tags: ["research", "rope", "security", "instruction-tuning"]
+---
+import TimelineChart from '../../components/charts/TimelineChart.svelte';
+
+export const provenanceTimeline = [
+  { label: 'Phase 1-4: Post-W Prototype', start: 2025.8, end: 2026.1, type: 'period', detail: 'Fixed offsets, catastrophic utility damage.' },
+  { label: 'Phase 5: Pre-W Pivot', start: 2026.2, end: 2026.4, type: 'critical', detail: 'Successful utility preservation, learnable angles.' },
+  { label: 'Counterfactual V2', start: 2026.4, end: 2026.5, type: 'milestone', detail: 'Dataset release and initial selectivity results.' },
+]
+
+The question we started with was a security one: can you bake "provenance" into a token so that a model can distinguish trusted instructions from untrusted data, even if the text looks identical?
+
+The answer we're testing is **RoPE-Provenance**. This post walks through the "Pre-W" mechanism and the pivot from fixed offsets to learnable role-angles.
+
+---
+
+## The Core Concept: Out-of-Band Symmetries
+
+In a standard Transformer, a token's identity is its embedding. If an attacker injects "ignore previous instructions" into a data field, the model sees the same embedding as if it were a legitimate instruction.
+
+**RoPE-Provenance** changes this. We carve out a low-frequency subspace of the RoPE positional encoding and use it as a "role channel." Trusted instructions get one rotation; untrusted data gets another. 
+
+<TimelineChart
+  title="RoPE-Provenance Project Roadmap"
+  events={provenanceTimeline}
+  minYear={2025.5}
+  maxYear={2026.6}
+  tickInterval={0.2}
+  client:load
+/>
+
+## The "Pre-W" Pivot
+
+In our early prototypes (Phase 1-4), we applied this rotation *after* the $W_q$ and $W_k$ projections. 
+
+**Verdict**: Catastrophic utility damage. The model's loss spiked, and instruction following collapsed. The rotation was "fighting" the learned weights of the attention mechanism.
+
+Phase 5 introduces the **Pre-W Learnable Role-Angle Mechanism**. We apply the rotation *before* the projections. 
+
+**Intuition**: By applying the rotation upstream of $W_q/W_k$, we allow the model's weights to "learn" how to handle the provenance signal. Instead of a hard, disruptive pivot, the provenance rotation becomes part of the feature-transport physics.
+
+## Learnable Angles
+
+We also made the role-angle $\theta$ a learnable parameter. Instead of forcing a $\pi/2$ gap, we let the model decide how much separation it needs.
+
+**The Observation**: Under standard Alpaca SFT, the optimizer tends to close the gap—the role-angle converges toward zero. 
+
+This isn't a failure; it's an informative null. It tells us that standard training doesn't reward role separation. To unlock the provenance channel, we need a curriculum that actually cares about security. 
+
+Next: [Counterfactual Provenance Experiments](/blog/2026-05-16-rope-counterfactual-experiments/), where we introduce the "reward" for role discrimination.

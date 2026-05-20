@@ -1,6 +1,6 @@
 <script lang="ts">
-	import { setContext, type Snippet } from 'svelte';
-	import { writable } from 'svelte/store';
+	import { type Snippet } from 'svelte';
+
 
 	interface Props {
 		title?: string;
@@ -14,19 +14,8 @@
 	let containerWidth = $state(0);
 	let containerEl: HTMLDivElement | undefined = $state();
 
-	const darkMode = writable(false);
-	setContext('darkMode', darkMode);
-
-	$effect(() => {
-		if (typeof window === 'undefined') return;
-		const mq = window.matchMedia('(prefers-color-scheme: dark)');
-		darkMode.set(mq.matches);
-		const handler = (e: MediaQueryListEvent) => darkMode.set(e.matches);
-		mq.addEventListener('change', handler);
-		return () => mq.removeEventListener('change', handler);
-	});
-
 	let height = $derived(Math.max(minHeight, containerWidth * aspectRatio));
+
 </script>
 
 <figure class="chart-container" bind:this={containerEl} bind:clientWidth={containerWidth}>

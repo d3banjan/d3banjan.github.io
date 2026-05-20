@@ -1,0 +1,44 @@
+---
+title: "Formalizing the Softmax and Hessian: Lean 4 Soundness Proofs"
+description: "A deep dive into the Lean 4 proofs for Softmax soundness and the BetaLocalHessian skeleton in the lean-mining project."
+pubDate: 2026-05-09
+series: "The Geometry of MoE Compression (Part E)"
+seriesOrder: 2
+tags: ["research", "lean", "math", "optimization"]
+---
+
+If you're going to use second-order optimization to rotate 26 billion parameters, you'd better be sure your Hessian is correct. "Probably right" doesn't scale to Gemma-4-26B.
+
+This post covers the formal verification of our MoE loss landscape: specifically, the Softmax soundness proofs and the `BetaLocalHessian` skeleton that make the [β-lift](/blog/2026-05-13-moe-beta-transfer/) stable.
+
+---
+
+## The Softmax Soundness Proof
+
+The MoE router uses a softmax to distribute tokens to experts. In our earlier quantization attempts, we kept seeing "optimization artifacts"—the optimizer would find low-loss regions that were actually just numerical singularities in the router's decision boundary.
+
+We fixed this by proving **`softmax_soundness`** in Lean 4 (landed 2026-04-20).
+
+**The claim we were investigating**: That the soft-assignment of experts doesn't violate the underlying convex constraints of the router during quantization. 
+
+**Verdict**: Proved. By formalizing the decision boundary, we've eliminated a whole class of "ghost gradients" that previously plagued our 1-bit KV-cache quantization. The router is now constrained to move only on the physically meaningful manifold.
+
+## The BetaLocalHessian Skeleton
+
+To perform the β-lift, we needed to calculate the local curvature of the rotation-parameter loss. We couldn't just trust a PyTorch autograd trace for this—we needed to know the *exact* algebraic identities.
+
+The `BetaLocalHessian` skeleton in `lean-mining` provides these. Key identities we've machine-checked:
+*   The gradient of the DC-mean centered activation norm.
+*   The second-order Taylor expansion of the β-parameter under small orthogonal perturbations.
+
+**Intuition**: The Hessian tells the optimizer how "curvy" the manifold is in every direction. By proving these identities in Lean, we ensure that our second-order updates move with maximal confidence toward the universal β-floor.
+
+---
+
+## Why the "Sorry" Discipline Matters
+
+In `lean-mining`, we follow a strict "zero sorry" discipline for core identities. It’s easy to write down a Hessian on a whiteboard and "hand-wave" the cross-terms. But the Lean compiler is a pedantic grader; if a single index in a tensorial contraction is off, the proof fails.
+
+This discipline is what allows us to bridge the gap between "interesting research paper" and "verified neural compiler." We're not just reporting a lucky seed; we're reporting a machine-checked property of the architecture.
+
+Next: [Dense Activation-Fit Recovery](/blog/2026-05-17-moe-activation-fit-recovery/), where we apply these proofs to "heal" quantized experts.

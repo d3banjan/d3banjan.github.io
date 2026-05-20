@@ -1,0 +1,45 @@
+---
+title: "Dense Activation-Fit Recovery: Healing Quantized Layers"
+description: "How to recover dense performance from quantized layers using activation-fit artifacts and the recovery scripts in lean-mining."
+pubDate: 2026-05-16
+series: "The Geometry of MoE Compression (Part E)"
+seriesOrder: 3
+tags: ["research", "quantization", "moe", "deep-learning"]
+---
+
+Quantization isn't just about precision; it's about structural damage. When you crush a 16-bit weight into 4 bits, you're not just losing "resolution"—you're breaking the intertwiner algebra that makes the attention heads work.
+
+But what if you could "heal" that damage? This post covers our work on **Dense Activation-Fit Recovery** in `lean-mining`, where we use formal bounds to recover dense-model performance from quantized layers.
+
+---
+
+## The Recovery Script: Not a stochastic fix
+
+Most recovery methods (like QAT or bias-tuning) are stochastic: they shuffle parameters until the loss goes down. Our approach is different. We use the **`ActivationFitBound.lean`** theorem to guide the reconstruction.
+
+The script operates on the L00 layer of the Gemma family, following three strict steps:
+
+1.  **Artifact Extraction**: We capture the *dense* activation manifold. This is the ground truth—the "healthy" state of the model.
+2.  **Bound Calculation**: We use the `ActivationFitBound` theorem to calculate the maximum allowable weight-space error that preserves the semantic sector algebra. 
+3.  **Frob-Matched Retraining**: We adjust the gate\_up weights to match the dense Frobenius norm.
+
+**Intuition**: Think of it as "geometric bone-setting." Instead of just massaging the parameters, we are forcing them back into the alignment that the `ActivationFitBound` theorem proves is necessary for functional parity.
+
+## Results: 128/128 experts
+
+The results from our `v3` retrain were unambiguous. In the Gemma pilot, **128 out of 128** tracked experts showed improvement. By using the Frobenius norm as a recovery target—rather than just the raw loss—we avoid the "overfitting geometry" that plagues standard fine-tuning.
+
+<dl class="term-aside">
+  <dt>Activation-Fit</dt>
+  <dd>The process of aligning quantized activations to their dense counterparts via weight adjustment.</dd>
+  <dt>Frobenius Matching</dt>
+  <dd>Adjusting weight matrices such that their Frobenius norm matches a pre-calculated target derived from the dense model.</dd>
+</dl>
+
+## The "Verdict" on Recovery
+
+We've shown that quantization doesn't have to be a one-way street. If you have a formal bound on what "correct" looks like in the activation manifold, you can use that bound to guide a deterministic recovery.
+
+This concludes the Part E series on **The Geometry of MoE Compression**. We've gone from the [β-lift](/blog/2026-05-13-moe-beta-transfer/) to [formal Hessians](/blog/2026-05-16-moe-softmax-hessian/) and finally to real-world recovery. 
+
+Next up: [Verified Neural Compilation](/series/verified-neural-compilation/), where we move from experts to the attention heads themselves.

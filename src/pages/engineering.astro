@@ -4,7 +4,7 @@ import Footer from '../components/Footer.astro';
 import FormattedDate from '../components/FormattedDate.astro';
 import Header from '../components/Header.astro';
 import TagList from '../components/TagList.astro';
-import { ENGINEERING_TAGS, getPublishedPosts, SERIES_META } from '../consts';
+import { ENGINEERING_TAGS, getPublishedPosts, SERIES_META, PAPERS } from '../consts';
 
 const posts = await getPublishedPosts();
 
@@ -110,9 +110,148 @@ const standaloneEngineeringPosts = posts
 			.standalone-post h3 a:hover {
 				color: var(--accent);
 			}
+
+			/* Featured Research Cards Styles */
+			.highlighted-papers-grid {
+				display: grid;
+				grid-template-columns: repeat(3, 1fr);
+				gap: 1.25em;
+				margin-bottom: 2em;
+			}
+			@media (max-width: 768px) {
+				.highlighted-papers-grid {
+					grid-template-columns: 1fr;
+				}
+			}
+			.paper-card {
+				display: flex;
+				flex-direction: column;
+				justify-content: space-between;
+				padding: 1.2em 1.4em;
+				background: rgba(var(--gray-light), 0.15);
+				border-left: 3px solid var(--accent);
+				border-radius: 0 6px 6px 0;
+				margin-bottom: 1.2em;
+				transition: transform 0.2s ease, box-shadow 0.2s ease;
+			}
+			.paper-card:hover {
+				transform: translateY(-2px);
+				box-shadow: 0 4px 12px rgba(var(--accent-rgb), 0.08);
+			}
+			.paper-card.highlighted {
+				background: rgba(var(--accent-rgb), 0.03);
+				border-top: 3px solid var(--accent);
+				border-left: 1px solid rgba(var(--accent-rgb), 0.2);
+				border-right: 1px solid rgba(var(--accent-rgb), 0.2);
+				border-bottom: 1px solid rgba(var(--accent-rgb), 0.2);
+				border-radius: 6px;
+				min-height: 200px;
+				margin-bottom: 0;
+			}
+			.paper-card h3 {
+				margin: 0 0 0.4em 0;
+				font-size: 1.05em;
+				line-height: 1.3;
+			}
+			.paper-card p {
+				margin: 0 0 0.8em 0;
+				font-size: 0.88em;
+				line-height: 1.4;
+				color: rgb(var(--gray));
+			}
+			.scrolling-papers-container {
+				width: 100%;
+				margin-bottom: 2em;
+				overflow: hidden;
+				position: relative;
+			}
+			.scrolling-papers-track {
+				display: flex;
+				overflow-x: auto;
+				gap: 2em;
+				padding: 2.5em 0.5em 1.5em 0.5em;
+				scrollbar-width: thin;
+				scrollbar-color: var(--accent) rgba(var(--gray-light), 0.15);
+				-webkit-overflow-scrolling: touch;
+				position: relative;
+			}
+			/* Dotted timeline connector line running horizontally */
+			.scrolling-papers-track::before {
+				content: '';
+				position: absolute;
+				top: 1.1em;
+				left: 2.5em;
+				right: 2.5em;
+				height: 2px;
+				background: repeating-linear-gradient(to right, transparent, transparent 4px, var(--accent) 4px, var(--accent) 8px);
+				opacity: 0.4;
+				z-index: 0;
+			}
+			.scrolling-papers-track::-webkit-scrollbar {
+				height: 6px;
+			}
+			.scrolling-papers-track::-webkit-scrollbar-track {
+				background: rgba(var(--gray-light), 0.1);
+				border-radius: 3px;
+			}
+			.scrolling-papers-track::-webkit-scrollbar-thumb {
+				background-color: var(--accent);
+				border-radius: 3px;
+			}
+			.paper-card.scrolling-card {
+				flex: 0 0 280px;
+				width: 280px;
+				min-height: 180px;
+				margin-bottom: 0;
+				position: relative;
+				z-index: 1;
+				padding: 1em 1.2em;
+				background: rgba(var(--gray-light), 0.12);
+				border: 1px solid rgba(var(--gray-light), 0.3);
+				border-radius: 6px;
+				border-left: 3px solid var(--accent);
+			}
+			/* Dot on the timeline */
+			.paper-card.scrolling-card::before {
+				content: '';
+				position: absolute;
+				top: -1.75em;
+				left: 1.5em;
+				width: 12px;
+				height: 12px;
+				background: var(--accent);
+				border: 3px solid #fff;
+				border-radius: 50%;
+				z-index: 2;
+				box-shadow: 0 0 0 2px rgba(var(--accent-rgb), 0.2);
+			}
+			@media (prefers-color-scheme: dark) {
+				.paper-card.scrolling-card::before {
+					border-color: #0f1219;
+				}
+			}
+			.paper-links {
+				display: flex;
+				flex-wrap: wrap;
+				gap: 0.6em;
+				margin-top: auto;
+			}
+			.paper-links a {
+				font-size: 0.82em;
+				font-weight: 600;
+				padding: 0.25em 0.7em;
+				border: 1px solid var(--accent);
+				border-radius: 3px;
+				color: var(--accent);
+				text-decoration: none;
+			}
+			.paper-links a:hover {
+				background: var(--accent);
+				color: white !important;
+			}
 		</style>
 	</head>
-	<body>
+	<body class="theme-engineering">
 		<Header />
 		<main>
 			<h1>Engineering</h1>
@@ -122,6 +261,40 @@ const standaloneEngineeringPosts = posts
 				Linux workflow. Experiment artifacts and engineering notes below. Methodology:
 				<a href="/series/methodology-transition/">Notes on a Methodology Transition</a>.
 			</p>
+
+			<h2>Featured RE/MTS Research</h2>
+			<div class="highlighted-papers-grid">
+				{PAPERS.slice(0, 3).map((paper) => (
+					<div class="paper-card highlighted">
+						<div>
+							<h3>{paper.title}</h3>
+							<p>{paper.description}</p>
+						</div>
+						<div class="paper-links">
+							<a href={paper.siteUrl} target="_blank">Microsite</a>
+							<a href={paper.seriesUrl}>Blog series</a>
+						</div>
+					</div>
+				))}
+			</div>
+
+			<h3 style="margin-top: 1.5em; margin-bottom: 0.8em; font-size: 1.2em;">Other Systems Research</h3>
+			<div class="scrolling-papers-container">
+				<div class="scrolling-papers-track">
+					{PAPERS.slice(3).map((paper) => (
+						<div class="paper-card scrolling-card">
+							<div>
+								<h3>{paper.title}</h3>
+								<p>{paper.description}</p>
+							</div>
+							<div class="paper-links">
+								<a href={paper.siteUrl} target="_blank">Microsite</a>
+								<a href={paper.seriesUrl}>Blog series</a>
+							</div>
+						</div>
+					))}
+				</div>
+			</div>
 
 			<h2>Series</h2>
 

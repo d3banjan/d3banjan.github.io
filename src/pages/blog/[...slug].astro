@@ -1,21 +1,41 @@
 ---
 import { type CollectionEntry, render } from 'astro:content';
 import BlogPost from '../../layouts/BlogPost.astro';
-import { getPublishedPosts } from '../../consts';
+import { getPublishedPosts, getPublishedBnPosts } from '../../consts';
 
 export async function getStaticPaths() {
 	const posts = await getPublishedPosts();
-	return posts.map((post) => ({
-		params: { slug: post.id },
-		props: post,
-	}));
-}
-type Props = CollectionEntry<'blog'>;
+	const bnPosts = await getPublishedBnPosts();
+	const bnIds = new Set(bnPosts.map((p) => p.id));
 
-const post = Astro.props;
+	return posts.map((post) => {
+		const hasBn = bnIds.has(post.id);
+		return {
+			params: { slug: post.id },
+			props: { post, hasBn },
+		};
+	});
+}
+
+type Props = {
+	post: CollectionEntry<'blog'>;
+	hasBn: boolean;
+};
+
+const { post, hasBn } = Astro.props;
 const { Content } = await render(post);
+
+const SITE_URL = 'https://d3banjan.github.io';
+const hreflangEn = hasBn ? `${SITE_URL}/blog/${post.id}/` : undefined;
+const hreflangBn = hasBn ? `${SITE_URL}/bn/${post.id}/` : undefined;
 ---
 
-<BlogPost {...post.data} id={post.id}>
+<BlogPost
+	{...post.data}
+	id={post.id}
+	hreflangEn={hreflangEn}
+	hreflangBn={hreflangBn}
+>
 	<Content />
 </BlogPost>
+

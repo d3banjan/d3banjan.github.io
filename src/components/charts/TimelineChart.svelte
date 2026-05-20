@@ -37,39 +37,39 @@
 	const margin = { top: 30, right: 20, bottom: 30, left: 20 };
 	const rowHeight = 40;
 
-	function computeMinMax(): [number, number] {
+	const minMax = $derived.by(() => {
 		const starts = events.map((e) => e.start);
 		const ends = events.map((e) => e.end ?? e.start);
 		return [
-			minYear ?? Math.min(...starts) - 0.5,
-			maxYear ?? Math.max(...ends) + 0.5,
+			minYear ?? Math.min(...starts, 2025) - 0.5,
+			maxYear ?? Math.max(...ends, 2026) + 0.5,
 		];
-	}
+	});
 
-	function assignRows(): number[] {
-		// Assign rows, respecting explicit row assignments and avoiding overlap
-		const rows: number[] = new Array(events.length).fill(0);
+	const rows = $derived.by(() => {
+		const result: number[] = new Array(events.length).fill(0);
 		const occupied: { end: number; row: number }[] = [];
 		for (let i = 0; i < events.length; i++) {
 			if (events[i].row !== undefined) {
-				rows[i] = events[i].row!;
-				occupied.push({ end: events[i].end ?? events[i].start + 0.3, row: rows[i] });
+				result[i] = events[i].row!;
+				occupied.push({ end: events[i].end ?? events[i].start + 0.3, row: result[i] });
 				continue;
 			}
 			let r = 0;
 			while (occupied.some((o) => o.row === r && o.end > events[i].start - 0.1)) r++;
-			rows[i] = r;
+			result[i] = r;
 			occupied.push({ end: events[i].end ?? events[i].start + 0.3, row: r });
 		}
-		return rows;
-	}
+		return result;
+	});
+
 </script>
 
 <ChartContainer {title} aspectRatio={aspectRatio ?? 0.3} minHeight={180}>
 	{#snippet children({ width, height })}
-		{@const [yearMin, yearMax] = computeMinMax()}
-		{@const rows = assignRows()}
-		{@const maxRow = Math.max(...rows)}
+		{@const [yearMin, yearMax] = minMax}
+		{@const maxRow = Math.max(...rows, 0)}
+
 		{@const chartWidth = width - margin.left - margin.right}
 		{@const yearSpan = yearMax - yearMin || 1}
 		{@const xScale = (year: number) => margin.left + ((year - yearMin) / yearSpan) * chartWidth}
@@ -77,6 +77,7 @@
 		{@const years = allYears.filter(y => (y - Math.floor(yearMin)) % tickInterval === 0)}
 		<div class="timeline-scroll">
 			<svg width={Math.max(width, events.length * 80)} {height} role="img" aria-label={title}>
+
 				<!-- Year grid -->
 				{#each years as year}
 					<line
@@ -85,20 +86,25 @@
 						stroke="rgb(var(--gray-light))" stroke-width="1"
 					/>
 					<text
-						x={xScale(year)} y={height - margin.bottom + 16}
-						text-anchor="middle" fill="rgb(var(--gray))" font-size="12"
+						x={xScale(year)} y={height - margin.bottom + 18}
+						text-anchor="middle" fill="rgb(var(--gray-dark))" font-size="12"
+						font-weight="500"
 					>{year}</text>
+
 				{/each}
 
 				<!-- Timeline axis -->
 				<line
-					x1={margin.left} y1={margin.top + (maxRow + 1) * rowHeight / 2}
-					x2={width - margin.right} y2={margin.top + (maxRow + 1) * rowHeight / 2}
+					x1={margin.left} y1={height - margin.bottom}
+					x2={width - margin.right} y2={height - margin.bottom}
 					stroke="rgb(var(--gray-light))" stroke-width="2"
 				/>
 
+
 				<!-- Events -->
+
 				{#each events as evt, i}
+
 					{@const row = rows[i]}
 					{@const y = margin.top + row * rowHeight + 4}
 					{@const color = evt.type === 'critical' ? '#e05555' : CHART_COLORS[i % CHART_COLORS.length]}
@@ -112,6 +118,12 @@
 							onmouseleave={() => { hoveredIndex = -1; }}
 							style="cursor: pointer"
 						>
+							<line
+								x1={(x1 + x2) / 2} y1={y + rowHeight - 12}
+								x2={(x1 + x2) / 2} y2={height - margin.bottom}
+								stroke={color} stroke-width="1.5" stroke-dasharray="3,2"
+								opacity="0.5"
+							/>
 							<rect
 								x={x1} y={y}
 								width={x2 - x1} height={rowHeight - 12}
@@ -127,6 +139,7 @@
 								>{evt.label}</text>
 							{/if}
 						</g>
+
 					{:else}
 						<!-- Milestone -->
 						{@const cx = xScale(evt.start)}
@@ -136,6 +149,11 @@
 							onmouseleave={() => { hoveredIndex = -1; }}
 							style="cursor: pointer"
 						>
+							<line
+								x1={cx} y1={y + (rowHeight - 12) / 2}
+								x2={cx} y2={height - margin.bottom}
+								stroke={color} stroke-width="1.5" stroke-dasharray="3,2"
+							/>
 							<circle
 								cx={cx} cy={y + (rowHeight - 12) / 2}
 								r={hoveredIndex === i ? 8 : 6}
@@ -146,13 +164,17 @@
 								x={cx} y={y - 4}
 								text-anchor="middle"
 								fill="rgb(var(--gray-dark))" font-size="10"
+								font-weight="600"
 							>{evt.label}</text>
 						</g>
+
 					{/if}
 				{/each}
 			</svg>
 		</div>
 		<Tooltip x={tooltipX} y={tooltipY} visible={hoveredIndex !== -1}>
+
+
 			{#if hoveredIndex !== -1}
 				{@const evt = events[hoveredIndex]}
 				<strong>{evt.label}</strong><br />
@@ -170,3 +192,5 @@
 		-webkit-overflow-scrolling: touch;
 	}
 </style>
+
+

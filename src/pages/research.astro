@@ -3,12 +3,17 @@ import BaseHead from '../components/BaseHead.astro';
 import Footer from '../components/Footer.astro';
 import FormattedDate from '../components/FormattedDate.astro';
 import Header from '../components/Header.astro';
-import { getPublishedPosts, SERIES_META } from '../consts';
+import { getPublishedPosts, SERIES_META, PAPERS } from '../consts';
 
 const posts = await getPublishedPosts();
 
+const paperSeriesSlugs = new Set(PAPERS.map(p => {
+	const parts = p.seriesUrl.split('/');
+	return parts[parts.length - 2] || '';
+}));
+
 const researchSeriesData = Object.entries(SERIES_META)
-	.filter(([, meta]) => meta.category === 'research')
+	.filter(([, meta]) => meta.category === 'research' && !paperSeriesSlugs.has(meta.slug))
 	.map(([name, meta]) => {
 		const group = posts
 			.filter((p) => p.data.series === name)
@@ -43,26 +48,129 @@ const researchSeriesData = Object.entries(SERIES_META)
 				margin-top: 2em;
 				margin-bottom: 0.8em;
 			}
+			.highlighted-papers-grid {
+				display: grid;
+				grid-template-columns: repeat(3, 1fr);
+				gap: 1.25em;
+				margin-bottom: 2em;
+			}
+			@media (max-width: 768px) {
+				.highlighted-papers-grid {
+					grid-template-columns: 1fr;
+				}
+			}
 			.paper-card {
+				display: flex;
+				flex-direction: column;
+				justify-content: space-between;
 				padding: 1.2em 1.4em;
 				background: rgba(var(--gray-light), 0.15);
 				border-left: 3px solid var(--accent);
 				border-radius: 0 6px 6px 0;
 				margin-bottom: 1.2em;
+				transition: transform 0.2s ease, box-shadow 0.2s ease;
+			}
+			.paper-card:hover {
+				transform: translateY(-2px);
+				box-shadow: 0 4px 12px rgba(var(--accent-rgb), 0.08);
+			}
+			.paper-card.highlighted {
+				background: rgba(var(--accent-rgb), 0.03);
+				border-top: 3px solid var(--accent);
+				border-left: 1px solid rgba(var(--accent-rgb), 0.2);
+				border-right: 1px solid rgba(var(--accent-rgb), 0.2);
+				border-bottom: 1px solid rgba(var(--accent-rgb), 0.2);
+				border-radius: 6px;
+				min-height: 200px;
+				margin-bottom: 0;
 			}
 			.paper-card h3 {
-				margin: 0 0 0.3em 0;
-				font-size: 1.1em;
+				margin: 0 0 0.4em 0;
+				font-size: 1.05em;
+				line-height: 1.3;
 			}
 			.paper-card p {
-				margin: 0 0 0.7em 0;
-				font-size: 0.9em;
+				margin: 0 0 0.8em 0;
+				font-size: 0.88em;
+				line-height: 1.4;
 				color: rgb(var(--gray));
+			}
+			.scrolling-papers-container {
+				width: 100%;
+				margin-bottom: 2em;
+				overflow: hidden;
+				position: relative;
+			}
+			.scrolling-papers-track {
+				display: flex;
+				overflow-x: auto;
+				gap: 2em;
+				padding: 2.5em 0.5em 1.5em 0.5em;
+				scrollbar-width: thin;
+				scrollbar-color: var(--accent) rgba(var(--gray-light), 0.15);
+				-webkit-overflow-scrolling: touch;
+				position: relative;
+			}
+			/* Dotted timeline connector line running horizontally */
+			.scrolling-papers-track::before {
+				content: '';
+				position: absolute;
+				top: 1.1em;
+				left: 2.5em;
+				right: 2.5em;
+				height: 2px;
+				background: repeating-linear-gradient(to right, transparent, transparent 4px, var(--accent) 4px, var(--accent) 8px);
+				opacity: 0.4;
+				z-index: 0;
+			}
+			.scrolling-papers-track::-webkit-scrollbar {
+				height: 6px;
+			}
+			.scrolling-papers-track::-webkit-scrollbar-track {
+				background: rgba(var(--gray-light), 0.1);
+				border-radius: 3px;
+			}
+			.scrolling-papers-track::-webkit-scrollbar-thumb {
+				background-color: var(--accent);
+				border-radius: 3px;
+			}
+			.paper-card.scrolling-card {
+				flex: 0 0 280px;
+				width: 280px;
+				min-height: 180px;
+				margin-bottom: 0;
+				position: relative;
+				z-index: 1;
+				padding: 1em 1.2em;
+				background: rgba(var(--gray-light), 0.12);
+				border: 1px solid rgba(var(--gray-light), 0.3);
+				border-radius: 6px;
+				border-left: 3px solid var(--accent);
+			}
+			/* Dot on the timeline */
+			.paper-card.scrolling-card::before {
+				content: '';
+				position: absolute;
+				top: -1.75em;
+				left: 1.5em;
+				width: 12px;
+				height: 12px;
+				background: var(--accent);
+				border: 3px solid #fff;
+				border-radius: 50%;
+				z-index: 2;
+				box-shadow: 0 0 0 2px rgba(var(--accent-rgb), 0.2);
+			}
+			@media (prefers-color-scheme: dark) {
+				.paper-card.scrolling-card::before {
+					border-color: #0f1219;
+				}
 			}
 			.paper-links {
 				display: flex;
 				flex-wrap: wrap;
 				gap: 0.6em;
+				margin-top: auto;
 			}
 			.paper-links a {
 				font-size: 0.82em;
@@ -75,7 +183,7 @@ const researchSeriesData = Object.entries(SERIES_META)
 			}
 			.paper-links a:hover {
 				background: var(--accent);
-				color: white;
+				color: white !important;
 			}
 			.series-block {
 				margin-bottom: 2em;
@@ -120,7 +228,7 @@ const researchSeriesData = Object.entries(SERIES_META)
 			.series-link:hover { text-decoration: underline; }
 		</style>
 	</head>
-	<body>
+	<body class="theme-research">
 		<Header />
 		<main>
 			<h1>Research</h1>
@@ -134,44 +242,36 @@ const researchSeriesData = Object.entries(SERIES_META)
 
 			<h2>Papers</h2>
 
-			<div class="paper-card">
-				<h3>Phase-Collapse Defragmentation: Provable Bounds on 1-bit KV-Cache Quantization in MoE</h3>
-				<p>
-					Moment-ratio gauge construction that determines — from weight statistics alone, before
-					inference — whether 1-bit KV-cache quantization is achievable for a given layer.
-					MoEGauge and JensenFloor theorems proved in Lean 4 with zero sorries.
-					Evaluated on OLMoE-1B-7B.
-				</p>
-				<div class="paper-links">
-					<a href="https://moe-gauge-paper.pages.dev/" target="_blank">Microsite + Lean source</a>
-					<a href="/series/moe-compression/">Blog series</a>
-				</div>
+			<div class="highlighted-papers-grid">
+				{PAPERS.slice(0, 3).map((paper) => (
+					<div class="paper-card highlighted">
+						<div>
+							<h3>{paper.title}</h3>
+							<p>{paper.description}</p>
+						</div>
+						<div class="paper-links">
+							<a href={paper.siteUrl} target="_blank">Microsite + Lean source</a>
+							<a href={paper.seriesUrl}>Blog series</a>
+						</div>
+					</div>
+				))}
 			</div>
 
-			<div class="paper-card">
-				<h3>Falsifying LoRA Alignment Geometry: srank as Overfitting Signature in DPO Fine-Tuning</h3>
-				<p>
-					Pre-registered study of whether DPO fine-tuning leaves a geometrically distinct
-					fingerprint in LoRA weight updates. Two claims killed: the orthogonal-complement
-					hypothesis (directional violation) and cross-probe srank (length-bias artifact).
-					Interactive microsite with d3 exploration widgets.
-				</p>
-				<div class="paper-links">
-					<a href="https://lazy-rudder-paper.pages.dev/" target="_blank">Microsite + Lean source</a>
-					<a href="/series/lora-alignment-geometry/">Blog series</a>
-				</div>
-			</div>
-
-			<div class="paper-card">
-				<h3>A Survey of Symmetries Compression Must Respect</h3>
-				<p>
-					Living catalogue of algebraic invariants — RoPE, SignPhase, BoundedArithmetic,
-					DenseSparse, dormancy — that any compression scheme must preserve to avoid silent
-					correctness failures. Lean 4 coverage across 152/161 symmetry claims.
-				</p>
-				<div class="paper-links">
-					<a href="https://symmetry-survey-paper.pages.dev/" target="_blank">Microsite + Lean source</a>
-					<a href="/series/symmetry-survey/">Blog series</a>
+			<h2>Other Research</h2>
+			<div class="scrolling-papers-container">
+				<div class="scrolling-papers-track">
+					{PAPERS.slice(3).map((paper) => (
+						<div class="paper-card scrolling-card">
+							<div>
+								<h3>{paper.title}</h3>
+								<p>{paper.description}</p>
+							</div>
+							<div class="paper-links">
+								<a href={paper.siteUrl} target="_blank">Microsite + Lean source</a>
+								<a href={paper.seriesUrl}>Blog series</a>
+							</div>
+						</div>
+					))}
 				</div>
 			</div>
 

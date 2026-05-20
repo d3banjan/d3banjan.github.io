@@ -28,6 +28,7 @@
 :root {
 	--accent: #2337ff;
 	--accent-dark: #000d8a;
+	--accent-rgb: 35, 55, 255;
 	--black: 15, 18, 25;
 	--gray: 96, 115, 159;
 	--gray-light: 229, 233, 240;
@@ -41,6 +42,7 @@
 	:root {
 		--accent: #6b7cff;
 		--accent-dark: #3449db;
+		--accent-rgb: 107, 124, 255;
 		--black: 230, 233, 240;
 		--gray: 160, 170, 195;
 		--gray-light: 40, 44, 55;
@@ -53,6 +55,47 @@
 		background-color: #0f1219;
 	}
 }
+
+/* ── Hub Dynamic Theme Accent Classes ── */
+.theme-home {
+	--accent: #4f46e5;
+	--accent-dark: #3730a3;
+	--accent-rgb: 79, 70, 229;
+}
+@media (prefers-color-scheme: dark) {
+	.theme-home {
+		--accent: #818cf8;
+		--accent-dark: #4f46e5;
+		--accent-rgb: 129, 140, 248;
+	}
+}
+
+.theme-research {
+	--accent: #0d9488;
+	--accent-dark: #0f766e;
+	--accent-rgb: 13, 148, 136;
+}
+@media (prefers-color-scheme: dark) {
+	.theme-research {
+		--accent: #2dd4bf;
+		--accent-dark: #0d9488;
+		--accent-rgb: 45, 212, 191;
+	}
+}
+
+.theme-engineering {
+	--accent: #d97706;
+	--accent-dark: #b45309;
+	--accent-rgb: 217, 119, 6;
+}
+@media (prefers-color-scheme: dark) {
+	.theme-engineering {
+		--accent: #fbbf24;
+		--accent-dark: #d97706;
+		--accent-rgb: 251, 191, 36;
+	}
+}
+
 @font-face {
 	font-family: "Atkinson";
 	src: url("/fonts/atkinson-regular.woff") format("woff");
@@ -67,6 +110,7 @@
 	font-style: normal;
 	font-display: swap;
 }
+
 body {
 	font-family: "Atkinson", sans-serif;
 	margin: 0;
@@ -79,6 +123,21 @@ body {
 	color: rgb(var(--gray-dark));
 	font-size: 20px;
 	line-height: 1.7;
+	position: relative;
+}
+
+/* Subtle top-header ambient background glow */
+body::before {
+	content: "";
+	position: absolute;
+	top: 0;
+	left: 0;
+	right: 0;
+	height: 600px;
+	background: radial-gradient(circle at 50% 0%, rgba(var(--accent-rgb), 0.06) 0%, rgba(var(--accent-rgb), 0.01) 60%, transparent 80%);
+	pointer-events: none;
+	z-index: -1;
+	transition: background 0.5s ease-in-out;
 }
 main {
 	width: 720px;
@@ -300,3 +359,134 @@ hr {
 .cognate .bengali-term {
 	font-family: 'Tiro Bangla', serif;
 }
+
+/* ── Timeline Styles ── */
+.timeline-container {
+	position: relative;
+	margin: 2em 0;
+	padding: 1em 0;
+}
+.timeline-spine {
+	position: absolute;
+	top: 0;
+	bottom: 0;
+	left: 20px;
+	width: 2px;
+	background: rgba(var(--gray-light), 0.3);
+}
+.timeline-feed {
+	display: flex;
+	flex-direction: column;
+	gap: 2.25em;
+	position: relative;
+}
+.timeline-item {
+	display: flex;
+	position: relative;
+	padding-left: 50px;
+}
+.timeline-node {
+	position: absolute;
+	left: 20px;
+	top: 1.8em;
+	width: 10px;
+	height: 10px;
+	background: rgb(var(--gray-light));
+	border: 2px solid var(--accent);
+	border-radius: 50%;
+	transform: translateX(-50%);
+	z-index: 2;
+	transition: background 0.3s, border-color 0.3s;
+}
+.timeline-item:hover .timeline-node {
+	background: var(--accent);
+}
+.timeline-card-wrapper {
+	position: relative;
+	width: 100%;
+	max-width: 680px;
+}
+
+.timeline-card {
+	padding: 1.1em 1.3em;
+	background: rgba(var(--gray-light), 0.08);
+	border: 1px solid rgba(var(--gray-light), 0.25);
+	border-radius: 6px;
+	text-decoration: none;
+	display: block;
+	transition: transform 0.2s ease, box-shadow 0.2s ease, border-color 0.2s ease;
+	position: relative;
+	color: inherit;
+}
+.timeline-card:hover {
+	transform: translateY(-2px);
+	box-shadow: var(--box-shadow);
+	border-color: rgba(var(--accent-rgb), 0.5);
+}
+.timeline-item.single .timeline-card {
+	border-left: 3px solid var(--accent);
+}
+.timeline-item.series .timeline-card {
+	border-left: 3px solid var(--accent);
+	background: rgba(var(--accent-rgb), 0.04);
+}
+
+.timeline-card h4 {
+	font-size: 1.15em;
+	margin: 0 0 0.3em;
+	line-height: 1.3;
+}
+.timeline-card .title-link {
+	color: inherit;
+	text-decoration: none;
+}
+.timeline-card .title-link::after {
+	content: '';
+	position: absolute;
+	top: 0;
+	left: 0;
+	right: 0;
+	bottom: 0;
+	z-index: 1;
+}
+.timeline-card .date {
+	font-size: 0.78em;
+	color: rgb(var(--gray));
+	margin: 0 0 0.6em;
+}
+.timeline-card .description {
+	font-size: 0.86em;
+	margin: 0.4em 0 0.8em;
+	line-height: 1.45;
+	color: rgb(var(--gray-dark));
+}
+.timeline-card .post-tags {
+	margin-top: 0.6em;
+	position: relative;
+	z-index: 2;
+}
+
+/* Series Progression index */
+.series-progression {
+	display: inline-flex;
+	align-items: center;
+	gap: 0.4em;
+	font-size: 0.68em;
+	font-weight: 700;
+	letter-spacing: 0.05em;
+	text-transform: uppercase;
+	color: var(--accent);
+	margin-bottom: 0.4em;
+}
+
+/* Consecutive stacking rule to connect same series */
+.series-connection {
+	position: absolute;
+	top: 1.8em;
+	bottom: -4.05em; /* mathematically calculated overlap down to the center of the next node */
+	left: -30px; /* aligns exactly with the timeline spine */
+	width: 2px;
+	background: var(--accent);
+	z-index: 1;
+}
+

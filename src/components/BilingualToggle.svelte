@@ -1,20 +1,14 @@
 <script lang="ts">
 	const SCROLL_KEY = 'bilingual-scroll-ratio';
 
-	let lang = $state<'en' | 'bn'>('en');
-	let href = $state('#');
+	interface Props {
+		lang?: 'en' | 'bn';
+		href?: string;
+	}
+
+	let { lang = 'en', href = '#' }: Props = $props();
 
 	$effect(() => {
-		const path = window.location.pathname;
-		lang = path.startsWith('/bn/') ? 'bn' : 'en';
-		if (path.startsWith('/bn/')) {
-			const slug = path.replace(/^\/bn\//, '').replace(/\/$/, '');
-			href = `/blog/${slug}/`;
-		} else {
-			const slug = path.replace(/^\/blog\//, '').replace(/\/$/, '');
-			href = `/bn/${slug}/`;
-		}
-
 		// On arrival: restore scroll position if we just toggled
 		const saved = sessionStorage.getItem(SCROLL_KEY);
 		if (saved !== null) {

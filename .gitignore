@@ -25,3 +25,7 @@ pnpm-debug.log*
 
 # vscode
 .vscode/
+
+# local scratch and antigravity files
+scratch/
+.antigravity*

@@ -109,10 +109,10 @@ const itemListJsonLd = {
 			}
 		</style>
 	</head>
-	<body>
+	<body class={`theme-${meta.category === 'blog' ? 'home' : meta.category}`}>
 		<Header />
 		<main>
-			<a href="/series/" class="back-link">&larr; All series</a>
+			<a href="/blog/" class="back-link">&larr; Back to blog timeline</a>
 			<h1>{seriesName}</h1>
 			<p class="series-desc">{meta.description}</p>
 			{

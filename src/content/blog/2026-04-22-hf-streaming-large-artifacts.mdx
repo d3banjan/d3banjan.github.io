@@ -1,0 +1,44 @@
+---
+title: "HF-Streaming for Large Artifacts: Scaling ML Research"
+description: "Implementing HFStreamUploader to bypass local disk limits for >100MB artifacts using safetensors and io.BytesIO."
+pubDate: 2026-04-22
+series: "Infrastructure for Frontier Research"
+seriesOrder: 1
+tags: ["engineering", "ml-ops", "tooling", "huggingface"]
+---
+
+The question we started with was a logistical bottleneck: how do you run massive "spectroscopy" sweeps across the Pythia and Llama families when your local RTX 3060 only has 12GB of VRAM and your disk is perpetually at 95%?
+
+The answer is **HF-Streaming**. This post covers the `HFStreamUploader` we built for `lean-mining` to bypass local disk limits for large (>100MB) artifacts.
+
+---
+
+## The Bottleneck: Disk as a Choke Point
+
+Standard ML research involves a lot of intermediate artifacts: tensors, weights, and detailed activation traces. Saving these to disk and *then* uploading them is slow and requires massive local scratch space. 
+
+**Intuition**: Disk is the "legacy" layer of our research stack. If we can treat the Hugging Face Hub as our primary memory, we can scale our experiments far beyond our local hardware.
+
+## The Solution: `HFStreamUploader`
+
+We implemented an in-memory streaming uploader using `safetensors` and `io.BytesIO`.
+
+The workflow is simple but effective:
+1.  **In-Memory Serialization**: We serialize tensors directly into a byte buffer.
+2.  **Upload Callback**: We leverage the `huggingface_hub` API's callback mechanism to push chunks to the Hub as they are generated.
+3.  **Resilient Progress**: By using chunked uploads, we ensure that if a stream is interrupted, we don't lose the entire 200MB artifact.
+
+## Why this isn't a "Tooling" problem
+
+As we noted in our [manuscript-as-code post](/blog/2026-04-19-lora-manuscript-as-code/), engineering infrastructure is research infrastructure. If your uploader is flaky, your results aren't checkable. 
+
+By streaming our spectroscopy results directly to the Hub, we've turned our "local spectroscopy" into a global, checkable results ledger. No more "I forgot to save the checkpoint" excuses.
+
+<dl class="term-aside">
+  <dt>Safetensors</dt>
+  <dd>A simple, safe, and fast format for storing and loading tensors; avoids the security risks of Pickle.</dd>
+  <dt>BytesIO</dt>
+  <dd>A file-like object in Python that lives entirely in RAM.</dd>
+</dl>
+
+Next: [The Dual-Emit Paper Pattern](/blog/2026-05-16-dual-emit-paper-pattern/), where we connect these artifacts to our manuscripts.

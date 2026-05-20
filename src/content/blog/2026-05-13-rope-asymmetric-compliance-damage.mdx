@@ -1,0 +1,60 @@
+---
+title: "Asymmetric Compliance Damage: The Cost of Isolation"
+description: "Measuring the damage to instruction following vs. data processing when RoPE subspaces are constrained."
+pubDate: 2026-05-13
+series: "RoPE-Provenance: Encoding Token Roles"
+seriesOrder: 3
+tags: ["research", "rope", "evals", "instruction-tuning"]
+---
+import ComparisonTable from '../../components/charts/ComparisonTable.svelte';
+
+export const complianceCols = [
+  { key: 'arm', label: 'Arm' },
+  { key: 'instruction', label: 'Instruction compliance', highlight: true },
+  { key: 'data', label: 'Data style-following' },
+]
+
+export const complianceRows = [
+  { arm: 'Vanilla (V2)', instruction: 0.155, data: 0.290 },
+  { arm: 'Fixed π/8 (V2)', instruction: 0.020, data: 0.295 },
+]
+
+One of the most surprising findings in the Phase 5 results wasn't a success, but an Informative Failure. We call it **Asymmetric Compliance Damage**.
+
+This post covers what happens when you apply a fixed $\pi/8$ rotation to the role channel, and why it selectively "kills" the trusted instruction stream while leaving the untrusted data stream intact.
+
+---
+
+## The $\pi/8$ Arm: A Selective Collapse
+
+In the [Counterfactual V2 experiments](/blog/2026-05-16-rope-counterfactual-experiments/), the vanilla model reached an instruction-compliance of **0.155**. We expected the $\pi/8$ arm (W&B: `y0033rou`) to either improve this or show a general utility loss across the board.
+
+**The Verdict**: The damage was asymmetric.
+
+<ComparisonTable
+  title="Asymmetric Compliance Damage (V2 Curriculum)"
+  columns={complianceCols}
+  rows={complianceRows}
+  highlightRows={[1]}
+  client:load
+/>
+
+*   **INSTRUCTION slot**: Compliance collapsed from **0.155 to 0.020**.
+*   **DATA slot**: Performance was essentially unchanged (0.290 to 0.295).
+
+**Intuition**: The $\pi/8$ rotation didn't just "blur" the model. It selectively destroyed the model's ability to adhere to the trusted role channel. The "provenance" rotation acted as a filter that only blocked the *good* signals.
+
+## The Cost-Law Framing
+
+This updates our understanding of the "Angle Cost Law." While the aggregate eval loss might look relatively smooth (+0.103 delta), the actual capability cost is focused. 
+
+**The Claim**: That a provenance mechanism should provide "free" isolation.
+**Verdict**: Falsified for post-projection fixed rotations. At this scale (SmolLM2-135M), the model cannot "un-rotate" the signal well enough to maintain instruction compliance. 
+
+---
+
+## Why this isn't a "Negative Result"
+
+In our [falsification methodology](/blog/2026-04-28-compression-falsification-ladder/), a failure that explains *why* it failed is more valuable than a lucky success. Asymmetric Compliance Damage tells us that post-projection rotations are fundamentally too disruptive for small-scale instruction followers.
+
+It points directly to the solution: **Pre-W placement**, which we'll cover in the [Phase 5 Audit](/blog/2026-05-20-rope-provenance-results-audit/).

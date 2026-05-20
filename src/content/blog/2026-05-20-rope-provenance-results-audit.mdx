@@ -1,0 +1,62 @@
+---
+title: "The Pi/8 Instruction Output Audit: Phase 5 Benchmarks"
+description: "A deep dive into Phase 5 results, SEP scores, and the final paper-ready benchmarks for RoPE-Provenance."
+pubDate: 2026-05-20
+series: "RoPE-Provenance: Encoding Token Roles"
+seriesOrder: 4
+tags: ["research", "rope", "benchmarks", "paper"]
+---
+import BarChart from '../../components/charts/BarChart.svelte';
+
+export const sepData = [
+  { label: 'Vanilla', group: 'v1', value: -0.220 },
+  { label: 'Vanilla', group: 'v2', value: -0.135 },
+  { label: 'Pi/8', group: 'v1', value: -0.280 },
+  { label: 'Pi/8', group: 'v2', value: -0.275 },
+]
+
+export const sepGroups = [
+  { key: 'v1', label: 'V1 (Clean)', color: 'rgb(var(--gray))' },
+  { key: 'v2', label: 'V2 (Directive)', color: 'var(--accent)' },
+]
+
+Final results for the Phase 5 benchmarks are in. This post is the "results ledger" entry for the rotational arms—a definitive null result for the fixed $\pi/8$ placement, and a clean baseline for the Pre-W mechanism.
+
+---
+
+## The SEP Scoreboard: A Negative Delta-of-Deltas
+
+Our decisive metric is the **SEP delta-of-deltas**: the gain in selectivity from RoPE-Provenance relative to the gain from data alone.
+
+<BarChart
+  title="SEP Scores: Vanilla vs Pi/8 Arm"
+  data={sepData}
+  groups={sepGroups}
+  valueLabel="SEP Score"
+  client:load
+/>
+
+**Verdict**: The $\pi/8$ arm failed the pre-registered gate. Its delta-of-deltas was **-0.080**. It essentially "wasted" the curriculum gain that the vanilla model exploited.
+
+## The Instruction Output Audit
+
+To make sure this wasn't a detection artifact (i.e., the model *was* following but in a different style), we ran a manual audit of 20 INSTRUCTION-slot outputs (`pi8_instruction_output_audit.json`).
+
+*   **Vanilla**: Executed the instruction in 3/20 cases.
+*   **Pi/8**: Executed in **0/20 cases**.
+
+The outputs weren't empty; they just drifted into repetitive loops or generic summaries. The $\pi/8$ rotation didn't just "mask" the instruction; it destroyed the model's ability to process it as an instruction.
+
+## Conclusion: The Rotational Matrix is Closed
+
+The Phase 5 results close the v1/v2 rotational matrix as an Informative Failure. 
+
+1.  **Post-projection fixed rotations**: Selectively damage the instruction stream ([Asymmetric Compliance Damage](/blog/2026-05-17-rope-asymmetric-compliance-damage/)).
+2.  **Learnable post-projection**: Optimizer closes the channel to avoid damage.
+3.  **Pre-W placement**: Restores vanilla-like utility and compliance, but lands in the same SEP band as the zeroed control.
+
+The "Pre-W" placement remains our strongest architectural null. It fixes the damage, even if it hasn't yet unlocked the separation. The search for a provenance mechanism that the model *wants* to use continues.
+
+---
+
+Full results and experiment logs are at the [RoPE-Provenance tracker](https://github.com/d3banjan/rope-provenance).

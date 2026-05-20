@@ -1,0 +1,39 @@
+---
+title: "The Impossibility of Key-Only Routing: An Architectural Boundary"
+description: "Formalizing why MoE routers must depend on residual-stream state rather than key-only summaries."
+pubDate: 2026-05-10
+series: "Verified Neural Compilation"
+seriesOrder: 3
+tags: ["research", "moe", "architecture", "lean"]
+---
+
+The question we started with was an optimization dream: could you design an MoE router that only looks at the attention keys? If you could, you could decouple the routing decision from the full residual stream, potentially saving massive amounts of compute and KV-cache bandwidth.
+
+The answer, unfortunately, is a machine-checked "no." This post walks through the **`no_key_only_factorization_of_router`** theorem and what it tells us about the limits of MoE architecture.
+
+---
+
+## The Dream: Key-Only Factorization
+
+In a standard MoE transformer, the router looks at the residual stream $x$ to decide which experts to activate. The attention keys $K$ are a projection of that same $x$.
+
+The hypothesis was that for "smart" models, the keys contain enough semantic information that a router $R(x)$ could be replaced by a surrogate $R'(K)$. If true, we could pre-calculate routing decisions much earlier in the pipeline.
+
+## The Verdict: Architecturally Impossible
+
+In `VerifiedNeuralCompilation/Core.lean` (landed 2026-04-19), we formalized this question as a factorization problem.
+
+**The Theorem**: `no_key_only_factorization_of_router`
+It proves that under the standard MoE interface, a router **cannot** factor through a key-only block-diagonal summary without losing information.
+
+**Intuition**: The keys are a "lossy" summary of the token's relationship to *other* tokens. But the router needs to know about the token's relationship to the *expert's* feature space. There is a fundamental "non-key" residue in the residual stream that the router relies on for specialized decision-making.
+
+---
+
+## The Boundary of the Possible
+
+This result isn't a failure; it's a boundary. By proving the *impossibility* of key-only routing, we've stopped chasing a compute-saving "ghost" and can focus on the real task: optimizing the transport of the residual stream itself.
+
+This concludes the initial **Verified Neural Compilation** series. We've defined the [RoPE commutant cage](/blog/2026-05-13-rope-commutant-classification/), lifted it to [multi-head bundles](/blog/2026-05-16-rope-multi-head-foldability/), and found the hard stop at key-only routing.
+
+Next up: [RoPE-Provenance](/series/rope-provenance/), where we apply these symmetries to token security.

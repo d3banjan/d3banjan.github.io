@@ -3,41 +3,65 @@ import BaseHead from '../components/BaseHead.astro';
 import Footer from '../components/Footer.astro';
 import FormattedDate from '../components/FormattedDate.astro';
 import Header from '../components/Header.astro';
-import { getPublishedPosts, SERIES_META, SITE_DESCRIPTION, SITE_TITLE } from '../consts';
+import { getPublishedPosts, SERIES_META, SITE_DESCRIPTION, SITE_TITLE, ENGINEERING_TAGS } from '../consts';
 
 const posts = await getPublishedPosts();
 
-const seriesGroups = new Map<string, typeof posts>();
-const standalonePosts: typeof posts = [];
-
-for (const post of posts) {
-	if (post.data.series && SERIES_META[post.data.series]) {
-		const group = seriesGroups.get(post.data.series) ?? [];
-		group.push(post);
-		seriesGroups.set(post.data.series, group);
-	} else {
-		standalonePosts.push(post);
+const personalPosts = posts.filter((post) => {
+	if (post.data.series) {
+		const meta = SERIES_META[post.data.series];
+		return meta && meta.category === 'blog';
 	}
-}
+	const isEngineering = post.data.tags.some((tag) => ENGINEERING_TAGS.has(tag));
+	return !isEngineering;
+}).sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf());
 
-standalonePosts.sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf());
-
-// Sort series newest-first by date of latest post
-const sortedSeries = Object.keys(SERIES_META)
-	.filter((name) => (seriesGroups.get(name) ?? []).length > 0)
-	.sort((a, b) => {
-		const latestA = Math.max(...(seriesGroups.get(a) ?? []).map((p) => p.data.pubDate.valueOf()));
-		const latestB = Math.max(...(seriesGroups.get(b) ?? []).map((p) => p.data.pubDate.valueOf()));
-		return latestB - latestA;
-	});
-
-const ARTICLES_INITIAL = 4;
+const highlightedPersonalPosts = personalPosts.slice(0, 9);
 ---
 
 <!doctype html>
 <html lang="en">
 	<head>
 		<BaseHead title={SITE_TITLE} description={SITE_DESCRIPTION} />
+		<script type="application/ld+json" set:html={JSON.stringify({
+			"@context": "https://schema.org",
+			"@type": "WebSite",
+			"name": SITE_TITLE,
+			"url": "https://d3banjan.github.io/",
+			"description": SITE_DESCRIPTION,
+			"publisher": {
+				"@type": "Person",
+				"name": "Debanjan Basu",
+				"url": "https://d3banjan.github.io/",
+				"sameAs": [
+					"https://linkedin.com/in/debanjan-basu",
+					"https://github.com/d3banjan"
+				]
+			},
+			"hasPart": [
+				{
+					"@type": "WebPage",
+					"@id": "https://d3banjan.github.io/research/",
+					"name": "Research Hub",
+					"url": "https://d3banjan.github.io/research/",
+					"description": "ML compression with Lean 4 formal bounds, LoRA alignment geometry, and falsifiable empirical methodology."
+				},
+				{
+					"@type": "WebPage",
+					"@id": "https://d3banjan.github.io/engineering/",
+					"name": "Engineering Hub",
+					"url": "https://d3banjan.github.io/engineering/",
+					"description": "Production systems, distributed pipelines, task queues, and LLM agent infrastructure."
+				},
+				{
+					"@type": "WebPage",
+					"@id": "https://d3banjan.github.io/blog/",
+					"name": "Personal Curiosity Blog",
+					"url": "https://d3banjan.github.io/blog/",
+					"description": "Personal blog including Bengali deep history, Berlin transit crisis, and general thoughts."
+				}
+			]
+		})} />
 		<style>
 			main {
 				width: 960px;
@@ -99,211 +123,190 @@ const ARTICLES_INITIAL = 4;
 				font-size: 0.9em;
 			}
 
-			/* ── Carousel ── */
-			.wia-outer {
-				position: relative;
+			/* ── Explore Hubs ── */
+			.explore-hubs {
+				margin: 3em 0;
 			}
-			.wia-scroll {
-				display: flex;
-				flex-direction: row;
-				overflow-x: auto;
-				scroll-snap-type: x mandatory;
-				scrollbar-width: none;
-				gap: 1em;
-				padding-bottom: 0.5em;
+			.hubs-grid {
+				display: grid;
+				grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+				gap: 1.5rem;
+				margin-top: 1em;
 			}
-			.wia-scroll::-webkit-scrollbar {
-				display: none;
-			}
-			.wia-scroll.expanded {
-				flex-direction: column;
-				overflow-x: visible;
-				scroll-snap-type: none;
-				gap: 1em;
-			}
-			.wia-card {
-				scroll-snap-align: start;
-				flex: 0 0 100%;
-				width: 100%;
-				box-sizing: border-box;
+			.hub-card {
 				padding: 1.5em;
 				background: rgba(var(--gray-light), 0.15);
 				border-radius: 8px;
-				border-left: 3px solid var(--accent);
+				text-decoration: none;
+				display: flex;
+				flex-direction: column;
+				transition: transform 0.2s ease, box-shadow 0.2s ease, border-color 0.2s ease;
+				border: 1px solid rgba(var(--gray-light), 0.5);
 			}
-			.card-kind {
+			.hub-card:hover {
+				transform: translateY(-2px);
+				box-shadow: var(--box-shadow);
+			}
+			.hub-card.research {
+				border-top: 4px solid #0d9488;
+			}
+			@media (prefers-color-scheme: dark) {
+				.hub-card.research {
+					border-top-color: #2dd4bf;
+				}
+			}
+			.hub-card.engineering {
+				border-top: 4px solid #d97706;
+			}
+			@media (prefers-color-scheme: dark) {
+				.hub-card.engineering {
+					border-top-color: #fbbf24;
+				}
+			}
+			.hub-card.personal {
+				border-top: 4px solid #4f46e5;
+			}
+			@media (prefers-color-scheme: dark) {
+				.hub-card.personal {
+					border-top-color: #818cf8;
+				}
+			}
+			.hub-kicker {
 				font-size: 0.72em;
 				font-weight: 700;
 				letter-spacing: 0.08em;
 				text-transform: uppercase;
 				color: var(--accent);
-				margin: 0 0 0.4em 0;
+				margin-bottom: 0.4em;
 			}
-			.card-title {
-				margin: 0 0 0.4em 0;
-				font-size: 1.15em;
+			.hub-card.research .hub-kicker {
+				color: #0d9488;
 			}
-			.card-title a {
+			@media (prefers-color-scheme: dark) {
+				.hub-card.research .hub-kicker {
+					color: #2dd4bf;
+				}
+			}
+			.hub-card.engineering .hub-kicker {
+				color: #d97706;
+			}
+			@media (prefers-color-scheme: dark) {
+				.hub-card.engineering .hub-kicker {
+					color: #fbbf24;
+				}
+			}
+			.hub-card.personal .hub-kicker {
+				color: #4f46e5;
+			}
+			@media (prefers-color-scheme: dark) {
+				.hub-card.personal .hub-kicker {
+					color: #818cf8;
+				}
+			}
+			.hub-card h3 {
+				font-size: 1.25em;
+				margin: 0 0 0.5em 0;
 				color: rgb(var(--black));
+			}
+			.hub-card p {
+				font-size: 0.9em;
+				color: rgb(var(--gray-dark));
+				margin: 0;
+				line-height: 1.5;
+			}
+
+			/* ── Curated Personal Grid ── */
+			.personal-grid {
+				display: grid;
+				grid-template-columns: repeat(3, 1fr);
+				gap: 1.5rem;
+				margin: 2em 0;
+			}
+			@media (max-width: 768px) {
+				.personal-grid {
+					grid-template-columns: 1fr;
+				}
+			}
+			.post-card {
+				background: rgba(var(--gray-light), 0.1);
+				border-radius: 8px;
+				padding: 1.5em;
 				text-decoration: none;
+				display: flex;
+				flex-direction: column;
+				color: inherit;
+				transition: transform 0.2s ease, box-shadow 0.2s ease, border-color 0.2s ease;
+				border: 1px solid rgba(var(--gray-light), 0.3);
 			}
-			.card-title a:hover {
-				color: var(--accent);
+			.post-card:hover {
+				transform: translateY(-2px);
+				box-shadow: var(--box-shadow);
+				border-color: var(--accent);
 			}
-			.card-desc {
-				margin: 0 0 0.8em 0;
-				font-size: 0.9em;
-				color: rgb(var(--gray));
+			.post-card.prominent {
+				background: rgba(var(--accent-rgb), 0.04);
+				border-top: 4px solid var(--accent);
 			}
-			.card-posts {
-				list-style: none;
-				padding: 0;
-				margin: 0 0 0.6em 0;
-			}
-			.card-posts li {
-				padding: 0.25em 0;
-				border-bottom: 1px solid rgba(var(--gray-light), 0.4);
-				font-size: 0.9em;
-			}
-			.card-posts li:last-child {
-				border-bottom: none;
-			}
-			.card-posts a {
+			.post-card.prominent h3 {
+				font-size: 1.25em;
+				margin: 0.3em 0;
 				color: rgb(var(--black));
-				text-decoration: none;
+				line-height: 1.3;
 			}
-			.card-posts a:hover {
-				color: var(--accent);
+			.post-card.normal {
+				border-left: 3px solid rgba(var(--gray-light), 0.8);
+				padding: 1.2em;
 			}
-			.post-date {
+			.post-card.normal h3 {
+				font-size: 1.1em;
+				margin: 0.2em 0;
+				color: rgb(var(--black));
+				line-height: 1.3;
+			}
+			.post-card .date {
 				font-size: 0.8em;
 				color: rgb(var(--gray));
-				margin-left: 0.4em;
 			}
-			.card-more-link {
-				display: inline-block;
-				font-size: 0.85em;
-				color: var(--accent);
-				text-decoration: none;
-				margin-top: 0.3em;
+			.post-card .desc {
+				font-size: 0.9em;
+				color: rgb(var(--gray-dark));
+				line-height: 1.5;
+				margin: 0.5em 0 1em;
+				flex-grow: 1;
 			}
-			.card-more-link:hover {
-				text-decoration: underline;
-			}
-
-			/* Picker pill strip */
-			.wia-picker {
-				display: flex;
-				flex-wrap: wrap;
-				gap: 0.5em;
-				margin-bottom: 1em;
-			}
-			.wia-scroll.expanded ~ * .wia-picker,
-			.wia-picker.hidden {
-				display: none;
-			}
-			.wia-pill {
-				background: none;
-				border: 1px solid rgba(var(--gray-light), 0.5);
-				border-radius: 2em;
-				padding: 0.3em 0.9em;
-				font-size: 0.8em;
-				font-weight: 600;
-				cursor: pointer;
-				color: rgb(var(--gray));
-				transition: border-color 0.15s, color 0.15s, background 0.15s;
-				white-space: nowrap;
-				letter-spacing: 0.02em;
-			}
-			.wia-pill:hover {
-				border-color: var(--accent);
-				color: var(--accent);
-			}
-			.wia-pill.active {
-				background: var(--accent);
-				border-color: var(--accent);
-				color: white;
-			}
-
-			/* Nav dots + arrows */
-			.wia-nav {
+			.card-footer {
+				margin-top: auto;
 				display: flex;
 				align-items: center;
-				justify-content: center;
-				gap: 0.5em;
-				margin-top: 0.8em;
+				justify-content: flex-end;
 			}
-			.wia-scroll.expanded ~ .wia-nav {
-				display: none;
-			}
-			.wia-dot {
-				width: 8px;
-				height: 8px;
-				border-radius: 50%;
-				background: rgba(var(--gray-light), 0.6);
-				border: none;
-				cursor: pointer;
-				padding: 0;
-				transition: background 0.2s;
-			}
-			.wia-dot.active {
-				background: var(--accent);
-			}
-			.wia-arrow {
-				background: none;
-				border: 1px solid rgba(var(--gray-light), 0.5);
-				border-radius: 50%;
-				width: 28px;
-				height: 28px;
-				cursor: pointer;
-				font-size: 1em;
-				line-height: 1;
-				color: rgb(var(--gray));
-				display: flex;
-				align-items: center;
-				justify-content: center;
-				flex-shrink: 0;
-				transition: border-color 0.2s, color 0.2s;
-			}
-			.wia-arrow:hover {
-				border-color: var(--accent);
+			.series-tag {
+				font-size: 0.72em;
+				font-weight: 700;
+				letter-spacing: 0.05em;
+				text-transform: uppercase;
 				color: var(--accent);
-			}
-
-			/* Expand toggle */
-			.wia-expand-btn {
-				display: block;
-				margin: 0.8em auto 0;
-				background: none;
-				border: 1px solid rgba(var(--gray-light), 0.5);
+				background: rgba(var(--accent-rgb), 0.08);
+				padding: 0.2em 0.6em;
 				border-radius: 4px;
-				padding: 0.35em 1em;
-				font-size: 0.85em;
-				cursor: pointer;
-				color: rgb(var(--gray));
-				transition: border-color 0.2s, color 0.2s;
 			}
-			.wia-expand-btn:hover {
-				border-color: var(--accent);
-				color: var(--accent);
+			.see-all-container {
+				text-align: center;
+				margin-top: 2.5em;
 			}
-
-			/* Articles expand-in-card */
-			.articles-expand-btn {
-				background: none;
-				border: none;
-				padding: 0;
-				font-size: 0.85em;
-				color: var(--accent);
-				cursor: pointer;
-				text-decoration: underline;
-				margin-top: 0.3em;
+			.see-all-btn {
+				display: inline-block;
+				padding: 0.6em 1.8em;
+				background: var(--accent);
+				color: white !important;
+				font-weight: 600;
+				border-radius: 6px;
+				text-decoration: none;
+				transition: transform 0.2s ease, opacity 0.2s ease;
 			}
-			.articles-overflow {
-				display: none;
-			}
-			.articles-overflow.visible {
-				display: block;
+			.see-all-btn:hover {
+				opacity: 0.9;
+				transform: translateY(-1px);
 			}
 
 			/* CTA */
@@ -333,7 +336,7 @@ const ARTICLES_INITIAL = 4;
 			}
 		</style>
 	</head>
-	<body>
+	<body class="theme-home">
 		<Header />
 		<main>
 			<h1>Debanjan Basu</h1>
@@ -358,6 +361,27 @@ const ARTICLES_INITIAL = 4;
 					adversarial validation methodology — trap-cell design, kill-fast sequential testing —
 					formalized as the <a href="https://compression-ladder-paper.pages.dev/">Compression Falsification Ladder</a>.
 				</p>
+			</section>
+
+			<section class="explore-hubs">
+				<h2>Explore the Hubs</h2>
+				<div class="hubs-grid">
+					<a href="/research/" class="hub-card research">
+						<span class="hub-kicker">Research Hub</span>
+						<h3>ML & Theory</h3>
+						<p>ML compression, LLM agent systems, Lean 4, and falsifiable empirical methodology.</p>
+					</a>
+					<a href="/engineering/" class="hub-card engineering">
+						<span class="hub-kicker">Engineering Hub</span>
+						<h3>Systems & Infra</h3>
+						<p>Production Python, Django, developer tooling, security gates, and Linux workflow.</p>
+					</a>
+					<a href="/blog/" class="hub-card personal">
+						<span class="hub-kicker">Personal Curiosity</span>
+						<h3>Chronological Blog</h3>
+						<p>Bengali history, Berlin transit, working notes, and thoughts that do not need a narrower shelf.</p>
+					</a>
+				</div>
 			</section>
 
 			<section>
@@ -394,101 +418,28 @@ const ARTICLES_INITIAL = 4;
 			</section>
 
 			<section>
-				<h2>What I write about</h2>
-				<div class="wia-outer">
-					<div class="wia-picker" id="wia-picker">
-						{sortedSeries.map((name, i) => (
-							<button class={'wia-pill' + (i === 0 ? ' active' : '')} data-index={String(i)}>
-								{name}
-							</button>
-						))}
-						{standalonePosts.length > 0 && (
-							<button class="wia-pill" data-index={String(sortedSeries.length)}>
-								Articles
-							</button>
-						)}
-					</div>
-					<div class="wia-scroll" id="wia-scroll">
-						{
-							sortedSeries.map((name) => {
-								const group = seriesGroups.get(name) ?? [];
-								const meta = SERIES_META[name];
-								const sorted = [...group].sort(
-									(a, b) => (a.data.seriesOrder ?? 0) - (b.data.seriesOrder ?? 0),
-								);
-								return (
-									<div class="wia-card">
-										<p class="card-kind">Series · {sorted.length} posts</p>
-										<h3 class="card-title">
-											<a href={`/series/${meta.slug}/`}>{name}</a>
-										</h3>
-										<p class="card-desc">{meta.description}</p>
-										<ul class="card-posts">
-											{sorted.map((p) => (
-												<li>
-													<a href={`/blog/${p.id}/`}>{p.data.title}</a>
-													<span class="post-date">
-														<FormattedDate date={p.data.pubDate} />
-													</span>
-												</li>
-											))}
-										</ul>
-									</div>
-								);
-							})
-						}
-
-						{
-							standalonePosts.length > 0 && (
-								<div class="wia-card">
-									<p class="card-kind">
-										Articles · {standalonePosts.length} standalone
-									</p>
-									<h3 class="card-title">Articles</h3>
-									<p class="card-desc">
-										One-off posts on engineering, methodology, statistics, and whatever demands
-										to be written.
-									</p>
-									<ul class="card-posts" id="articles-initial">
-										{standalonePosts.slice(0, ARTICLES_INITIAL).map((p) => (
-											<li>
-												<a href={`/blog/${p.id}/`}>{p.data.title}</a>
-												<span class="post-date">
-													<FormattedDate date={p.data.pubDate} />
-												</span>
-											</li>
-										))}
-									</ul>
-									{standalonePosts.length > ARTICLES_INITIAL && (
-										<>
-											<ul class="card-posts articles-overflow" id="articles-overflow">
-												{standalonePosts.slice(ARTICLES_INITIAL).map((p) => (
-													<li>
-														<a href={`/blog/${p.id}/`}>{p.data.title}</a>
-														<span class="post-date">
-															<FormattedDate date={p.data.pubDate} />
-														</span>
-													</li>
-												))}
-											</ul>
-											<button class="articles-expand-btn" id="articles-expand">
-												+{standalonePosts.length - ARTICLES_INITIAL} more
-											</button>
-										</>
+				<h2>Curated Personal Writings</h2>
+				<div class="personal-grid">
+					{highlightedPersonalPosts.map((post, i) => {
+						const isProminent = i < 3;
+						return (
+							<a href={`/blog/${post.id}/`} class={`post-card ${isProminent ? 'prominent' : 'normal'}`}>
+								<span class="date">
+									<FormattedDate date={post.data.pubDate} />
+								</span>
+								<h3>{post.data.title}</h3>
+								<p class="desc">{post.data.description}</p>
+								<div class="card-footer">
+									{post.data.series && (
+										<span class="series-tag">{post.data.series}</span>
 									)}
-									<a href="/blog/" class="card-more-link">View all posts →</a>
 								</div>
-							)
-						}
-					</div>
-
-					<div class="wia-nav" id="wia-nav">
-						<button class="wia-arrow" id="wia-prev" aria-label="Previous">&#8249;</button>
-						<div id="wia-dots" style="display:flex;gap:0.5em;"></div>
-						<button class="wia-arrow" id="wia-next" aria-label="Next">&#8250;</button>
-					</div>
-
-					<button class="wia-expand-btn" id="wia-expand">Show all ↓</button>
+							</a>
+						);
+					})}
+				</div>
+				<div class="see-all-container">
+					<a href="/blog/" class="see-all-btn">See all personal writings &rarr;</a>
 				</div>
 			</section>
 
@@ -508,83 +459,6 @@ const ARTICLES_INITIAL = 4;
 		</main>
 		<Footer />
 
-		<script>
-			// ── Carousel ──
-			const scroll = document.getElementById('wia-scroll') as HTMLElement;
-			const dotsContainer = document.getElementById('wia-dots') as HTMLElement;
-			const picker = document.getElementById('wia-picker') as HTMLElement;
-			const expandBtn = document.getElementById('wia-expand') as HTMLButtonElement;
-			const prevBtn = document.getElementById('wia-prev') as HTMLButtonElement;
-			const nextBtn = document.getElementById('wia-next') as HTMLButtonElement;
-			const nav = document.getElementById('wia-nav') as HTMLElement;
 
-			const cards = Array.from(scroll?.children ?? []) as HTMLElement[];
-			const pills = Array.from(picker?.querySelectorAll('.wia-pill') ?? []) as HTMLButtonElement[];
-			const total = cards.length;
-			let currentIndex = 0;
-
-			// Build bottom dots (small, supplementary)
-			const dots: HTMLButtonElement[] = [];
-			cards.forEach((_, i) => {
-				const dot = document.createElement('button');
-				dot.className = 'wia-dot' + (i === 0 ? ' active' : '');
-				dot.setAttribute('aria-label', `Go to card ${i + 1}`);
-				dot.addEventListener('click', () => scrollToCard(i));
-				dotsContainer?.appendChild(dot);
-				dots.push(dot);
-			});
-
-			// Wire picker pills
-			pills.forEach((pill) => {
-				pill.addEventListener('click', () => {
-					const i = parseInt(pill.dataset.index ?? '0', 10);
-					scrollToCard(i);
-				});
-			});
-
-			function setActive(i: number) {
-				dots.forEach((d, j) => d.classList.toggle('active', j === i));
-				pills.forEach((p, j) => p.classList.toggle('active', j === i));
-			}
-
-			function scrollToCard(i: number) {
-				if (!scroll) return;
-				const cardWidth = scroll.offsetWidth + parseFloat(getComputedStyle(scroll).gap || '0');
-				scroll.scrollTo({ left: i * cardWidth, behavior: 'smooth' });
-				currentIndex = i;
-				setActive(i);
-			}
-
-			prevBtn?.addEventListener('click', () => scrollToCard(Math.max(0, currentIndex - 1)));
-			nextBtn?.addEventListener('click', () => scrollToCard(Math.min(total - 1, currentIndex + 1)));
-
-			scroll?.addEventListener('scroll', () => {
-				if (!scroll) return;
-				const cardWidth = scroll.offsetWidth || 1;
-				const i = Math.round(scroll.scrollLeft / cardWidth);
-				if (i !== currentIndex) {
-					currentIndex = i;
-					setActive(i);
-				}
-			});
-
-			// Expand / collapse
-			let expanded = false;
-			expandBtn?.addEventListener('click', () => {
-				expanded = !expanded;
-				scroll?.classList.toggle('expanded', expanded);
-				if (nav) nav.style.display = expanded ? 'none' : 'flex';
-				if (picker) picker.style.display = expanded ? 'none' : 'flex';
-				expandBtn.textContent = expanded ? 'Show as carousel ↑' : 'Show all ↓';
-			});
-
-			// ── Articles expand ──
-			const artExpand = document.getElementById('articles-expand') as HTMLButtonElement | null;
-			const artOverflow = document.getElementById('articles-overflow') as HTMLElement | null;
-			artExpand?.addEventListener('click', () => {
-				const open = artOverflow?.classList.toggle('visible');
-				if (artExpand) artExpand.textContent = open ? 'Show less' : `+${artOverflow?.children.length} more`;
-			});
-		</script>
 	</body>
 </html>
