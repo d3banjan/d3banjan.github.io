@@ -1,4 +1,6 @@
 <script lang="ts">
+	import { onMount } from 'svelte';
+
 	const SCROLL_KEY = 'bilingual-scroll-ratio';
 
 	interface Props {
@@ -8,7 +10,7 @@
 
 	let { lang = 'en', href = '#' }: Props = $props();
 
-	$effect(() => {
+	onMount(() => {
 		// On arrival: restore scroll position if we just toggled
 		const saved = sessionStorage.getItem(SCROLL_KEY);
 		if (saved !== null) {

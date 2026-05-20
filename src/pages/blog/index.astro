@@ -4,41 +4,54 @@ import Footer from '../../components/Footer.astro';
 import FormattedDate from '../../components/FormattedDate.astro';
 import Header from '../../components/Header.astro';
 import TagList from '../../components/TagList.astro';
-import { getPublishedPosts, SERIES_META, SITE_DESCRIPTION, SITE_TITLE } from '../../consts';
+import { getPublishedPosts, SERIES_META, SITE_DESCRIPTION, SITE_TITLE, ENGINEERING_TAGS } from '../../consts';
 
-const posts = (await getPublishedPosts()).sort(
-	(a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf(),
-);
+const allPosts = await getPublishedPosts();
 
-// Map each series name to its sorted posts (oldest to newest)
+// Filter for Personal Curiosity (category 'blog' or non-technical standalone)
+const posts = allPosts.filter((post) => {
+	if (post.data.series) {
+		const meta = SERIES_META[post.data.series];
+		return meta && meta.category === 'blog';
+	}
+	const isEngineering = post.data.tags.some((t) => ENGINEERING_TAGS.has(t));
+	const isResearch = post.data.tags.some((t) =>
+		['ml-research', 'compression', 'quantization', 'methodology', 'mathlib', 'lean4', 'formal-verification'].includes(t)
+	);
+	return !isEngineering && !isResearch;
+}).sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf());
+
+// Map each series name to its sorted posts (oldest to newest) to calculate progression indexes
 const seriesPostsMap = new Map<string, typeof posts>();
-for (const p of posts) {
+for (const p of allPosts) {
 	if (p.data.series) {
 		const list = seriesPostsMap.get(p.data.series) ?? [];
 		list.push(p);
 		seriesPostsMap.set(p.data.series, list);
 	}
 }
-
 for (const [, list] of seriesPostsMap.entries()) {
 	list.sort((a, b) => (a.data.seriesOrder ?? 0) - (b.data.seriesOrder ?? 0));
 }
+
+const singlePosts = posts.filter((p) => !p.data.series);
+const seriesPosts = posts.filter((p) => p.data.series);
 ---
 
 <!doctype html>
 <html lang="en">
 	<head>
-		<BaseHead title={SITE_TITLE} description={SITE_DESCRIPTION} />
+		<BaseHead title={`Blog — ${SITE_TITLE}`} description={SITE_DESCRIPTION} />
 		<style>
 			main {
-				width: 960px;
+				width: 1000px;
 				max-width: calc(100% - 2em);
 				margin: auto;
 				padding: 3em 1em;
 			}
 			.landing-intro {
 				max-width: 720px;
-				margin-bottom: 2em;
+				margin-bottom: 3em;
 			}
 			.category-grid {
 				display: grid;
@@ -73,89 +86,303 @@ for (const [, list] of seriesPostsMap.entries()) {
 				padding-bottom: 0.3em;
 				margin: 0 0 1.5em;
 			}
+
+			/* ── Timeline CSS Grid Layout ── */
+			.timeline-container {
+				position: relative;
+				margin-top: 2rem;
+			}
+			.timeline-columns {
+				display: grid;
+				grid-template-columns: 1.2fr 2px 2fr;
+				gap: 2.5rem;
+				position: relative;
+			}
+			.timeline-spine {
+				grid-column: 2;
+				width: 2px;
+				background: linear-gradient(to bottom, var(--accent) 0%, rgba(var(--accent-rgb), 0.2) 60%, transparent 100%);
+				position: relative;
+			}
+			.timeline-col {
+				display: flex;
+				flex-direction: column;
+			}
+			.col-heading {
+				font-size: 1em;
+				font-weight: 700;
+				text-transform: uppercase;
+				letter-spacing: 0.08em;
+				color: rgb(var(--gray));
+				border-bottom: 1px solid rgba(var(--gray-light), 0.4);
+				padding-bottom: 0.5rem;
+				margin-bottom: 1.5rem;
+			}
+
+			/* Left Stack: Single Posts */
+			.cards-stack {
+				display: flex;
+				flex-direction: column;
+				gap: 1.5rem;
+			}
+
+			/* Right Grid: Series Posts - Multiple Occupancy */
+			.cards-grid {
+				display: grid;
+				grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+				gap: 1.5rem;
+			}
+
+			/* Timeline Cards styling */
+			.timeline-card-wrapper {
+				position: relative;
+			}
+			.timeline-card {
+				padding: 1.25rem;
+				background: rgba(var(--gray-light), 0.12);
+				border-radius: 8px;
+				box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
+				transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+				position: relative;
+				box-sizing: border-box;
+			}
+			.timeline-card:hover {
+				transform: translateY(-2px);
+				background: rgba(var(--gray-light), 0.2);
+				box-shadow: var(--box-shadow);
+			}
+
+			/* Single Cards: Left Border Accent */
+			.single-post-wrapper .timeline-card {
+				border-left: 4px solid var(--accent);
+			}
+
+			/* Series Cards: Right Border Accent + Category Tint */
+			.series-post-wrapper .timeline-card {
+				border-right: 4px solid var(--accent);
+			}
+
+			/* Specific Category Tinting for Series Cards */
+			.theme-home .timeline-card {
+				background: rgba(79, 70, 229, 0.05);
+			}
+			@media (prefers-color-scheme: dark) {
+				.theme-home .timeline-card {
+					background: rgba(129, 140, 248, 0.07);
+				}
+			}
+			.theme-research .timeline-card {
+				background: rgba(13, 148, 136, 0.05);
+				border-right-color: #0d9488;
+			}
+			@media (prefers-color-scheme: dark) {
+				.theme-research .timeline-card {
+					background: rgba(45, 212, 191, 0.07);
+					border-right-color: #2dd4bf;
+				}
+			}
+			.theme-engineering .timeline-card {
+				background: rgba(217, 119, 6, 0.05);
+				border-right-color: #d97706;
+			}
+			@media (prefers-color-scheme: dark) {
+				.theme-engineering .timeline-card {
+					background: rgba(251, 191, 36, 0.07);
+					border-right-color: #fbbf24;
+				}
+			}
+
+			/* Series Progression & Headers */
+			.series-progression {
+				font-size: 0.72em;
+				font-weight: 700;
+				text-transform: uppercase;
+				letter-spacing: 0.06em;
+				color: var(--accent);
+				margin-bottom: 0.4rem;
+			}
+			.theme-research .series-progression {
+				color: #0d9488;
+			}
+			@media (prefers-color-scheme: dark) {
+				.theme-research .series-progression {
+					color: #2dd4bf;
+				}
+			}
+			.theme-engineering .series-progression {
+				color: #d97706;
+			}
+			@media (prefers-color-scheme: dark) {
+				.theme-engineering .series-progression {
+					color: #fbbf24;
+				}
+			}
+
+			.timeline-card .title {
+				font-size: 1.1em;
+				margin: 0 0 0.3rem 0;
+				line-height: 1.3;
+			}
+			.timeline-card .title a {
+				color: rgb(var(--black));
+				text-decoration: none;
+			}
+			.timeline-card .title a:hover {
+				color: var(--accent);
+			}
+			.timeline-card .date {
+				font-size: 0.8em;
+				color: rgb(var(--gray));
+				margin: 0 0 0.6rem 0;
+			}
+			.timeline-card .description {
+				font-size: 0.9em;
+				color: rgb(var(--gray-dark));
+				margin: 0 0 0.8rem 0;
+				line-height: 1.5;
+			}
+			.timeline-card .post-tags {
+				margin-top: 0.5rem;
+			}
+
+			/* Responsive Fallback */
+			@media (max-width: 1024px) {
+				.timeline-columns {
+					grid-template-columns: 1fr 2px 1.5fr;
+					gap: 1.5rem;
+				}
+			}
+			@media (max-width: 768px) {
+				main {
+					padding: 2em 1em;
+				}
+				.timeline-columns {
+					display: flex;
+					flex-direction: column;
+					gap: 2rem;
+				}
+				.timeline-spine {
+					display: none;
+				}
+				.cards-grid {
+					grid-template-columns: 1fr;
+				}
+				.single-post-wrapper .timeline-card {
+					border-left: 4px solid var(--accent);
+				}
+				.series-post-wrapper .timeline-card {
+					border-right: none;
+					border-left: 4px solid var(--accent);
+				}
+			}
 		</style>
 	</head>
 	<body class="theme-home">
 		<Header />
 		<main>
 			<section class="landing-intro">
-				<h1>Blog</h1>
+				<h1>Blog Archive</h1>
 				<p>
-					Everything in reverse chronological order: research notes, engineering writeups,
-					Bengali history, Berlin transit, and working notes that do not need a narrower shelf.
+					Personal curiosity writing, essays, and chronicles. For my technical work, explore the 
+					dedicated subblogs linked below or in the header navigation.
 				</p>
 			</section>
-			<nav class="category-grid" aria-label="Writing categories">
+
+			<nav class="category-grid" aria-label="Writing hubs">
 				<a class="category-card" href="/research/">
-					<h2>Research</h2>
-					<p>ML compression, LLM agent systems, Lean 4, and falsifiable empirical methodology.</p>
+					<h2>Research Subblog</h2>
+					<p>ML compression, LLM agent systems, Lean 4 formal proofs, and empirical methodology.</p>
 				</a>
 				<a class="category-card" href="/engineering/">
-					<h2>Engineering</h2>
-					<p>Production Python, Django, developer tooling, security gates, and Linux workflow.</p>
+					<h2>Engineering Subblog</h2>
+					<p>Production Python, Django task queues, observability, developer tools, and infrastructure.</p>
 				</a>
 			</nav>
-			<section>
-				<h2 class="archive-heading">All posts</h2>
-				<div class="timeline-container">
-					<div class="timeline-spine"></div>
-					<div class="timeline-feed">
-						{
-							posts.map((post, i) => {
-								const hasSeries = post.data.series && SERIES_META[post.data.series];
-								const seriesMeta = hasSeries ? SERIES_META[post.data.series!] : null;
-								
-								// Calculate series progression
-								let indexInSeries = 0;
-								let totalInSeries = 0;
-								if (hasSeries) {
-									const list = seriesPostsMap.get(post.data.series!);
-									indexInSeries = list ? list.findIndex((p) => p.id === post.id) + 1 : 0;
-									totalInSeries = list ? list.length : 0;
-								}
 
-								// Check if consecutive posts in timeline are in same series to connect them
-								const currentSeries = post.data.series;
-								const nextInSameSeries = currentSeries && i < posts.length - 1 && posts[i + 1].data.series === currentSeries;
-								
-								// Determine side and theme classes
-								const isSeries = !!seriesMeta;
-								const itemClass = isSeries ? 'series' : 'single';
-								const categoryClass = seriesMeta 
-									? (seriesMeta.category === 'blog' ? 'home' : seriesMeta.category)
-									: 'home';
-								
-								return (
-									<div class={`timeline-item ${itemClass} theme-${categoryClass}`}>
-										<div class="timeline-node"></div>
-										<div class="timeline-card-wrapper">
-											{nextInSameSeries && <div class="series-connection"></div>}
-											<div class="timeline-card">
-												{isSeries && (
-													<div class="series-progression">
-														Series · Post {indexInSeries}/{totalInSeries}
+			<section>
+				<h2 class="archive-heading">Timeline</h2>
+				<div class="timeline-container">
+					<div class="timeline-columns">
+						
+						<!-- Left Column: Single Posts (Standalone thoughts) -->
+						<div class="timeline-col single-posts-col">
+							<h3 class="col-heading">Single Posts</h3>
+							<div class="cards-stack">
+								{
+									singlePosts.length > 0 ? (
+										singlePosts.map((post) => (
+											<div class="timeline-card-wrapper single-post-wrapper">
+												<div class="timeline-card">
+													<h4 class="title">
+														<a href={`/blog/${post.id}/`}>{post.data.title}</a>
+													</h4>
+													<p class="date">
+														<FormattedDate date={post.data.pubDate} />
+													</p>
+													<p class="description">
+														{post.data.description}
+													</p>
+													<div class="post-tags">
+														<TagList tags={post.data.tags} />
 													</div>
-												)}
-												<h4 class="title">
-													<a href={`/blog/${post.id}/`} class="title-link">
-														{post.data.title}
-													</a>
-												</h4>
-												<p class="date">
-													<FormattedDate date={post.data.pubDate} />
-												</p>
-												<p class="description">
-													{post.data.description}
-												</p>
-												<div class="post-tags">
-													<TagList tags={post.data.tags} />
 												</div>
 											</div>
-										</div>
-									</div>
-								);
-							})
-						}
+										))
+									) : (
+										<p style="color: rgb(var(--gray)); font-size: 0.9em;">No standalone posts yet.</p>
+									)
+								}
+							</div>
+						</div>
+
+						<!-- Timeline Spine line -->
+						<div class="timeline-spine"></div>
+
+						<!-- Right Column: Series Posts (Visual connection, indices, multiple occupancy) -->
+						<div class="timeline-col series-posts-col">
+							<h3 class="col-heading">Series Writing</h3>
+							<div class="cards-grid">
+								{
+									seriesPosts.length > 0 ? (
+										seriesPosts.map((post) => {
+											const seriesName = post.data.series!;
+											const seriesMeta = SERIES_META[seriesName];
+											const seriesCategory = seriesMeta ? seriesMeta.category : 'blog';
+											const categoryClass = seriesCategory === 'blog' ? 'home' : seriesCategory;
+											
+											const list = seriesPostsMap.get(seriesName);
+											const indexInSeries = list ? list.findIndex((p) => p.id === post.id) + 1 : 0;
+											const totalInSeries = list ? list.length : 0;
+
+											return (
+												<div class={`timeline-card-wrapper series-post-wrapper theme-${categoryClass}`}>
+													<div class="timeline-card">
+														<div class="series-progression">
+															{seriesName} · Post {indexInSeries}/{totalInSeries}
+														</div>
+														<h4 class="title">
+															<a href={`/blog/${post.id}/`}>{post.data.title}</a>
+														</h4>
+														<p class="date">
+															<FormattedDate date={post.data.pubDate} />
+														</p>
+														<p class="description">
+															{post.data.description}
+														</p>
+														<div class="post-tags">
+															<TagList tags={post.data.tags} />
+														</div>
+													</div>
+												</div>
+											);
+										})
+									) : (
+										<p style="color: rgb(var(--gray)); font-size: 0.9em;">No series posts yet.</p>
+									)
+								}
+							</div>
+						</div>
+
 					</div>
 				</div>
 			</section>

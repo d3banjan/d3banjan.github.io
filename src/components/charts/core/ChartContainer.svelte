@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { type Snippet } from 'svelte';
+	import { onMount, type Snippet } from 'svelte';
 
 
 	interface Props {
@@ -12,14 +12,33 @@
 	let { title = '', aspectRatio = 0.5, minHeight = 200, children }: Props = $props();
 
 	let containerWidth = $state(600);
-	let containerEl: HTMLDivElement | undefined = $state();
+	let containerEl: HTMLElement | undefined = $state();
 
 	let activeWidth = $derived(containerWidth || 600);
 	let height = $derived(Math.max(minHeight, activeWidth * aspectRatio));
 
+	onMount(() => {
+		if (!containerEl) return;
+
+		// Initial measure
+		containerWidth = containerEl.clientWidth;
+
+		const observer = new ResizeObserver((entries) => {
+			for (const entry of entries) {
+				containerWidth = entry.contentRect.width;
+			}
+		});
+
+		observer.observe(containerEl);
+
+		return () => {
+			observer.disconnect();
+		};
+	});
+
 </script>
 
-<figure class="chart-container" bind:this={containerEl} bind:clientWidth={containerWidth}>
+<figure class="chart-container" bind:this={containerEl}>
 	{#if title}
 		<figcaption class="chart-title">{title}</figcaption>
 	{/if}
