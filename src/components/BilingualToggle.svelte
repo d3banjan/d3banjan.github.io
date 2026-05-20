@@ -8,13 +8,18 @@
 
 	let { lang = 'en', href = '#' }: Props = $props();
 
+	// Pre-compute labels — no {#if} needed in template
+	const isEn = $derived(lang === 'en');
+	const activeLabel = $derived(isEn ? 'EN' : 'বাংলা');
+	const inactiveLabel = $derived(isEn ? 'বাংলা' : 'EN');
+	const tooltipTitle = $derived(isEn ? 'বাংলায় পড়ুন' : 'Read in English');
+
 	// On arrival: restore scroll position if we just toggled
 	if (typeof window !== 'undefined') {
 		const saved = sessionStorage.getItem(SCROLL_KEY);
 		if (saved !== null) {
 			sessionStorage.removeItem(SCROLL_KEY);
 			const ratio = parseFloat(saved);
-			// Run after a short delay to allow full layout render
 			setTimeout(() => {
 				const target = ratio * (document.body.scrollHeight - window.innerHeight);
 				window.scrollTo({ top: target, behavior: 'instant' });
@@ -29,16 +34,10 @@
 </script>
 
 <div class="bilingual-toggle">
-	<a {href} onclick={handleClick} aria-label="Switch language" title={lang === 'en' ? 'বাংলায় পড়ুন' : 'Read in English'}>
-		{#if lang === 'en'}
-			<span class="active">EN</span>
-			<span class="divider">/</span>
-			<span class="inactive">বাংলা</span>
-		{:else}
-			<span class="inactive">EN</span>
-			<span class="divider">/</span>
-			<span class="active">বাংলা</span>
-		{/if}
+	<a {href} onclick={handleClick} aria-label="Switch language" title={tooltipTitle}>
+		<span class={isEn ? 'active' : 'inactive'}>{isEn ? 'EN' : 'বাংলা'}</span>
+		<span class="divider">/</span>
+		<span class={isEn ? 'inactive' : 'active'}>{isEn ? 'বাংলা' : 'EN'}</span>
 	</a>
 </div>
 
