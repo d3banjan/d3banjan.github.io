@@ -18,7 +18,7 @@ To put this ratio in context: Berlin owns companies across housing (degewo, HOWO
 This isn't about whether Falk's salary is unreasonable in absolute terms — CEOs of transit agencies running 15,000+ employees in European capitals can earn this much. The issue is the gap at the bottom.
 
 <BarChart
-	client:visible
+	client:only="svelte"
 	title="BVG Annual Compensation: The 9.8:1 Ratio"
 	horizontal={true}
 	data={[
@@ -59,7 +59,7 @@ The gap between BVG wages and those at comparable German operators is stark.
 | Vacation days (pre-2025) | 28 | 30 | 30 |
 
 <BarChart
-	client:visible
+	client:only="svelte"
 	title="Monthly Entry Wages: Berlin vs Munich vs Hamburg"
 	horizontal={false}
 	data={[
@@ -150,7 +150,7 @@ For an entry-level driver previously earning approximately 2,807 euros monthly:
 This closes much of the gap with Hamburg (3,277 euros) but still trails Munich (3,435 euros) — even before Munich's Muenchenzulage is factored in. Berlin drivers gained 2 vacation days (reaching the Munich and Hamburg standard of 30) but did not achieve the 35-hour week Ver.di demanded.
 
 <LineChart
-	client:visible
+	client:only="svelte"
 	title="Berlin Driver Wage Trajectory vs Peer Cities"
 	series={[
 		{

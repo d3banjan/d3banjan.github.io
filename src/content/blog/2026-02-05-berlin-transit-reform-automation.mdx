@@ -57,7 +57,7 @@ Vienna's **Dienstgeberabgabe** (employer transit tax) — 2 euros per employee p
 Scaling this to Berlin is straightforward arithmetic. Berlin has approximately 2 million employed persons (compared to Vienna's ~900,000). A Vienna-style levy of 2 euros per employee per week could generate **80 to 100 million euros annually** — enough to cover a significant portion of the 140 million euro wage settlement cost.
 
 <SliderSimulation
-	client:load
+	client:only="svelte"
 	title="Employer Transit Levy: What Could Berlin Generate?"
 	sliderLabel="Levy per employee per week"
 	min={0}
@@ -93,7 +93,7 @@ For context, 600 million euros annually is roughly:
 - 20% of the total U-Bahn maintenance backlog
 
 <SliderSimulation
-	client:load
+	client:only="svelte"
 	title="Congestion Charge: Revenue & Impact Projections"
 	sliderLabel="Daily charge within S-Bahn ring"
 	min={0}
@@ -133,7 +133,7 @@ Nuremberg's **VAG** (Verkehrs-Aktiengesellschaft Nuernberg) has operated **drive
 The results directly address the reliability and cost concerns that dominate BVG's crisis:
 
 <ComparisonTable
-	client:visible
+	client:only="svelte"
 	title="Automated vs Conventional U-Bahn Performance"
 	columns={[
 		{ key: "metric", label: "Metric", sortable: true },

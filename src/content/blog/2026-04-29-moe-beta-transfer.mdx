@@ -47,7 +47,7 @@ The central finding is that the learned rotation parameter $\beta$ (specifically
   references={betaReferences}
   yLabel="β value"
   xLabel="Expert ID"
-  client:load
+  client:only="svelte"
 />
 
 **Intuition**: By centering the experts and rotating them into a shared alignment, the model's internal diversity is preserved while the numerical representation becomes more compact. The fact that this range is universal across the 26B model family suggests we've found a geometric constant of the MoE architecture, not just a training artifact.

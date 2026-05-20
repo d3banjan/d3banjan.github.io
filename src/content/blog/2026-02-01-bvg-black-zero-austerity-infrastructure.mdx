@@ -87,7 +87,7 @@ German transit experts call this the **"Beton statt Menschen"** (concrete instea
 Berlin's 15-year service contract with BVG (2020-2035) reflects this bias directly:
 
 <StackedBar
-	client:visible
+	client:only="svelte"
 	title="BVG Service Contract: Allocation vs Actual Need (Billions EUR)"
 	data={[
 		{
@@ -114,7 +114,7 @@ The system that needs 2.8 billion euros just for U-Bahn maintenance gets 1.7 bil
 To make matters worse, planned investment for 2026-2027 has already been cut from **645 million euros to just 320 million** — a 50% reduction before the money is even spent.
 
 <BarChart
-	client:visible
+	client:only="svelte"
 	title="Investment Cuts: Planned vs Actual (2026-2027)"
 	horizontal={false}
 	data={[
@@ -134,7 +134,7 @@ If you want to understand why German infrastructure projects take so long and co
 Germany's **Vergaberecht** (public procurement law) governs how public entities purchase goods and services. It exists for good reasons — preventing corruption, ensuring fair competition, and getting value for taxpayer money. But in practice, it creates procurement timelines that would be comical if the consequences weren't so serious.
 
 <TimelineChart
-	client:visible
+	client:only="svelte"
 	title="J/JK U-Bahn Train Procurement Timeline"
 	minYear={2016}
 	maxYear={2027}

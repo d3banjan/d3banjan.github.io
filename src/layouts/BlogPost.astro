@@ -131,7 +131,7 @@ const jsonLd = {
 		</main>
 		{hreflangEn && hreflangBn && (
 			<BilingualToggle
-				client:load
+				client:only="svelte"
 				lang={defaultLang}
 				href={defaultLang === 'en' ? `/bn/${id}/` : `/blog/${id}/`}
 			/>

@@ -64,7 +64,7 @@ The cap requires **9.25 million euros in savings for 2026** and **15.8 million e
 Munich's U-Bahn punctuality has held reasonably steady at **91.9% in 2024**. But bus punctuality tells a different story:
 
 <LineChart
-	client:visible
+	client:only="svelte"
 	title="Munich Bus Punctuality: A Steady Collapse"
 	areaFill={true}
 	series={[
@@ -104,7 +104,7 @@ Vienna complemented this structural funding with a transformative fare policy. I
 The results were dramatic:
 
 <BarChart
-	client:visible
+	client:only="svelte"
 	title="Vienna: Annual Pass Holders vs Registered Cars"
 	horizontal={false}
 	data={[
@@ -188,7 +188,7 @@ Zurich voters recently approved a plan to cut annual passes from CHF 809 to **CH
 | **Dedicated transit funding** | None | None | None | Employer tax (60M euros/yr) | Fare recovery mandate |
 
 <RadarChart
-	client:visible
+	client:only="svelte"
 	title="Five-City Transit Comparison"
 	axes={[
 		{ key: "wages", label: "Driver Wages", max: 80000 },

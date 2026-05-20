@@ -1,6 +1,4 @@
 <script lang="ts">
-	import { onMount } from 'svelte';
-
 	const SCROLL_KEY = 'bilingual-scroll-ratio';
 
 	interface Props {
@@ -10,16 +8,19 @@
 
 	let { lang = 'en', href = '#' }: Props = $props();
 
-	onMount(() => {
-		// On arrival: restore scroll position if we just toggled
+	// On arrival: restore scroll position if we just toggled
+	if (typeof window !== 'undefined') {
 		const saved = sessionStorage.getItem(SCROLL_KEY);
 		if (saved !== null) {
 			sessionStorage.removeItem(SCROLL_KEY);
 			const ratio = parseFloat(saved);
-			const target = ratio * (document.body.scrollHeight - window.innerHeight);
-			window.scrollTo({ top: target, behavior: 'instant' });
+			// Run after a short delay to allow full layout render
+			setTimeout(() => {
+				const target = ratio * (document.body.scrollHeight - window.innerHeight);
+				window.scrollTo({ top: target, behavior: 'instant' });
+			}, 50);
 		}
-	});
+	}
 
 	function handleClick() {
 		const ratio = window.scrollY / (document.body.scrollHeight - window.innerHeight);
