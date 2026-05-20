@@ -56,7 +56,7 @@
 
 	let { extent = 'subcontinent', features = [], title = '', aspectRatio = 0.65, legend }: Props = $props();
 
-	const mapId = Math.random().toString(36).slice(2, 8);
+	const mapId = (title || 'map').toLowerCase().replace(/[^a-z0-9]+/g, '-') + '-' + features.length;
 
 	// [latMin, latMax, lonMin, lonMax]
 	const EXTENTS: Record<Extent, [number, number, number, number]> = {

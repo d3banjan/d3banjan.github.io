@@ -11,10 +11,11 @@
 
 	let { title = '', aspectRatio = 0.5, minHeight = 200, children }: Props = $props();
 
-	let containerWidth = $state(0);
+	let containerWidth = $state(600);
 	let containerEl: HTMLDivElement | undefined = $state();
 
-	let height = $derived(Math.max(minHeight, containerWidth * aspectRatio));
+	let activeWidth = $derived(containerWidth || 600);
+	let height = $derived(Math.max(minHeight, activeWidth * aspectRatio));
 
 </script>
 
@@ -23,9 +24,7 @@
 		<figcaption class="chart-title">{title}</figcaption>
 	{/if}
 	<div class="chart-body" style:height="{height}px">
-		{#if containerWidth > 0}
-			{@render children?.({ width: containerWidth, height })}
-		{/if}
+		{@render children?.({ width: activeWidth, height })}
 	</div>
 </figure>
 
