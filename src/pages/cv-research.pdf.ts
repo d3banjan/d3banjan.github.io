@@ -8,7 +8,7 @@ export async function GET() {
 	return new Response(pdf, {
 		headers: {
 			'Content-Type': 'application/pdf',
-			'Content-Disposition': 'attachment; filename="debanjan-basu-cv.pdf"',
+			'Content-Disposition': 'inline; filename="debanjan-basu-cv-research.pdf"',
 		},
 	});
 }

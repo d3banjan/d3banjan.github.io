@@ -296,6 +296,40 @@ const standaloneEngineeringPosts = posts
 				</div>
 			</div>
 
+			<h2>Projects</h2>
+			<div class="highlighted-papers-grid">
+				<div class="paper-card highlighted">
+					<div>
+						<h3>butterflow</h3>
+						<p>
+							CLI framework for declaratively defining agent flows, running evals, and caching
+							tokens between test runs. Combines user-flow testing and token cost optimization
+							into one tool — same execution trace, cache aggressively, measure quality
+							simultaneously.
+						</p>
+					</div>
+					<div class="paper-links">
+						<a href="https://github.com/d3banjan/butterflow" target="_blank">GitHub</a>
+						<a href="/blog/2026-05-04-butterflow-agent-eval-dsl/">Blog post</a>
+					</div>
+				</div>
+				<div class="paper-card highlighted">
+					<div>
+						<h3>falcon</h3>
+						<p>
+							Custom typestubs that track payload annotations by source to gate unsafe ML
+							deserialization (pickle, HDF5) at the type-checker level. Security research from
+							huntr.com CVE work on serialization-route vulnerabilities in GenAI platforms.
+							Lean 4 soundness proofs.
+						</p>
+					</div>
+					<div class="paper-links">
+						<a href="https://github.com/d3banjan/falcon" target="_blank">GitHub</a>
+						<a href="/series/falcon-security/">Blog series</a>
+					</div>
+				</div>
+			</div>
+
 			<h2>Series</h2>
 
 			{engineeringSeriesData.map(({ name, meta, posts }) => (
