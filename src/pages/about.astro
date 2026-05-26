@@ -33,11 +33,14 @@ import { SITE_TITLE, SITE_DESCRIPTION, PAPERS } from '../consts';
 			}
 			.download-cv {
 				display: inline-block;
-				background: var(--accent);
+				background: #d97706;
 				color: white;
 				padding: 0.5em 1.5em;
 				border-radius: 4px;
 				text-decoration: none;
+			}
+			@media (prefers-color-scheme: dark) {
+				.download-cv { background: #fbbf24; color: #0f172a; }
 			}
 			.cv-action-row {
 				display: flex;
@@ -51,13 +54,24 @@ import { SITE_TITLE, SITE_DESCRIPTION, PAPERS } from '../consts';
 			}
 			.download-cv-secondary {
 				background: white;
-				color: var(--accent);
-				border: 1.5px solid var(--accent);
+				color: #0d9488;
+				border: 1.5px solid #0d9488;
 			}
 			.download-cv-secondary:hover {
-				background: var(--accent);
+				background: #0d9488;
 				color: white;
 				opacity: 1;
+			}
+			@media (prefers-color-scheme: dark) {
+				.download-cv-secondary {
+					background: transparent;
+					color: #2dd4bf;
+					border-color: #2dd4bf;
+				}
+				.download-cv-secondary:hover {
+					background: #2dd4bf;
+					color: #0f172a;
+				}
 			}
 			.cv-divider {
 				width: 1px;
@@ -70,9 +84,14 @@ import { SITE_TITLE, SITE_DESCRIPTION, PAPERS } from '../consts';
 				gap: 1.5em;
 			}
 			.profile-links a {
-				color: var(--accent);
 				text-decoration: none;
 				font-weight: 600;
+			}
+			.profile-links a.link-research { color: #0d9488; }
+			.profile-links a.link-engineering { color: #d97706; }
+			@media (prefers-color-scheme: dark) {
+				.profile-links a.link-research { color: #2dd4bf; }
+				.profile-links a.link-engineering { color: #fbbf24; }
 			}
 			.profile-links a:hover { text-decoration: underline; }
 			section {
@@ -343,8 +362,8 @@ import { SITE_TITLE, SITE_DESCRIPTION, PAPERS } from '../consts';
 				<a href="/cv-research.pdf" class="download-cv download-cv-secondary" target="_blank">CV — Research (PDF)</a>
 				<div class="cv-divider"></div>
 				<div class="profile-links">
-					<a href="/research">Research profile →</a>
-					<a href="/engineering">Engineering profile →</a>
+					<a href="/research" class="link-research">Research profile →</a>
+					<a href="/engineering" class="link-engineering">Engineering profile →</a>
 				</div>
 			</div>
 
