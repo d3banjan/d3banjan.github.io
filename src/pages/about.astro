@@ -40,11 +40,12 @@ import { SITE_TITLE, SITE_DESCRIPTION, PAPERS } from '../consts';
 				text-decoration: none;
 				margin-bottom: 2em;
 			}
-			.cv-downloads {
+			.cv-action-row {
 				display: flex;
-				gap: 0.8em;
 				flex-wrap: wrap;
-				margin-bottom: 1em;
+				align-items: center;
+				gap: 1em;
+				margin-bottom: 2em;
 			}
 			.download-cv:hover {
 				opacity: 0.9;
@@ -59,10 +60,15 @@ import { SITE_TITLE, SITE_DESCRIPTION, PAPERS } from '../consts';
 				color: white;
 				opacity: 1;
 			}
+			.cv-divider {
+				width: 1px;
+				height: 1.5em;
+				background: rgba(var(--gray-light), 0.6);
+				flex-shrink: 0;
+			}
 			.profile-links {
 				display: flex;
 				gap: 1.5em;
-				margin-bottom: 2em;
 			}
 			.profile-links a {
 				color: var(--accent);
@@ -333,13 +339,14 @@ import { SITE_TITLE, SITE_DESCRIPTION, PAPERS } from '../consts';
 				<a href="https://huggingface.co/d3banjan">HuggingFace</a> ·
 				<a href="https://medium.com/@debanjanbasu">Medium</a>
 			</p>
-			<div class="cv-downloads">
+			<div class="cv-action-row">
 				<a href="/cv-engineering.pdf" class="download-cv" target="_blank">CV — Engineering (PDF)</a>
 				<a href="/cv-research.pdf" class="download-cv download-cv-secondary" target="_blank">CV — Research (PDF)</a>
-			</div>
-			<div class="profile-links">
-				<a href="/research">Research profile →</a>
-				<a href="/engineering">Engineering profile →</a>
+				<div class="cv-divider"></div>
+				<div class="profile-links">
+					<a href="/research">Research profile →</a>
+					<a href="/engineering">Engineering profile →</a>
+				</div>
 			</div>
 
 			<section>
