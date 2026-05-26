@@ -37,7 +37,7 @@ export const SERIES_META: Record<string, { slug: string; description: string; ca
 	},
 	'Wayland Desktop Mastery': {
 		slug: 'wayland-desktop-mastery',
-		category: 'engineering',
+		category: 'blog',
 		description:
 			"Niri's scrolling paradigm, unified shortcuts across compositors, DankMaterialShell, and building a cohesive Wayland desktop.",
 	},
@@ -129,16 +129,13 @@ export const ENGINEERING_TAGS = new Set([
 	'developer-tools',
 	'django',
 	'evals',
-	'linux',
 	'llm',
 	'ml-ops',
 	'networking',
 	'python',
 	'security',
 	'software-engineering',
-	'terminal',
 	'tooling',
-	'workflow',
 ]);
 
 export interface ResearchPaper {
