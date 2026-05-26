@@ -262,40 +262,6 @@ const standaloneEngineeringPosts = posts
 				<a href="/series/methodology-transition/">Notes on a Methodology Transition</a>.
 			</p>
 
-			<h2>Featured RE/MTS Research</h2>
-			<div class="highlighted-papers-grid">
-				{PAPERS.slice(0, 3).map((paper) => (
-					<div class="paper-card highlighted">
-						<div>
-							<h3>{paper.title}</h3>
-							<p>{paper.description}</p>
-						</div>
-						<div class="paper-links">
-							<a href={paper.siteUrl} target="_blank">Microsite</a>
-							<a href={paper.seriesUrl}>Blog series</a>
-						</div>
-					</div>
-				))}
-			</div>
-
-			<h3 style="margin-top: 1.5em; margin-bottom: 0.8em; font-size: 1.2em;">Other Systems Research</h3>
-			<div class="scrolling-papers-container">
-				<div class="scrolling-papers-track">
-					{PAPERS.slice(3).map((paper) => (
-						<div class="paper-card scrolling-card">
-							<div>
-								<h3>{paper.title}</h3>
-								<p>{paper.description}</p>
-							</div>
-							<div class="paper-links">
-								<a href={paper.siteUrl} target="_blank">Microsite</a>
-								<a href={paper.seriesUrl}>Blog series</a>
-							</div>
-						</div>
-					))}
-				</div>
-			</div>
-
 			<h2>Projects</h2>
 			<div class="highlighted-papers-grid">
 				<div class="paper-card highlighted">
@@ -327,6 +293,40 @@ const standaloneEngineeringPosts = posts
 						<a href="https://github.com/d3banjan/falcon" target="_blank">GitHub</a>
 						<a href="/series/falcon-security/">Blog series</a>
 					</div>
+				</div>
+			</div>
+
+			<h2>Featured RE/MTS Research</h2>
+			<div class="highlighted-papers-grid">
+				{PAPERS.slice(0, 3).map((paper) => (
+					<div class="paper-card highlighted">
+						<div>
+							<h3>{paper.title}</h3>
+							<p>{paper.description}</p>
+						</div>
+						<div class="paper-links">
+							<a href={paper.siteUrl} target="_blank">Microsite</a>
+							<a href={paper.seriesUrl}>Blog series</a>
+						</div>
+					</div>
+				))}
+			</div>
+
+			<h3 style="margin-top: 1.5em; margin-bottom: 0.8em; font-size: 1.2em;">Other Systems Research</h3>
+			<div class="scrolling-papers-container">
+				<div class="scrolling-papers-track">
+					{PAPERS.slice(3).map((paper) => (
+						<div class="paper-card scrolling-card">
+							<div>
+								<h3>{paper.title}</h3>
+								<p>{paper.description}</p>
+							</div>
+							<div class="paper-links">
+								<a href={paper.siteUrl} target="_blank">Microsite</a>
+								<a href={paper.seriesUrl}>Blog series</a>
+							</div>
+						</div>
+					))}
 				</div>
 			</div>
 
