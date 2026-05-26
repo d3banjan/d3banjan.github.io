@@ -4,7 +4,7 @@ import Footer from '../components/Footer.astro';
 import FormattedDate from '../components/FormattedDate.astro';
 import Header from '../components/Header.astro';
 import TagList from '../components/TagList.astro';
-import { ENGINEERING_TAGS, getPublishedPosts, SERIES_META, PAPERS } from '../consts';
+import { ENGINEERING_TAGS, getPublishedPosts, SERIES_META } from '../consts';
 
 const posts = await getPublishedPosts();
 
@@ -258,8 +258,7 @@ const standaloneEngineeringPosts = posts
 			<p>
 				Production systems and LLM agent infrastructure: distributed pipelines (Dask, Celery),
 				agent observability (Arize Phoenix), Python, Django, task queues, security gates, and
-				Linux workflow. Experiment artifacts and engineering notes below. Methodology:
-				<a href="/series/methodology-transition/">Notes on a Methodology Transition</a>.
+				Linux workflow. Experiment artifacts and engineering notes below.
 			</p>
 
 			<h2>Projects</h2>
@@ -310,37 +309,19 @@ const standaloneEngineeringPosts = posts
 				</div>
 			</div>
 
-			<h2>Featured RE/MTS Research</h2>
-			<div class="highlighted-papers-grid">
-				{PAPERS.slice(0, 3).map((paper) => (
-					<div class="paper-card highlighted">
-						<div>
-							<h3>{paper.title}</h3>
-							<p>{paper.description}</p>
-						</div>
-						<div class="paper-links">
-							<a href={paper.siteUrl} target="_blank">Microsite</a>
-							<a href={paper.seriesUrl}>Blog series</a>
-						</div>
-					</div>
-				))}
-			</div>
-
-			<h3 style="margin-top: 1.5em; margin-bottom: 0.8em; font-size: 1.2em;">Other Systems Research</h3>
-			<div class="scrolling-papers-container">
-				<div class="scrolling-papers-track">
-					{PAPERS.slice(3).map((paper) => (
-						<div class="paper-card scrolling-card">
-							<div>
-								<h3>{paper.title}</h3>
-								<p>{paper.description}</p>
-							</div>
-							<div class="paper-links">
-								<a href={paper.siteUrl} target="_blank">Microsite</a>
-								<a href={paper.seriesUrl}>Blog series</a>
-							</div>
-						</div>
-					))}
+			<h2>Research</h2>
+			<div class="paper-card highlighted" style="max-width: 480px; margin-bottom: 2em;">
+				<div>
+					<h3>Typed Policy Rails</h3>
+					<p>
+						Architectural approach for making source, operation, risk, and policy state explicit
+						through typed side channels rather than text-only prompts. Improves model alignment
+						without prompt bloat by encoding context in the type system.
+					</p>
+				</div>
+				<div class="paper-links">
+					<a href="https://policy-rails-microsite.pages.dev/" target="_blank">Microsite</a>
+					<a href="https://github.com/d3banjan/lean-mining" target="_blank">GitHub</a>
 				</div>
 			</div>
 
