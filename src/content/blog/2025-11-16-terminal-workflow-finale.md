@@ -174,6 +174,23 @@ git worktree prune
 
 </details>
 
+### PR Review Without Leaving Your Work
+
+Worktrees also solve code review. Someone opens a PR; you want to run it, poke at it, maybe point Claude at it — without disturbing your feature branch:
+
+```bash
+# Fetch the PR into a local branch
+git fetch origin pull/123/head:pr-123
+
+# Check it out in a review worktree
+git worktree add ../myapp-pr123 pr-123
+
+# Review in a fresh Claude session
+cd ../myapp-pr123 && claude
+```
+
+Your feature work stays exactly where you left it. When the review is done, `git worktree remove ../myapp-pr123`, delete the `pr-123` branch, and the whole thing disappears.
+
 ### Kitty + Worktree Helper
 
 ```bash
@@ -213,35 +230,6 @@ notify-send "Command finished" "Exit: $EXIT"
 Usage: `./notify.sh npm run build`
 
 Tab title changes when done. Desktop notification too.
-
-## Cross-Cutting Patterns
-
-Looking across all the tools, patterns emerge:
-
-### 1. Declarative over Imperative
-
-| Tool | Declarative Approach |
-|------|---------------------|
-| Kitty sessions | Workspace layout as config file |
-| Starship | Prompt as TOML, not shell script |
-| Git worktrees | Branches as directories |
-
-### 2. Consistent Interfaces
-
-| Interface | Same Across |
-|-----------|-------------|
-| `Ctrl+Shift+*` | All Kitty operations |
-| `Ctrl+R` | All history tools (Atuin/McFly/fzf) |
-| `kitty @` | All remote control |
-
-### 3. Context Awareness
-
-| Tool | Knows About |
-|------|-------------|
-| Starship | Current language/project |
-| Atuin | Current directory history |
-| Hints | Content type on screen |
-| Worktrees | Current branch |
 
 ## My Daily Workflow
 

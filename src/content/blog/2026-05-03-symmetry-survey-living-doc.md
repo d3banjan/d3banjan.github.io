@@ -11,7 +11,25 @@ A survey paper is usually a snapshot. You write it at a point in time, submit it
 
 The [symmetry survey](/blog/2026-04-26-symmetry-survey-catalogue/) I've been building is not structured that way. It has a living proof corpus—Lean 4 theorems that accumulate as I prove them—and the document's coverage badge reflects the actual current state. When a theorem lands, the badge updates. When a new architecture gets added, the survey grows to accommodate it without invalidating anything already proved.
 
-This post is about the mechanics of that: how the pipeline works, what the coverage badge actually means and why a handful of theorems are still open, and what it took to add RWKV to the survey without breaking the existing corpus.
+This post is about what it took to add RWKV to the survey without breaking the existing corpus—including one invariant with no Transformer analogue—and then the mechanics: how the pipeline works, what the coverage badge actually means, and why a handful of theorems are still open.
+
+---
+
+## Adding RWKV: A New Architectural Family
+
+RWKV is a recurrent architecture—an alternative to Transformers that processes sequences with a recurrent state rather than full attention. It's interesting for compression research because the recurrent state has different structural invariants than attention: instead of Q/K/V projections and a dot-product attention mechanism, you have a time-mixing layer that updates a state vector, and a channel-mixing layer that conditions on the current token.
+
+The symmetry catalogue already covered RoPE, SignPhase, BoundedArithmetic, DenseSparse, and Dormancy. All of these were originally motivated by Transformer architectures. When I added RWKV, the question was: which of these symmetry types still apply, which need refinement, and which RWKV-specific invariants are missing?
+
+**What transferred directly.** SignPhase and BoundedArithmetic apply without modification. RWKV uses SiLU activations; sign violations under quantization work exactly as in Transformers. Integer accumulation arithmetic is architecture-agnostic.
+
+**What needed refinement.** Dormancy. In Transformers, dormancy refers to attention heads or MLP neurons that have near-zero activation on average. In RWKV, the analogous concept is *state channels* that carry near-zero signal across time steps. The formal definition needed generalizing from "neurons" to "recurrent state channels," but the core theorem structure was the same.
+
+**What was missing.** RWKV has a specific invariant with no Transformer analogue: **recurrent state stability**. The time-mixing update is (roughly) $s_t = \text{decay} \cdot s_{t-1} + k_t \cdot v_t$, where `decay` is a learned per-channel exponential decay factor bounded in $(0, 1)$. Compression that pushes `decay` outside $(0, 1)$—e.g., quantization that rounds a value of $0.98$ to $1.0$—turns a stable recurrent system into a marginally stable or unstable one. The state doesn't decay; it accumulates unboundedly.
+
+This is RWKV's version of RoPE's orthogonality requirement: a numerical constraint with group-theoretic content. `decay` must stay in $(0, 1)$ not because the model was trained to like values in that range, but because that's the range over which the recurrent system is provably stable.
+
+The RWKV section of the survey is a "receptacle" in the sense that it's a slot with a defined structure—informal statement, formal statement, proof, implications—waiting for each new theorem as it gets proved. Adding RWKV didn't invalidate any existing theorems because those theorems are about architectural features, not about specific architectures. RoPE's theorem doesn't say "this applies to GPT-2." It says "any Q/K projection that uses rotational position encoding must preserve the rotation group structure." RWKV doesn't use RoPE, so RWKV is simply out of scope for that theorem. No contradiction.
 
 ---
 
@@ -50,24 +68,6 @@ They will land. They're just the hardest ones.
 
 ---
 
-## Adding RWKV: A New Architectural Family
-
-RWKV is a recurrent architecture—an alternative to Transformers that processes sequences with a recurrent state rather than full attention. It's interesting for compression research because the recurrent state has different structural invariants than attention: instead of Q/K/V projections and a dot-product attention mechanism, you have a time-mixing layer that updates a state vector, and a channel-mixing layer that conditions on the current token.
-
-The symmetry catalogue already covered RoPE, SignPhase, BoundedArithmetic, DenseSparse, and Dormancy. All of these were originally motivated by Transformer architectures. When I added RWKV, the question was: which of these symmetry types still apply, which need refinement, and which RWKV-specific invariants are missing?
-
-**What transferred directly.** SignPhase and BoundedArithmetic apply without modification. RWKV uses SiLU activations; sign violations under quantization work exactly as in Transformers. Integer accumulation arithmetic is architecture-agnostic.
-
-**What needed refinement.** Dormancy. In Transformers, dormancy refers to attention heads or MLP neurons that have near-zero activation on average. In RWKV, the analogous concept is *state channels* that carry near-zero signal across time steps. The formal definition needed generalising from "neurons" to "recurrent state channels," but the core theorem structure was the same.
-
-**What was missing.** RWKV has a specific invariant with no Transformer analogue: **recurrent state stability**. The time-mixing update is (roughly) $s_t = \text{decay} \cdot s_{t-1} + k_t \cdot v_t$, where `decay` is a learned per-channel exponential decay factor bounded in $(0, 1)$. Compression that pushes `decay` outside $(0, 1)$—e.g., quantization that rounds a value of $0.98$ to $1.0$—turns a stable recurrent system into a marginally stable or unstable one. The state doesn't decay; it accumulates unboundedly.
-
-This is RWKV's version of RoPE's orthogonality requirement: a numerical constraint with group-theoretic content. `decay` must stay in $(0, 1)$ not because the model was trained to like values in that range, but because that's the range over which the recurrent system is provably stable.
-
-The RWKV section of the survey is a "receptacle" in the sense that it's a slot with a defined structure—informal statement, formal statement, proof, implications—waiting for each new theorem as it gets proved. Adding RWKV didn't invalidate any existing theorems because those theorems are about architectural features, not about specific architectures. RoPE's theorem doesn't say "this applies to GPT-2." It says "any Q/K projection that uses rotational position encoding must preserve the rotation group structure." RWKV doesn't use RoPE, so RWKV is simply out of scope for that theorem. No contradiction.
-
----
-
 ## What "Living" Actually Means
 
 The standard model for a survey paper: write it, submit it, it becomes a fixed reference. Any updates require a new submission, a new version number, a new round of review.
@@ -78,11 +78,11 @@ This creates a different kind of artifact. A reader visiting the microsite today
 
 The honest version of this: it also means the survey is always slightly incomplete. The open theorems are visible in the status table. The RWKV theorems still being developed are listed with their status. This is uncomfortable compared to a PDF that simply doesn't mention what wasn't proved. But it's more useful. A reader can see exactly what's been verified and what hasn't.
 
-One concrete benefit: when I found the widget bug in the RoPE frequency visualisation (described in the [previous post](/blog/2026-04-26-symmetry-survey-catalogue/))—the false $/16$ denominator causing the active-band display to wrap incorrectly—the correction went into the proof corpus, the survey regenerated, and the fix was visible immediately. A traditional PDF would have an erratum, or nothing at all.
+One concrete benefit: when I found the widget bug in the RoPE frequency visualization (described in the [previous post](/blog/2026-04-26-symmetry-survey-catalogue/))—the false $/16$ denominator causing the active-band display to wrap incorrectly—the correction went into the proof corpus, the survey regenerated, and the fix was visible immediately. A traditional PDF would have an erratum, or nothing at all.
 
 ---
 
-## The Synchronisation Problem
+## The Synchronization Problem
 
 There's a harder version of this that I haven't fully solved: keeping the *informal* survey text synchronized with the proof corpus.
 

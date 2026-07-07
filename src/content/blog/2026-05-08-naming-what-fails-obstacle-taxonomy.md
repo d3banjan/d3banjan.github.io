@@ -4,7 +4,7 @@ description: '25+ preregistered kills over six weeks of compression research. Th
 pubDate: 'May 08 2026'
 tags: ["ml-research", "methodology", "lean4", "compression", "negative-results"]
 series: "Notes on a Methodology Transition"
-seriesOrder: 4
+seriesOrder: 5
 ---
 
 By week six, the experiment archive had over 25 preregistered, killed experiments. That's a lot of failures. Each one has a postmortem, a `decision.json`, trap results, and the SHA256-locked decision rule that made the kill clean. The machinery is documented in the [pre-registration post](/blog/2026-04-20-preregistration-ml/) and the [compression-falsification-ladder post](/blog/2026-04-28-compression-falsification-ladder/).
@@ -29,7 +29,7 @@ The answer, empirically, is: later than you think. You need to see enough witnes
 
 ## The obstacle classes
 
-The kills reduced to approximately 10 mechanism classes, labeled A through L (skipping E and I, which are methodology artifacts, not mechanism). Here are the four that matter most for understanding the current state of the project:
+The kills reduced to approximately 10 mechanism classes, labeled A through L. Two letters are skipped: Class E is a byte-versus-quality budget wall where the kill is pure arithmetic — the inequality is the whole result, no theorem adds anything — and Class I collects measurement-protocol bugs, kills of a measurement rather than of a mechanism. Neither is a structural obstacle, so neither gets a theorem. Here are the four classes that matter most for understanding the current state of the project:
 
 **Class A: Source ⊥ output covector.**
 
@@ -73,7 +73,7 @@ After the taxonomy, the workflow changes:
 
 The Lean theorem becomes the cheapest possible experiment: one line of type-checking instead of four GPU-hours. A configuration that's covered by an existing theorem doesn't need a new experiment. It needs a citation.
 
-This is the physicist move described in [the previous post](/blog/2026-05-07-physicist-vs-evolutionary-ml-research/): theorem-screened experiments. The experiments that remain after screening are better experiments — they probe behavior the theorems don't yet cover, which is exactly where empirical investigation is productive.
+This is the physicist move described in [the previous post](/blog/2026-05-07-physicist-vs-selectionist-ml-research/): theorem-screened experiments. The experiments that remain after screening are better experiments — they probe behavior the theorems don't yet cover, which is exactly where empirical investigation is productive.
 
 ---
 
@@ -108,3 +108,7 @@ That's what a negative result archive is supposed to do. Most negative results i
 ---
 
 Twenty-five kills, ten classes, ten theorems. The next phase isn't more kills — it's proving theorems for the residual classes and running experiments only on configurations that clear the taxonomy filter. That's a different research program than the one that started six weeks ago, and it's a better one.
+
+---
+
+*Next: [Theorem-Screened Experiments](/blog/2026-05-09-theorem-screened-experiments/)*

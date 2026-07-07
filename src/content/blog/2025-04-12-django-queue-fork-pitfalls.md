@@ -1,6 +1,6 @@
 ---
-title: 'The Fork, the File Descriptor, and the Deployment'
-description: 'Two production bugs from subprocess isolation: shared database connections after fork, and lost working directories after deployment.'
+title: 'The Fork Bug and the Deploy Bug'
+description: 'Two production bugs found in one debugging session: a database connection shared across fork(), and a deploy script that deleted the directory out from under a running worker.'
 pubDate: 'Apr 12 2025'
 tags: ["django", "python", "fork", "linux"]
 series: "Production Django Task Queue"
@@ -9,9 +9,9 @@ seriesOrder: 3
 
 ## The Consequence of Forking
 
-The [previous post](/blog/2025-03-29-django-queue-memory-leaks) solved the memory problem by running tasks in subprocesses. Memory went from 500 MB to 50 MB. Problem solved.
+The [previous post](/blog/2025-03-29-django-queue-memory-leaks/) solved the memory problem by running tasks in subprocesses. Memory went from 500 MB to 50 MB. Problem solved.
 
-Then two new bugs appeared. Both were consequences of how process creation works on Linux, and both were subtle enough to pass testing but fail in production.
+Then a new bug appeared — a direct consequence of how process creation works on Linux, subtle enough to pass testing but fail in production. And while chasing it, we found a second bug that had nothing to do with fork at all: it was hiding in our deploy script, waiting for a long-running process to expose it. This post covers both.
 
 **Quick background:** When Python's `multiprocessing` creates a child process on Linux, it uses a system call called `fork()`. This creates an almost-exact copy of the parent process — same memory contents, same open network connections, same everything. The child is a clone that starts running from the point of the fork. This is different from starting a fresh Python interpreter; the child inherits whatever state the parent had at that moment.
 
@@ -55,21 +55,15 @@ Even worse: if both parent and child try to query the database simultaneously, t
 
 ### The fix
 
-Close all database connections in the child process before doing any work:
+Close all database connections in the child process before doing any work. The `_child_worker` function from the [previous post](/blog/2025-03-29-django-queue-memory-leaks/) gains exactly one line at the top:
 
 ```python
 from django.db import connections
 
 def _child_worker(task_name, task_params):
-    """Runs in child process."""
     # CRITICAL: close inherited connections before doing anything
     connections.close_all()
-
-    # Now import and execute — Django will create fresh connections
-    module_path, func_name = task_name.rsplit(".", 1)
-    module = importlib.import_module(module_path)
-    func = getattr(module, func_name)
-    func(**task_params)
+    ...  # import and execute the task as before
 ```
 
 `connections.close_all()` tells Django to close every database connection it currently holds. This drops the inherited (shared) connections. When the task code subsequently accesses the database, Django automatically opens a **new** connection — one that belongs exclusively to the child process. No sharing, no conflict.
@@ -99,6 +93,8 @@ The tradeoff: `spawn` starts a completely new Python interpreter from scratch, w
 </details>
 
 ## Bug 2: The Vanishing Working Directory
+
+To be clear up front: this one is not a fork bug. It's a deploy-script bug that predates the subprocess work — any long-running process would eventually have hit it. We just found it in the same debugging session, because the subprocess worker was the long-running process that finally tripped over it.
 
 ### The symptom
 
@@ -159,20 +155,18 @@ systemctl restart myapp-web
 
 ## The Design Lesson
 
-Both bugs follow a pattern: **the subprocess model creates constraints that ripple beyond the code**.
-
-The in-process model had no fork-related issues. It also had unbounded memory growth. The subprocess fix solved memory but introduced two new failure modes — one in database management, one in deployment strategy.
+The two bugs are not the same kind of bug, and it took me a while to see that. The connection bug is a genuine consequence of `fork()`: the child inherits the parent's state, and some of that state — live network sockets — must not be shared. The deploy bug was latent in the deploy script all along; the subprocess work didn't cause it, it just made us look closely enough to find it.
 
 ```mermaid
 flowchart TB
     A["In-process execution"] -->|"memory leak"| B["Subprocess isolation"]
-    B -->|"shared FDs"| C["connections.close_all()"]
-    B -->|"inode invalidation"| D["rsync deployment"]
+    B -->|"shared connections after fork"| C["connections.close_all()"]
+    F["rm + cp deploy script"] -->|"inode invalidation"| D["rsync deployment"]
     C --> E["Working system"]
     D --> E
 ```
 
-This is a recurring theme: **every architectural decision constrains the decisions around it.** The subprocess model is the right choice for memory management, but it means you need to think about what the child process inherits from the parent — connections, directory references, and more.
+What they share: **every architectural decision constrains the decisions around it.** The subprocess model is the right choice for memory management, but it means you need to think about what the child process inherits from the parent — connections, working directory, and more. And a long-running worker means your deploy script can no longer treat the filesystem as if nothing is watching it.
 
 ## Checklist for Subprocess Workers
 
@@ -189,7 +183,7 @@ If you're spawning child processes from a long-running Django command, verify:
 1. **Forking shares database connections** — parent and child end up talking over the same network socket, causing corruption
 2. **`connections.close_all()` before work** — let Django create fresh connections in the child
 3. **Directories have internal IDs** — `rm + cp` destroys and recreates the directory; `rsync` updates it in place
-4. **Subprocess isolation ripples through deployment** — how you create processes constrains how you deploy code
-5. **Every fix has second-order effects** — solving memory created fork and deployment bugs
+4. **Long-running workers constrain deployment** — deleting and recreating their directory breaks them; update in place or restart them
+5. **Fixes surface neighboring bugs** — solving memory created the fork bug, and debugging the fork bug exposed a deploy bug that had been there all along
 
 ---

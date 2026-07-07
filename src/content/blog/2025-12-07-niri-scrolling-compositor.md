@@ -1,6 +1,6 @@
 ---
 title: 'Niri: The Scrolling Tiling Compositor That Made Me Leave Hyprland'
-description: 'Why Niri scrolling paradigm works better than traditional tiling for ultrawide monitors, and how to think about window management differently.'
+description: "Why Niri's scrolling paradigm works better than traditional tiling for ultrawide monitors, and how to think about window management differently."
 pubDate: 'Dec 07 2025'
 tags: ["niri", "wayland", "tiling-wm", "linux"]
 series: "Wayland Desktop Mastery"
@@ -39,9 +39,7 @@ I have a 3440×1440 ultrawide. Traditional tiling works until I open "too many" 
 
 With Niri, I set a preferred column width (50% of screen). Every window gets that width. Open 10 windows? Scroll to see them. Each remains usable.
 
-**The tradeoff:** You can't see all windows simultaneously. You must scroll.
-
-**Why I accept this:** I rarely *need* to see 6+ windows at once. When I do, I use the overview (`Super+W`). Most of the time, I work with 2-3 visible windows and scroll to others.
+The tradeoff is that you can't see all windows simultaneously — you have to scroll. I accept that because I rarely *need* to see 6+ windows at once. When I do, I use the overview (`Super+W`). Most of the time, I work with 2-3 visible windows and scroll to others.
 
 ## Columns: The Core Abstraction
 
@@ -63,7 +61,7 @@ block-beta
 - `Super+H/L` moves between columns (horizontal)
 - `Super+J/K` moves between windows in a column (vertical)
 
-**The insight:** This maps to how I think about tasks. Related windows stack in a column. Unrelated tasks are separate columns. Navigation reflects the mental organization.
+This maps to how I think about tasks. Related windows stack in a column. Unrelated tasks are separate columns. Navigation reflects the mental organization.
 
 ## Hyprland vs Niri: Design Differences
 
@@ -109,7 +107,7 @@ layout {
 }
 ```
 
-**The advantage:** Niri hot-reloads config changes. Save the file, see the result. No restart, no reload command.
+Niri hot-reloads config changes. Save the file, see the result. No restart, no reload command.
 
 ## Designing for Consistency
 
@@ -206,7 +204,7 @@ Mod+S { focus-workspace 9; }
 Mod+Shift+S { move-column-to-workspace 9; }
 ```
 
-**The tradeoff:** It's not an overlay. I actually switch workspaces. Less elegant, but functional.
+It's not an overlay — I actually switch workspaces. Less elegant, but functional.
 
 ## Getting Started
 
@@ -236,18 +234,4 @@ layout {
 
 Start Niri from your display manager or TTY. Edit the config, and changes apply immediately.
 
-## Is Niri Right for You?
-
-**Good fit if:**
-- You have an ultrawide monitor
-- You work with many windows
-- You think in "tasks" rather than "window arrangements"
-- You want simpler mental model
-
-**Maybe not if:**
-- You need all windows visible simultaneously
-- You heavily use multi-monitor
-- You rely on special workspace overlays
-- You need mature, battle-tested window rules
-
----
+That's really all there is to it. The reasons I switched and the things I still miss are both above — if the scrolling model fits how you already think about your screen, a minimal config like this is enough to find out.

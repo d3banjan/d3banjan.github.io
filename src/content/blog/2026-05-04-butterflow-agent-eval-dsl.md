@@ -60,7 +60,7 @@ with flow("refund explanation quality") as f:
     ))
 ```
 
-`fuzzy.groundedness` uses Phoenix's `HallucinationEvaluator` — it sends the retrieved context and the response to a judge model and returns a score. `fuzzy.tone` uses a custom evaluator spec. Both return a float; Butterflow converts this to pass/fail at the configured threshold.
+`fuzzy.groundedness` uses Phoenix's `HallucinationEvaluator` — it sends the retrieved context and the response to a judge model and returns a score. `fuzzy.tone` goes through the same Phoenix machinery, but with a custom template instead of a built-in evaluator: a `ClassificationTemplate` run through `llm_classify`. The template shows the judge the final response alongside the target descriptor — here, `neutral-confident` — and the rails constrain the judge's output to a fixed label set, so it classifies rather than free-associates. Each label maps to a score, and that score is what the threshold compares against. The point of building on `llm_classify` instead of a bare prompt is the rails: without them, judge models drift into prose, and prose does not convert to a pass/fail gate. Both evaluators return a float; Butterflow converts it to pass/fail at the configured threshold.
 
 The split is explicit in the spec. A reviewer reading a `flow` knows immediately which assertions are structural (no external calls, no cost) and which are semantic (judge model, latency, non-zero cost). The deterministic ones run first; if they fail, the fuzzy ones are skipped — no point judging tone if the wrong tool was called.
 
@@ -84,7 +84,7 @@ The spec does not pin *how* the agent achieves the outcome. It pins *what* the o
 
 Running evals against live LLMs is expensive if done naively. Butterflow cuts costs in three places.
 
-### Cache clusters
+### Grouping flows by shared prompt prefix
 
 ```
 butterflow plan examples/ --show-cache-clusters
@@ -104,7 +104,7 @@ Cache cluster A [system_prompt_v2, tools_v4]:
 
 Without cache-cluster grouping, each flow pays the full prefix cost. With it, the prefix is charged once and the KV cache is reused across all flows in the cluster. For eval suites where many flows share the same system prompt (which is almost every suite), this is the largest single cost reduction.
 
-### Subset runs
+### Running tagged subsets, not samples
 
 ```
 butterflow run examples/ --subset happy
@@ -112,7 +112,7 @@ butterflow run examples/ --subset happy
 
 Runs only flows tagged `subset="happy"`. This is not sampling — it runs the exact flows tagged for that subset, deterministically. During development, you run the happy path after each change. The full suite runs in CI. `--subset` is not an approximation of correctness; it is a structured triage tool that matches the development workflow.
 
-### Token-aware planning
+### Estimating spend before the run
 
 Before any run, `butterflow plan` estimates token cost per flow, groups by cache cluster, and shows the total estimated spend. If the estimate exceeds the configured budget, it asks for confirmation. This prevents the failure mode where a 200-flow batch starts fine and hits the rate ceiling an hour in, producing a partial result that cannot be used.
 

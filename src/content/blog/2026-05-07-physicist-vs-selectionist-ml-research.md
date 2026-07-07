@@ -4,7 +4,7 @@ description: 'AI makes hypothesis generation cheap. Evaluation stays expensive. 
 pubDate: 'May 07 2026'
 tags: ["ml-research", "methodology", "research-style", "lean4"]
 series: "Notes on a Methodology Transition"
-seriesOrder: 3
+seriesOrder: 4
 ---
 
 There is a question that comes up at the start of every research session: *is this candidate worth running?*
@@ -69,7 +69,7 @@ In this loop, the experiment count does not go to zero. But the *character* of t
 
 You cannot start in physicist mode. The selectionist phase is not optional — it is how you learn what to prove.
 
-At the start of a research program, the prior over failure modes is uniform. You do not know if compression will fail because of algebraic structure (obstacle class K: covector readout collapse), depth-composition effects (class L: accumulated error blow-up), distributional mismatch, or something else. When the prior is uniform, breadth-first is the right strategy. Run the variants. Let the kills accumulate. Look at what the dead configurations have in common.
+At the start of a research program, the prior over failure modes is uniform. You do not know if compression will fail because of algebraic structure ([obstacle class K](/blog/2026-05-08-naming-what-fails-obstacle-taxonomy/), covector readout collapse — a single scalar readout cannot distinguish outputs that differ in directions it does not measure), depth-composition effects (class L, accumulated error blow-up — per-layer errors compound geometrically with depth until the end-to-end tolerance is blown), distributional mismatch, or something else. When the prior is uniform, breadth-first is the right strategy. Run the variants. Let the kills accumulate. Look at what the dead configurations have in common.
 
 The kill pattern is the theorem waiting to be written. After 25+ kills over six weeks of compression research, the structural failure modes became visible: roughly 10 distinct patterns underlying all those surface-level variant failures. Once the pattern is clear, writing the Lean 4 proof is the next step — not because it is intellectually satisfying, but because a proved theorem with zero sorries is something a future experimental loop can actually use as a filter.
 
@@ -79,13 +79,13 @@ The selectionist phase was building the theorem library. That is what it was for
 
 ## Where AI fits in
 
-Once you have a theorem that kills a family of configurations, the problem of generating candidates changes shape.
+Once you have a theorem that kills a family of configurations, the problem of generating candidates changes shape. The difference is visible in the prompts.
 
-Open-ended: "propose compression variants for OLMoE-1B-7B." The LLM generates 50 things. You filter them yourself. Many will fall inside a class you already have a theorem for. Effort wasted on filtering.
+Open-ended: "propose compression variants for OLMoE-1B-7B." The LLM generates 50 things, and a good share of them are dead on arrival — single-covector-readout steering schemes in new clothing, the exact family `equal_readouts_collapses` closed in one shot. An unconstrained prompt happily regenerates classes the library has already killed, and recognizing each retread is your time, spent re-filtering settled questions.
 
-Constrained: "propose compression variants that satisfy `kills_iff_pow_exceeds` with $L=16$, $\tau=0.05$." The LLM generates candidates that clear the bound. You still verify, but the search space is pre-filtered. The theorem is now a prompt constraint.
+Constrained: "propose compression variants with no single-readout steering, per-layer ratio below the `kills_iff_pow_exceeds` bound $(1+\tau)^{1/L} - 1$ with $L=16$, $\tau=0.05$." The Class K retreads drop out, the depth-composition violations never appear, and what comes back sits in territory the theorem library does not cover — the only territory worth evaluating. You still verify every candidate; verification just starts past the dead classes instead of inside them.
 
-This is the research acceleration that the combination unlocks: the LLM generates within a constrained hypothesis space defined by proved theorems, and experiments verify only what the theorems leave open. The loop is faster because generation is AI-assisted and the filter is machine-checked.
+The theorem is now a prompt constraint. That is what the combination buys: the LLM generates within a hypothesis space bounded by proved theorems, and experiments verify only what the theorems leave open.
 
 Neither alone is enough. LLM-generated candidates without theorem filtering is noise. Theorem filtering without AI-assisted generation is slow. The combination is the productive regime.
 

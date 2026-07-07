@@ -4,7 +4,7 @@ description: 'Theoretical physicists barely need it. Experimental physicists can
 pubDate: 'May 05 2026'
 tags: ["ml-research", "methodology", "experimental-design", "statistics"]
 series: "Notes on a Methodology Transition"
-seriesOrder: 1
+seriesOrder: 2
 ---
 
 My training is reductive. Physics background, IISER Kolkata — the instinct is to take the simplest model that contains the phenomenon, write down two parameters, derive a prediction, measure one number. If the number does not appear, the model is wrong. This is a clean way to think, and it does not require elaborate experimental design because the theory tells you what to measure.
@@ -59,11 +59,7 @@ The ML literature replication crisis is the result. An effect reported on one da
 
 ## The structure we borrowed
 
-The pre-registration discipline in this research program is borrowed directly from clinical trial methodology — and for the same reason. When you run enough experiments, you will find effects by chance. When you have enough flexibility in how you analyze the results, you will find effects that fit the story you want to tell. Pre-registration is not distrust of your own integrity; it is recognition that the search process itself produces false positives, and locking the decision rule before the search begins is the only reliable remedy.
-
-The τ-baseline plays the role of the control arm. In a drug trial, the control arm measures what happens without the intervention, so you can separate the drug's effect from the natural course of the disease. In a compression experiment, the τ-baseline measures what happens with a trivial intervention — random reinitialization, or a bias-only fine-tune — so you can separate the method's effect from the natural variance of the training process.
-
-The trap cells are the equivalent of pre-specified secondary endpoints. In a clinical trial, you pre-specify which secondary outcomes you will measure and how you will analyze them, before seeing data, so that no one can accuse you of fishing for significance among all possible outcomes after the fact. The trap cells pre-specify which confounds will be checked: length bias, checkpoint timing, distribution shift. If any trap fires, the claim is retracted — not because you designed it to, but because you committed to that standard before knowing what the data would look like.
+I have written about the machinery itself elsewhere — [the pre-registration workflow](/blog/2026-04-20-preregistration-ml/) and [the full falsification ladder](/blog/2026-04-28-compression-falsification-ladder/) — so here I will only draw the map back to the clinical trial. Pre-registration is the locked analysis plan: the decision rule committed before the search begins, because the search itself produces false positives no matter how honest you are. The τ-baseline is the control arm: it measures what a trivial intervention — random reinitialization, a bias-only fine-tune — achieves, so the method's effect can be separated from the natural variance of training. The trap cells are the pre-specified secondary endpoints: the confounds to check — length bias, checkpoint timing, distribution shift — named before the data exists, with retraction committed in advance if any of them fires.
 
 ---
 

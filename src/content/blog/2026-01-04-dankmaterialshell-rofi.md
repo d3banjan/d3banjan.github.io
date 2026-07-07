@@ -20,7 +20,7 @@ Each is a separate project with its own design language. Making them feel unifie
 
 ## DankMaterialShell: The Shell Layer
 
-[DankMaterialShell](https://github.com/danknil/DankMaterialShell) (DMS) is a Quickshell-based desktop shell. It provides:
+[DankMaterialShell](https://github.com/AvengeMedia/DankMaterialShell) (DMS) is a Quickshell-based desktop shell. It provides:
 - Top panel with workspaces, systray, clock
 - Power menu
 - App spotlight

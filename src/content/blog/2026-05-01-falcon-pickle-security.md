@@ -38,7 +38,7 @@ pickle.loads(payload)
 # curl fires. The model "loaded" successfully.
 ```
 
-This is not theoretical. The National Vulnerability Database has CVEs against scikit-learn pipelines, Hugging Face model loading paths, and MLflow artifact stores — all pickle-backed, all exploitable by a malicious artifact.
+This is not theoretical. CVE-2020-13092 is this exact exploit against scikit-learn — an untrusted file passed to `joblib.load` with a `__reduce__` that calls `os.system`. CVE-2024-3568 is the same pattern in Hugging Face transformers, where `load_repo_checkpoint` called `pickle.load` on checkpoint data; the fix removed the function entirely. And MLflow collected nine at once — CVE-2024-37052 through CVE-2024-37060 — mostly malicious pickles hidden inside logged models that fire when a victim calls `load_model`. All pickle-backed, all exploitable by a malicious artifact.
 
 ### Which packages wrap pickle without securing it
 

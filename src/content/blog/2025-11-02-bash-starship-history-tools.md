@@ -167,66 +167,6 @@ This runs after every command and tells Kitty where you are. Now `Ctrl+Shift+T` 
 
 **The pattern:** Terminal and shell cooperate via escape sequences. Same mechanism powers Starship's timing, Atuin's history capture, and more.
 
-## Aliases: Consistent Behavior Across Machines
-
-Aliases ensure commands behave consistently regardless of which machine I'm on.
-
-**Philosophy:** Make dangerous things safer, make common things shorter.
-
-```bash
-# Safer defaults (confirm before overwriting)
-alias cp='cp -i'
-alias mv='mv -i'
-alias rm='rm -I'  # -I prompts once for >3 files
-
-# Human-readable output
-alias df='df -h'
-alias free='free -m'
-alias du='du -h'
-
-# Quick access
-alias '?'='claude -p'  # Quick Claude queries
-```
-
-The `?` alias is my favorite. Quick questions without a full session:
-
-```bash
-? "how do I revert the last git commit"
-```
-
-<details>
-<summary>Universal archive extraction function</summary>
-
-Different archives need different commands. I never remember which.
-
-```bash
-ex() {
-    if [ -f "$1" ]; then
-        case "$1" in
-            *.tar.bz2) tar xjf "$1" ;;
-            *.tar.gz)  tar xzf "$1" ;;
-            *.tar.xz)  tar xJf "$1" ;;
-            *.tar)     tar xf "$1" ;;
-            *.tbz2)    tar xjf "$1" ;;
-            *.tgz)     tar xzf "$1" ;;
-            *.zip)     unzip "$1" ;;
-            *.rar)     unrar x "$1" ;;
-            *.7z)      7z x "$1" ;;
-            *.gz)      gunzip "$1" ;;
-            *.bz2)     bunzip2 "$1" ;;
-            *.xz)      unxz "$1" ;;
-            *)         echo "'$1' cannot be extracted" ;;
-        esac
-    else
-        echo "'$1' is not a valid file"
-    fi
-}
-```
-
-Now: `ex whatever.tar.gz` — no thinking about syntax.
-
-</details>
-
 ## The Complete Stack
 
 ```mermaid
@@ -239,10 +179,9 @@ block-beta
     bash["Bash (portable, everywhere)"]
   end
   block:layer3["Enhancements"]:1
-    columns 3
+    columns 2
     starship["Starship"]
     history["Atuin/McFly/fzf"]
-    aliases["Aliases"]
   end
 ```
 
@@ -252,15 +191,3 @@ Each layer is independently replaceable:
 - Don't like Kitty? Everything else still works
 
 **The mental model:** Unix philosophy applied to shell setup. Small tools, clear interfaces, compose freely.
-
-## Design Decisions Summary
-
-| Decision | Tradeoff | Why I Chose It |
-|----------|----------|----------------|
-| Bash over Fish/Zsh | Fewer features | Portability to any server |
-| Starship | Extra binary | One config across shells |
-| Atuin default | Heavier than fzf | Directory-aware search |
-| Switchable history | Complexity | Different tools for different contexts |
-| OSC 7 integration | Shell modification | Directory inheritance in tabs |
-
----

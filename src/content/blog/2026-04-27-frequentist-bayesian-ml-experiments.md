@@ -4,7 +4,7 @@ description: 'Frequentist hypothesis testing rebuilt from first principles for M
 pubDate: 'Apr 27 2026'
 tags: ["ml-research", "methodology", "statistics", "bayesian", "hypothesis-testing"]
 series: "Notes on a Methodology Transition"
-seriesOrder: 2
+seriesOrder: 3
 ---
 
 Most ML researchers have a vague, uncomfortable relationship with p-values. You learned the formula, you know 0.05 is the magic number, and you have a nagging feeling that you are not quite using it right.
@@ -182,4 +182,4 @@ The combination is the right tool for a solo researcher without a statistics tea
 
 ---
 
-*Next in the series: [Two Research Modes, and Why the Second One Needs Lean 4](/blog/2026-05-07-physicist-vs-evolutionary-ml-research/)*
+*Next in the series: [Two Research Modes, and Why the Second One Needs Lean 4](/blog/2026-05-07-physicist-vs-selectionist-ml-research/)*

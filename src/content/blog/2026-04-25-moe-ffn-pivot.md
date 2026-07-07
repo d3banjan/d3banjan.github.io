@@ -63,6 +63,8 @@ The traps: random rotation (expected outcome — no better than gauge baseline),
 
 ## The V4 MLP-only 16-layer verdict
 
+(The V4 is prereg versioning: this was the fourth locked design for the rung — V1 through V3 were earlier drafts of the same experiment, each revised and re-locked under the prereg rules before this run.)
+
 The singular value spectra were not narrow. Across OLMoE expert FFN matrices, the effective dimension distribution peaked around $d_{\text{eff}} / d \approx 0.65$–$0.75$. The narrow-d threshold ($< 0.4$) was not met by any layer; the pass condition required 70% of matrices to clear it.
 
 This is the first falsification. The FFN weights in OLMoE-1B-7B experts are not low-rank in the way the hypothesis required. The singular value spectrum decays, but it decays slowly — there's no "elbow" at a small rank that would support the narrow-d compression story.
@@ -115,7 +117,7 @@ The lesson from Part E is that intuitions about specialization don't translate a
 
 After the V4 verdict, the pre-registration kill procedure produced:
 
-- `decision.json`: `{"rung": "E-ffn-rotation", "verdict": "KILLED", "round": 1, "trigger": "narrow-d threshold unmet at 10-layer checkpoint"}`
+- `decision.json`: `{"rung": "E-ffn-rotation", "verdict": "KILLED", "round": 1, "trigger": "narrow-d threshold unmet at 4-layer checkpoint"}`
 - `postmortem.md`: documents the singular value distribution finding, the RAdam plateau, and the generation probe result
 - Lean theorem tracker updated: bound tightness confirmed for FFN case (the bound works as advertised — the problem is the problem, not the bound)
 

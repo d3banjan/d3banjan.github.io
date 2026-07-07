@@ -31,25 +31,13 @@ This final post shows the complete picture.
 
 ### 1. Unified Color Palette
 
-All components use coordinated colors:
-
-| Token | Color | Used In |
-|-------|-------|---------|
-| Focus/Selection | `#7fc8ff` | Niri focus ring, Rofi selection |
-| Background | `#1a1a1a` | Rofi, terminal transparency |
-| Text | `#cdd6f4` | Rofi, Kitty |
-| Surface | `#45475a` | Borders, panels |
+One accent, `#7fc8ff`, does double duty as Niri's focus ring and Rofi's selection highlight. Backgrounds sit on `#1a1a1a`, text on Catppuccin's `#cdd6f4`, borders and panels on `#45475a`.
 
 **The principle:** Extract colors from one source (Niri's focus ring, Catppuccin), apply everywhere.
 
 ### 2. Unified Shortcut Philosophy
 
-| Modifier | Meaning | Example |
-|----------|---------|---------|
-| `Super` | Do action | `Super+C` = close |
-| `Super+Shift` | Move (stay) | `Super+Shift+3` = send to ws 3 |
-| `Super+Alt` | Move (follow) | `Super+Alt+3` = go with window |
-| `Super+Ctrl` | Alternate | `Super+Ctrl+R` = cycle widths |
+`Super` does the action (`Super+C` closes). `Super+Shift` moves a window and stays put (`Super+Shift+3` sends to workspace 3). `Super+Alt` moves and follows (`Super+Alt+3` goes with the window). `Super+Ctrl` is the alternate form (`Super+Ctrl+R` cycles widths).
 
 **The principle:** Modifier encodes action type. Works in Niri, would work in Hyprland.
 
@@ -142,14 +130,7 @@ Three tabs appear: project, dev (split), git.
 - `Super+W` — overview
 - `Super+S` — scratchpad (workspace 9)
 
-**Context Switching:**
-```bash
-# New feature in parallel
-git worktree add ../myapp-feature feature-branch
-worktree-claude ~/projects/myapp-feature
-```
-
-Two Claude sessions, two branches, zero conflict.
+**Context Switching:** a git worktree plus a second Claude session per feature branch — the full `worktree-claude` walkthrough is in the [terminal workflow post](/blog/2025-11-16-terminal-workflow-finale/).
 
 **End of Day:**
 - `Super+X` — power menu → shutdown
@@ -195,15 +176,7 @@ ttf-hack-nerd
 
 ## The Meta-Pattern
 
-Looking across everything—terminal, shell, compositor, AI assistant—the same patterns repeat:
-
-| Pattern | Examples |
-|---------|----------|
-| **IPC for control** | `kitty @`, `dms ipc`, `niri msg` |
-| **Config as code** | `.kdl`, `.toml`, `.json`, session files |
-| **Declarative layouts** | Kitty sessions, Niri workspaces |
-| **Separation of concerns** | Compositor vs shell vs launcher |
-| **Hot reload** | Niri, Starship, DMS |
+Looking across everything—terminal, shell, compositor, AI assistant—the same patterns repeat: IPC for control, config as code, declarative layouts (Kitty sessions, Niri workspaces), separation of concerns, hot reload.
 
 These aren't just Linux patterns. They're good software patterns. The desktop is a distributed system where the user is the integrator.
 
@@ -224,7 +197,7 @@ Each step is independent. Add what helps, skip what doesn't.
 ## Resources
 
 - [Niri](https://github.com/YaLTeR/niri) — The compositor
-- [DankMaterialShell](https://github.com/danknil/DankMaterialShell) — The shell
+- [DankMaterialShell](https://github.com/AvengeMedia/DankMaterialShell) — The shell
 - [Kitty](https://sw.kovidgoyal.net/kitty/) — The terminal
 - [Starship](https://starship.rs) — The prompt
 - [Catppuccin](https://catppuccin.com) — The color palette

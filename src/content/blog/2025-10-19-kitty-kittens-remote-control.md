@@ -74,7 +74,7 @@ map ctrl+shift+o kitten hints
 
 **The standard fix:** Set `TERM=xterm-256color` and lose Kitty features. Or manually copy terminfo files. Neither is good.
 
-**The kitten solution:** `kitten ssh` automatically copies Kitty's terminfo to the server on first connection, then SSH's normally.
+**The kitten solution:** `kitten ssh` automatically copies Kitty's terminfo to the server on first connection, then SSHs normally.
 
 ```bash
 kitten ssh user@host
@@ -111,17 +111,7 @@ kitty @ new-window --cwd ~/projects/myapp
 
 **The mental model:** Your terminal is a server. Scripts are clients.
 
-### Real-World Use: Test Runner
-
-I have an editor keybinding that runs tests without leaving my editor:
-
-```bash
-#!/bin/bash
-# run-tests.sh
-kitty @ send-text --match title:dev "npm test\n"
-```
-
-The `--match` flag targets windows by title, ID, or environment variable. My dev tab always has title "dev", so this sends the test command there.
+My favorite use: an editor keybinding that runs `run-tests.sh`, a one-line script that sends `npm test` to my dev tab with `kitty @ send-text --match title:dev`. Tests run without leaving the editor. The `--match` flag targets windows by title, ID, or environment variable. I walk through the full script and workflow in the [final post of this series](/blog/2025-11-16-terminal-workflow-finale).
 
 <details>
 <summary>More remote control patterns</summary>
@@ -211,18 +201,7 @@ env MY_VAR=value
 
 </details>
 
-## Design Patterns Across Features
-
-Notice the consistency:
-
-| Feature | Pattern | Result |
-|---------|---------|--------|
-| Hints | Identify content by type, not position | Faster, more accurate selection |
-| SSH kitten | Automate the tedious setup | Seamless remote sessions |
-| Remote control | Expose terminal as API | Scriptable workflows |
-| Sessions | Declare workspace as code | Reproducible environments |
-
-Each feature follows the same philosophy: **automate the tedious, expose the powerful**.
+Every feature above follows the same philosophy: **automate the tedious, expose the powerful**.
 
 ## Combining Everything
 
@@ -242,5 +221,3 @@ All in the terminal. No context switching. No mouse except when I want it.
 2. **SSH kitten** solves terminfo automatically — zero ongoing maintenance
 3. **Remote control** makes terminals scriptable — automation becomes possible
 4. **Session files** make workspaces reproducible — morning setup becomes one command
-
----

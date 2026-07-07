@@ -4,14 +4,14 @@ description: 'A three-step decision rule for running fewer, better experiments: 
 pubDate: 'May 09 2026'
 tags: ["ml-research", "methodology", "lean4", "experimental-design"]
 series: "Notes on a Methodology Transition"
-seriesOrder: 5
+seriesOrder: 6
 ---
 
 The most expensive thing in empirical ML research is running an experiment that a proof could have killed.
 
 A GPU-hour is cheap. Renting four of them costs less than a coffee subscription. A week of dead-end exploration costs something you can't buy back: the narrow window when your understanding of a problem is still sharp and your hypotheses are still crisp. The loss isn't the compute; it's the opportunity.
 
-The selectionist approach I described in [earlier posts](/blog/2026-05-07-physicist-vs-evolutionary-ml-research/) treats experiments as the primary unit of knowledge production. You design a probe, pre-register it, run it, interpret the result. Repeat. The physicist move is to treat *theorems* as the primary unit and use experiments only for what theorems can't settle.
+The selectionist approach I described in [earlier posts](/blog/2026-05-07-physicist-vs-selectionist-ml-research/) treats experiments as the primary unit of knowledge production. You design a probe, pre-register it, run it, interpret the result. Repeat. The physicist move is to treat *theorems* as the primary unit and use experiments only for what theorems can't settle.
 
 The practical instrument for this is a three-step decision rule: run it before pre-registering any new probe.
 
@@ -76,6 +76,8 @@ The trap cell fix is particularly high-leverage. When I was redesigning trap cel
 
 ## The cost model in concrete terms
 
+One caveat before the numbers: these are ballpark figures, not timed measurements. The previous post could count 25 kills against 10 obstacle classes because every postmortem was on disk; nobody logs how long probe design takes. Read the ratios, not the digits.
+
 Late selectionist mode:
 
 - Probe design: 2–3 hours (includes trap design, gate selection, corpus choice)
@@ -93,7 +95,7 @@ Physicist target:
 
 The Lean verification isn't overhead — it's the work. If the Lean check rules out the configuration before execution, the 30 minutes of Lean work just saved 4 GPU-hours. If it doesn't rule it out, the 30 minutes tightened the probe design and identified exactly what the experiment needs to demonstrate.
 
-The strongest signal that this is working isn't the GPU savings — it's the theorem-to-probe ratio. Selectionist mode: roughly 1 Lean theorem per 3 probes, because theorems were downstream artifacts of experiments. Physicist target: 1 theorem per 1–2 probes, because theorems are upstream filters on which experiments run.
+The strongest signal that this is working isn't the GPU savings — it's the theorem-to-probe ratio. Selectionist mode: roughly 1 Lean theorem per 3 probes, because theorems were downstream artifacts of experiments. Physicist target: 1 theorem per 1–2 probes, because theorems are upstream filters on which experiments run. Both ratios are impressions from eyeballing the repo, not counts like the kill tally in the previous post — I flag that plainly because this series keeps insisting on the difference.
 
 ---
 
@@ -109,4 +111,4 @@ The goal isn't to prove theorems instead of running experiments. It's to run exp
 
 ---
 
-*This is post 3 of the Notes on a Methodology Transition series. Previous posts: [Physicist vs. Evolutionary-Biologist ML Research](/blog/2026-05-07-physicist-vs-evolutionary-ml-research/) · [Naming What Fails: An Obstacle Taxonomy](/blog/2026-05-08-naming-what-fails-obstacle-taxonomy/) · [Pre-Registration for Solo ML Researchers](/blog/2026-04-20-preregistration-ml/) · [How to Honestly Test if a Neural Network Can Be Compressed](/blog/2026-04-28-compression-falsification-ladder/)*
+*This is post 6 of the Notes on a Methodology Transition series. Previous posts: [Pre-Registration for Solo ML Researchers](/blog/2026-04-20-preregistration-ml/) · [What Experimental Design Actually Means](/blog/2026-05-05-experimental-design-ml-research/) · [Hypothesis Testing from Scratch, and Its Bayesian Analogue](/blog/2026-04-27-frequentist-bayesian-ml-experiments/) · [Two Research Modes, and Why the Second One Needs Lean 4](/blog/2026-05-07-physicist-vs-selectionist-ml-research/) · [Naming What Fails: The Obstacle Taxonomy](/blog/2026-05-08-naming-what-fails-obstacle-taxonomy/)*

@@ -26,20 +26,7 @@ For my use case (local development, modern hardware), these tradeoffs are invisi
 
 ## Design Philosophy: Modifier Consistency
 
-Kitty's keybindings follow a single pattern: `Ctrl+Shift+<key>`. This isn't arbitrary—it's a deliberate choice to avoid conflicts.
-
-**The problem:** Terminals pass most key combinations to the shell. `Ctrl+C` is SIGINT. `Ctrl+Z` is SIGTSTP. `Ctrl+R` is reverse search. Any keybinding the terminal claims is one the shell can't use.
-
-**The solution:** `Ctrl+Shift` combinations are rarely used by CLI programs. By claiming this modifier space, Kitty gets rich keybindings without breaking shell functionality.
-
-| Action | Kitty | Why This Key |
-|--------|-------|--------------|
-| New tab | `Ctrl+Shift+T` | T for Tab (matches browsers) |
-| Close | `Ctrl+Shift+Q` | Q for Quit (matches browsers) |
-| Copy | `Ctrl+Shift+C` | C for Copy (Ctrl+C is SIGINT) |
-| Paste | `Ctrl+Shift+V` | V for paste (matches everywhere) |
-
-The browser-like shortcuts reduce cognitive load. You already know `Ctrl+T` opens tabs—adding Shift is the only new thing to learn.
+Kitty's keybindings follow a single pattern: `Ctrl+Shift+<key>`. This isn't arbitrary. Terminals pass most key combinations to the shell—`Ctrl+C` is SIGINT, `Ctrl+Z` is SIGTSTP, `Ctrl+R` is reverse search—so any keybinding the terminal claims is one the shell can't use. `Ctrl+Shift` combinations are rarely used by CLI programs, so Kitty claims that space: `Ctrl+Shift+T` for a new tab, `Ctrl+Shift+C` for copy, and so on. (I write more about designing modifier schemes in [the Niri shortcuts post](/blog/2025-12-21-niri-shortcuts-navigation), where the same logic applies at the compositor level.)
 
 ## Layouts: Solving the Split Problem
 
@@ -94,7 +81,7 @@ map ctrl+shift+t launch --cwd=current --type=tab
 map ctrl+shift+enter launch --cwd=current
 ```
 
-This requires shell integration (covered in post 3) to work reliably.
+This requires shell integration (covered in [post 3](/blog/2025-11-02-bash-starship-history-tools)) to work reliably.
 
 ### Decision 2: Disable the audio bell
 
@@ -115,61 +102,10 @@ font_size 12.0
 
 **The tradeoff:** Ligatures look beautiful but can confuse beginners who see `≠` in code but must type `!=`. I keep them on because I'm past that confusion.
 
-<details>
-<summary>Full recommended configuration</summary>
-
-```conf
-# Font
-font_family      JetBrains Mono
-font_size        12.0
-
-# Cursor
-cursor_shape     beam
-cursor_blink_interval 0
-
-# Scrollback
-scrollback_lines 10000
-
-# Bell
-enable_audio_bell no
-
-# Tab bar
-tab_bar_style    powerline
-tab_powerline_style slanted
-
-# Window
-background_opacity 0.95
-
-# Shell integration
-shell_integration enabled
-
-# Directory inheritance
-map ctrl+shift+t launch --cwd=current --type=tab
-map ctrl+shift+enter launch --cwd=current
-```
-
-</details>
+Everything else in my config is cosmetic. If you only change three things, change these.
 
 ## Compared to Alternatives
 
-| Terminal | Rendering | Multiplexing | Config Format |
-|----------|-----------|--------------|---------------|
-| Kitty | GPU (OpenGL) | Built-in | Plain text |
-| Alacritty | GPU (OpenGL) | None (use tmux) | YAML |
-| WezTerm | GPU (WebGPU) | Built-in | Lua |
-| gnome-terminal | CPU | Tabs only | GUI |
+The serious competition is other GPU terminals. Alacritty is lighter but has no multiplexing—you need tmux. WezTerm has built-in multiplexing like Kitty, but configures in Lua (more powerful, more complex) and renders via WebGPU (newer, less tested).
 
-**Kitty vs Alacritty:** Both GPU-accelerated, but Kitty has built-in splits/tabs. Alacritty is lighter but requires tmux for multiplexing.
-
-**Kitty vs WezTerm:** WezTerm's Lua config is more powerful but more complex. Kitty's plain text config is simpler. WezTerm uses WebGPU (newer, less tested). Both are excellent.
-
-**My choice:** Kitty's balance of power and simplicity fits my workflow. The kitten extension system (next post) seals the deal.
-
-## Key Takeaways
-
-1. **GPU rendering** eliminates the terminal as a bottleneck
-2. **`Ctrl+Shift` modifier** avoids shell conflicts by design
-3. **Layout cycling** is simpler than arbitrary splits for most use cases
-4. **Directory inheritance** requires explicit configuration but transforms workflow
-
----
+Kitty's balance of power and simplicity fits my workflow. The kitten extension system ([next post](/blog/2025-10-19-kitty-kittens-remote-control)) seals the deal.

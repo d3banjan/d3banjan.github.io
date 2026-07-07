@@ -4,7 +4,7 @@ description: 'Solo research programs drift one small exception at a time. Three 
 pubDate: 'May 10 2026'
 tags: ["ml-research", "methodology", "research-operations", "tooling"]
 series: "Notes on a Methodology Transition"
-seriesOrder: 6
+seriesOrder: 7
 ---
 
 Solo research programs drift. Not because the researcher is careless, but because each session adds small exceptions to the protocol that feel justified in the moment.
@@ -71,22 +71,13 @@ After each session's Lean work, the proof count should be monotonically non-decr
 
 Either case needs immediate investigation, not deferred investigation. A sorry in a theorem you've claimed as proved is a retraction-level event for the internal record, even if nothing has been published.
 
-The check depends on how you track theorem status, but the principle is constant: maintain a human-readable summary of proved vs. sorry counts, and diff it against yesterday's version.
-
-```bash
-# generate current status (adapt to your Lean project layout)
-grep -r 'theorem\|sorry' LeanProofs/src/ \
-  | grep -v '^ *--' \
-  | awk '/theorem/{t++} /sorry/{s++} END{print "proved:", t-s, "sorry:", s}'
-```
-
-More practically, most Lean projects produce a build log. A simpler check is whether the build is clean:
+The check depends on how you track theorem status, but the principle is constant: compare today's proof status against yesterday's. The tempting version is a grep-and-awk one-liner that counts `theorem` lines and `sorry` lines and subtracts. Don't use it — it silently miscounts whenever one theorem contains two sorries, or a sorry sits on a line that doesn't mention `theorem` at all. The build log is the ground truth, so check the build instead:
 
 ```bash
 cd LeanProofs && lake build 2>&1 | grep -E 'warning|error|sorry'
 ```
 
-Any sorry appearing in a file that was clean yesterday is a regression. Lean's compiler catches this too — but the compiler check is only as good as whether you remember to run it. Adding it to the daily routine removes the "I'll check it next time" failure mode.
+Any sorry appearing in a file that was clean yesterday is a regression. The compiler catches this reliably — but only if you remember to run it. Adding it to the daily routine removes the "I'll check it next time" failure mode.
 
 ---
 
@@ -120,4 +111,4 @@ drift-check:
 
 ---
 
-*This is post 4 of the Notes on a Methodology Transition series. Previous posts: [Theorem-Screened Experiments](/blog/2026-05-09-theorem-screened-experiments/) · [Physicist vs. Evolutionary-Biologist ML Research](/blog/2026-05-07-physicist-vs-evolutionary-ml-research/) · [Naming What Fails: An Obstacle Taxonomy](/blog/2026-05-08-naming-what-fails-obstacle-taxonomy/) · [Pre-Registration for Solo ML Researchers](/blog/2026-04-20-preregistration-ml/)*
+*This is post 7 of the Notes on a Methodology Transition series. Previous posts: [Pre-Registration for Solo ML Researchers](/blog/2026-04-20-preregistration-ml/) · [What Experimental Design Actually Means](/blog/2026-05-05-experimental-design-ml-research/) · [Hypothesis Testing from Scratch, and Its Bayesian Analogue](/blog/2026-04-27-frequentist-bayesian-ml-experiments/) · [Two Research Modes, and Why the Second One Needs Lean 4](/blog/2026-05-07-physicist-vs-selectionist-ml-research/) · [Naming What Fails: The Obstacle Taxonomy](/blog/2026-05-08-naming-what-fails-obstacle-taxonomy/) · [Theorem-Screened Experiments](/blog/2026-05-09-theorem-screened-experiments/)*

@@ -3,6 +3,8 @@ title: 'Pre-Registration for Solo ML Researchers'
 description: 'How to borrow the clinical trial discipline of writing down what "pass" looks like before running the experiment — and why a SHA256 hash is the cheapest honesty enforcement mechanism available.'
 pubDate: 'Apr 20 2026'
 tags: ["ml-research", "methodology", "pre-registration", "experimentation"]
+series: "Notes on a Methodology Transition"
+seriesOrder: 1
 ---
 
 The easiest person to deceive is yourself, and solo ML researchers are especially exposed: no co-authors to push back, no lab meeting where a skeptical postdoc asks why you switched metrics mid-run. Just you, your results, and a brain that wants the experiment to have worked.
@@ -59,6 +61,9 @@ trap_cells:
   - name: task_swap
     description: Use code-derived basis on math data and vice versa
     expected_outcome: FAIL (cross-task degradation must be visible)
+  - name: off_projection
+    description: Route data through the directions the method discards as unimportant
+    expected_outcome: FAIL (if the discarded directions don't hurt, importance is misidentified)
   - name: trivial_pass
     description: Run uncompressed model through evaluation pipeline
     expected_outcome: PASS with near-zero error
@@ -77,7 +82,7 @@ locked_by: "sha256 embedded below"
 sha256: ""                      # filled in by lock script; experiment refuses to run if mismatch
 ```
 
-The lock script is three lines:
+The lock script is ten lines:
 
 ```python
 import hashlib, json, sys

@@ -11,9 +11,9 @@ Compression research has a specific, underappreciated failure mode: schemes that
 
 Not wrong in the sense of bad hyperparameters. Wrong in the sense that they violate structural invariants baked into the model architecture—invariants that are invisible to perplexity metrics, invisible to benchmark evals on the right distribution, but catastrophic on anything the training distribution didn't anticipate.
 
-The canonical version of this failure: quantize a model, watch perplexity improve slightly (the quantization noise acts as regularisation), ship it, watch it silently degrade on a real task. The model wasn't compressed. It was *broken in a way that looked like improvement*.
+The canonical version of this failure: quantize a model, watch perplexity improve slightly (the quantization noise acts as regularization), ship it, watch it silently degrade on a real task. The model wasn't compressed. It was *broken in a way that looked like improvement*.
 
-The survey I've been building is a formal catalogue of these invariants. Each entry is a **symmetry type**: a structural property that compression must preserve or the model's behaviour becomes undefined in a specific, provable way. Each entry maps to at least one theorem in Lean 4—a formal proof assistant—so "must preserve" is not handwaving but a machine-checked claim.
+The survey I've been building is a formal catalogue of these invariants. Each entry is a **symmetry type**: a structural property that compression must preserve or the model's behavior becomes undefined in a specific, provable way. Each entry maps to at least one theorem in Lean 4—a formal proof assistant—so "must preserve" is not handwaving but a machine-checked claim.
 
 Here's what the catalogue currently contains.
 
@@ -25,7 +25,7 @@ Brief detour for readers unfamiliar with it: Lean 4 is a functional programming 
 
 For a symmetry survey, this matters. "Compression that breaks rotational symmetry corrupts the relative-position signal" is a claim. Lean makes it a theorem. You can read the proof, check the assumptions, and know exactly what is and isn't covered.
 
-Current coverage and the remaining gaps are summarised at the end.
+Current coverage and the remaining gaps are summarized at the end.
 
 ---
 
@@ -41,7 +41,7 @@ The rotation acts on pairs of dimensions: $(q_{2i}, q_{2i+1})$ gets multiplied b
 
 The model still produces outputs. Perplexity on a fixed-position sequence may not visibly change. But tasks that require the model to track long-range dependencies—where the relative-position signal for large $|m - n|$ matters—will degrade.
 
-**The widget bug that taught me something real.** During proof development, a visualisation widget for the RoPE frequency spectrum had a bug: it was wrapping the active band at $\theta = 2\pi$ and using a false $/16$ denominator in the frequency calculation. The consequence was that the widget showed most of the rotation energy concentrated in a narrow band—which looked plausible, almost correct. But it was wrong, and the wrongness was *structural*: the same category of error as a quantization scheme that appears correct on a scalar analysis but breaks on the group-theoretic structure.
+**The widget bug that taught me something real.** During proof development, a visualization widget for the RoPE frequency spectrum had a bug: it was wrapping the active band at $\theta = 2\pi$ and using a false $/16$ denominator in the frequency calculation. The consequence was that the widget showed most of the rotation energy concentrated in a narrow band—which looked plausible, almost correct. But it was wrong, and the wrongness was *structural*: the same category of error as a quantization scheme that appears correct on a scalar analysis but breaks on the group-theoretic structure.
 
 The Lean theorem for RoPE states, formally: an operation on the Q/K weight matrices is safe (in the sense of preserving relative-position encoding) only if it is a member of the orthogonal group on the rotation subspace. Quantization is not a member. Therefore quantization of Q/K requires explicit correction (e.g., RotorQuant-style SRHT pre-rotation that puts outliers in a basis where rounding is safer).
 
@@ -75,11 +75,11 @@ This is the most "engineering" of the symmetry types—closest to hardware—but
 
 ### 4. DenseSparse — MoE Router Activation Patterns
 
-**What it is.** Mixture-of-Experts (MoE) models—OLMoE, Mixtral, and their relatives—use a router that selects a small number of experts (typically 2–8 out of 64+) to process each token. The key property: the activated expert set is *sparse*. Most experts don't fire on most tokens. This isn't a bug to be corrected; it's the mechanism by which each expert specialises.
+**What it is.** Mixture-of-Experts (MoE) models—OLMoE, Mixtral, and their relatives—use a router that selects a small number of experts (typically 2–8 out of 64+) to process each token. The key property: the activated expert set is *sparse*. Most experts don't fire on most tokens. This isn't a bug to be corrected; it's the mechanism by which each expert specializes.
 
-**What compression breaks.** Compression that acts on the router's output distribution—or that forces activations to be denser (e.g., by normalising away the top-K selection, or by approximating the router's softmax output with a smoother distribution)—destroys expert specialisation.
+**What compression breaks.** Compression that acts on the router's output distribution—or that forces activations to be denser (e.g., by normalizing away the top-K selection, or by approximating the router's softmax output with a smoother distribution)—destroys expert specialization.
 
-The router is not just selecting experts; it's enforcing a *partitioning* of the input distribution across experts. Compression that makes this partitioning softer (denser) means each expert now sees a wider input distribution—destroying the specialisation that the model spent training building up.
+The router is not just selecting experts; it's enforcing a *partitioning* of the input distribution across experts. Compression that makes this partitioning softer (denser) means each expert now sees a wider input distribution—destroying the specialization that the model spent training building up.
 
 The Lean theorems for DenseSparse cover the top-K selection invariant: if compression maps a top-K sparse selection to a distribution with effective support greater than K, it has violated the router's structural contract.
 
@@ -95,7 +95,7 @@ The concrete failure mode I encountered: in early G₄ experiments (see the [com
 
 The more subtle version: quantization with a small number of levels. A dormant neuron has weights and activations concentrated near zero. With coarse quantization, these get rounded to zero. The neuron is now actually dead, not just dormant.
 
-The Lean theorem for dormancy establishes the condition under which a compression scheme is *dormancy-safe*: it must not decrease the maximum activation of any neuron below the threshold used to define dormancy. A proof that a compression scheme is dormancy-safe is a guarantee that rare-input behaviour is preserved.
+The Lean theorem for dormancy establishes the condition under which a compression scheme is *dormancy-safe*: it must not decrease the maximum activation of any neuron below the threshold used to define dormancy. A proof that a compression scheme is dormancy-safe is a guarantee that rare-input behavior is preserved.
 
 ---
 

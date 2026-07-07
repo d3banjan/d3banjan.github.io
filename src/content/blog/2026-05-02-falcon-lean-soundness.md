@@ -70,6 +70,8 @@ The model is a simplification of the Python runtime, but that is the point. We a
 
 Three theorems in the falcon-secure Lean formalization reached zero sorries (no placeholders, no holes — the proofs are complete).
 
+Before the code blocks: what follows is a readable paraphrase, not verbatim source. The actual proofs live in `lean/TaintedTypingFramework/Soundness.lean` in the repo. `eval_not_tainted_without_loads` and the `NoLoads` predicate appear there under exactly those names; the other identifiers below are simplified for exposition, so if you search the repo for them and come up empty, that is why.
+
 ### Theorem 1: `eval_not_tainted_without_loads`
 
 A `Tainted` value cannot reach the `eval`-equivalent function unless it passes through a `loads`-equivalent function first.
@@ -91,7 +93,8 @@ The proof is by structural induction on the execution path. Every branch that le
 Any execution path that contains no `loads` call cannot produce a tainted value that escapes the computation boundary.
 
 ```lean
--- Approximate statement
+-- Approximate statement; in the repo this claim is proved inside
+-- eval_not_tainted_without_loads, not under this name
 def NoLoads (path : ExecutionPath) : Prop :=
   ∀ step ∈ path, ¬ IsLoadsCall step
 
@@ -121,6 +124,7 @@ Proving that safe programs cannot leak is only half the work. We also need to pr
 `Leaks.lean` contains a corpus of programs that *do* leak, with proofs that they do:
 
 ```lean
+-- Approximate; the repo's Leaks.lean names its theorems differently
 -- A program that leaks: passes Tainted data directly to deserialize
 -- bypassing the trust gate
 def leaky_program (raw : Tagged Bytes) : Option Object :=
@@ -167,4 +171,4 @@ That is a different kind of answer.
 
 ---
 
-*falcon-secure is at [github.com/d3banjan/falcon](https://github.com/d3banjan/falcon). The Lean formalization is in `proofs/`. CVE triage by package is on the project microsite. The first post in this series — on the type-stub mechanism itself — is at [/blog/2026-05-01-falcon-pickle-security/](/blog/2026-05-01-falcon-pickle-security/).*
+*falcon-secure is at [github.com/d3banjan/falcon](https://github.com/d3banjan/falcon). The Lean formalization is in `lean/TaintedTypingFramework/`. CVE triage by package is on the project microsite. The first post in this series — on the type-stub mechanism itself — is at [/blog/2026-05-01-falcon-pickle-security/](/blog/2026-05-01-falcon-pickle-security/).*

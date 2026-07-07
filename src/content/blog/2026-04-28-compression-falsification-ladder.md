@@ -3,26 +3,19 @@ title: 'How to Honestly Test if a Neural Network Can Be Compressed'
 description: 'Pre-registration, trap cells, τ-hardened baselines, and kill-fast protocols: a field methodology for compression research that tries to kill its own ideas. With actual results from OLMoE-1B-7B.'
 pubDate: 'Apr 28 2026'
 tags: ["ml-research", "compression", "methodology", "quantization", "MoE"]
+series: "Compressing MoE Without Lying To Yourself"
+seriesOrder: 4
 ---
 
 Neural network compression papers have a replication problem. Not the statistical kind—the kind where the ideas simply don't work outside the paper's experimental setup.
 
-I've spent the last several months trying to compress OLMoE-1B-7B. Most of the ideas died. This post is about the methodology I built to kill them cleanly—and what that process actually produced.
+I've spent the last several months trying to compress OLMoE-1B-7B. Most of the ideas died. This post is the scoreboard: which ideas died, which one survived, and what the killing machinery looked like in action.
 
 ---
 
 ## The core problem
 
-When you have spent months on a compression idea, you want it to work. Your brain will find ways to make the numbers look good.
-
-The failure modes are well-documented:
-
-- **Cherry-picking**: test 5 models, report the best one
-- **Metric shopping**: perplexity looked bad, switch to accuracy
-- **Hidden fine-tuning**: "post-training compression" but quietly fine-tuned for 3 epochs
-- **No negative controls**: never check if a random method does just as well
-
-The result is a literature where ideas look great in papers and fail in practice.
+When you have spent months on a compression idea, you want it to work. Your brain will find ways to make the numbers look good: cherry-picking (test 5 models, report the best one), metric shopping (perplexity looked bad, switch to accuracy), hidden fine-tuning, no negative controls. The result is a literature where ideas look great in papers and fail in practice.
 
 The fix isn't statistical rigor alone. It's **trying to kill your ideas** rather than prove them.
 
@@ -45,76 +38,9 @@ G₀: Rotate or permute the weight axes
 
 **Rule:** If a lower rung fails, everything above it fails too. You cannot claim task-conditional compression (G₄) if basic rotation (G₀) is already impossible.
 
-Every rung goes through the same lifecycle:
+Every rung runs under the pre-registration discipline from [the companion post](/blog/2026-04-20-preregistration-ml/): a SHA256-locked prereg file the experiment script refuses to run without, four trap cells that must fail if the method is real, and a τ baseline—the best score pure random chance achieves—that the method must beat by a clear margin. That post has the full mechanics; this one is about what the ladder actually produced.
 
-1. Write down exactly what you're testing and exactly how you'll decide pass/fail
-2. Lock that document with a SHA256 hash—the experiment script refuses to run if the file changed
-3. Run the cheapest possible test
-4. Check four "trap cells" that should fail if your method is real
-5. Compare against τ, the best score random chance could achieve
-6. Apply the locked decision rule: pass → move up, fail → publish the failure and move on
-
----
-
-## Pre-registration: locking the rules before you play
-
-Before any experiment, I write a file called `tau.json`. It specifies:
-
-- Exactly what's being tested
-- Exactly how success is measured
-- How many data points, which random seeds, what decision threshold
-
-Then I compute a SHA256 hash of this file and embed it inside the file itself. The experiment script recomputes the hash at launch and refuses to start if anything changed.
-
-This is the oldest trick in science, newly relevant for ML: **seal your exam answers before the test**.
-
-In practice, this discipline caught real problems. In early rounds, the traps were too weak and I got "inconclusive" results. The locked rules said "inconclusive = redesign and re-lock," not "inconclusive = call it a pass." So I did. The second round had stronger traps and a clear kill.
-
----
-
-## Trap cells: catching yourself cheating
-
-Trap cells are automatic lie detectors embedded in every experiment. Four per rung:
-
-**Trap 1: Random basis.** Replace the compression basis with a completely random one and run the same test. If your "clever" basis barely beats random, the cleverness is an illusion.
-
-**Trap 2: Task swap.** Use the compression basis designed for code on text data (and vice versa). If code and text genuinely need different compression, swapping must hurt.
-
-**Trap 3: Off-projection.** Deliberately route data through the part of the model that the compression basis explicitly ignores. If the basis captures the important directions, the ignored directions should be useless.
-
-**Trap 4: Trivial pass.** Feed the uncompressed model through the evaluation pipeline. Expect zero error. If this fails, the error measurement is broken.
-
-These aren't hypothetical safeguards. The task_swap trap was decisive on G₄: swapping a "code" basis onto "text" data destroyed performance in 12 out of 12 cells. That proved the task-conditioning signal was real. It also, eventually, helped prove the *compression claim* was not—but that came later.
-
----
-
-## τ: the "how lucky is random?" test
-
-τ is the best score you could get by pure chance.
-
-Concretely: take the neural network weights, replace them with completely random directions of the same size, measure the error on real data, repeat 10 times, take the best result. That's τ.
-
-A compression method only passes if it beats τ by a clear margin. If it barely beats random, nothing was discovered.
-
-In early rounds, τ was unstable—it shifted 0.03–0.09 between runs, enough to flip results from "pass" to "fail." The fix was hardening: 10× more data (100 → 1000 samples) and averaging over 10 random seeds instead of 1. This reduced noise 10×. Now if a result is marginal, the problem is the compression idea, not statistical dust.
-
----
-
-## The kill-fast protocol
-
-Before touching a GPU, check if the idea is mathematically possible:
-
-| Check | Time |
-|-------|------|
-| Does the compressed form actually fit in fewer bytes? | 5 minutes, pencil and paper |
-| What's the best possible error at this rank? (one SVD) | 5 minutes |
-| Would random compression do just as well? | 5 minutes, numpy |
-
-If any check fails, kill immediately. No GPU needed.
-
-For actual experiments: run the hardest cell first. In my setup, Layer 3 + Wikitext was always hardest. If it fails, the entire rung is dead. 4 minutes instead of 60.
-
-One addition I learned the hard way: **smoke discipline before long GPU runs**. Static checkers (`ruff`, `ty`) cannot catch device-state bugs. A type-correct PyTorch call like `tensor.detach().float().cpu()` will sail past every static analysis tool and explode at runtime if the tensor is a meta-tensor placeholder on CPU offload. Before any long run on an HF model loaded with `device_map="auto"`, the pre-flight must include a real `--dense_only` run that touches an offloaded layer. That five minutes caught a bug that would have surfaced 90 seconds into a 140-minute launch.
+Two field notes from living under those rules. First, the lock bit back: in early rounds the traps were too weak and results came back inconclusive, and the locked decision rule said "inconclusive = redesign and re-lock," not "inconclusive = call it a pass." Second, τ needed hardening—it drifted 0.03–0.09 between runs, enough to flip verdicts, until I went from 100 to 1000 samples and from 1 seed to 10, cutting the noise 10×. After that, a marginal result meant the idea was weak, not the measurement.
 
 ---
 
@@ -137,7 +63,9 @@ After running these rungs on OLMoE-1B-7B:
 
 G₄ was the strongest candidate: build a smaller "recipe book" of weight directions, shared across experts. We tried per-task bases (separate books for code, math, text) and a single universal 16-direction basis from code.
 
-Both died, but the universal basis failure is instructive. At 4 layers it looked almost okay. At 16 layers:
+The task_swap trap was decisive on the first half of the claim: swapping a "code" basis onto "text" data destroyed performance in 12 out of 12 cells. The task-conditioning signal was real.
+
+The compression claim built on it was not. Both variants died, and the universal basis failure is the instructive one. At 4 layers it looked almost okay. At 16 layers:
 
 | Task | NLL inflation |
 |------|--------------|
@@ -180,6 +108,24 @@ All three corpora pass at strict gates. Both traps fire. Eight megabytes of per-
 v4 tested whether top-K per-token outlier extraction would break the humaneval floor. It didn't—no monotonic trend across K ∈ {0, 8, 16, 32, 64}. The humaneval residual isn't "a few large numbers per token."
 
 v5 ran a 3×3 calibration-vs-evaluation matrix. The diagonal entry (calibrate on humaneval, evaluate on humaneval) dropped inflation from +4.64% to +2.46%. The residual mechanism is calibration-distribution mismatch: humaneval weight activations are spikier than wikitext, and scales calibrated on wikitext hit saturation cliffs on humaneval's outlier channels.
+
+---
+
+## The kill-fast protocol
+
+Before touching a GPU, check if the idea is mathematically possible:
+
+| Check | Time |
+|-------|------|
+| Does the compressed form actually fit in fewer bytes? | 5 minutes, pencil and paper |
+| What's the best possible error at this rank? (one SVD) | 5 minutes |
+| Would random compression do just as well? | 5 minutes, numpy |
+
+If any check fails, kill immediately. No GPU needed.
+
+For actual experiments: run the hardest cell first. In my setup, Layer 3 + Wikitext was always hardest. If it fails, the entire rung is dead. 4 minutes instead of 60.
+
+One addition I learned the hard way: **smoke discipline before long GPU runs**. Static checkers (`ruff`, `ty`) cannot catch device-state bugs. A type-correct PyTorch call like `tensor.detach().float().cpu()` will sail past every static analysis tool and explode at runtime if the tensor is a meta-tensor placeholder on CPU offload. Before any long run on an HF model loaded with `device_map="auto"`, the pre-flight must include a real `--dense_only` run that touches an offloaded layer. That five minutes caught a bug that would have surfaced 90 seconds into a 140-minute launch.
 
 ---
 
