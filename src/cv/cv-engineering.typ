@@ -139,9 +139,9 @@
   #exp("Nexern GmbH", "Senior ML & Data Engineer · Aug 2020–Jul 2026 · Berlin")
   #set text(size: 8.8pt)
   #list(tight: true, spacing: 0.3em,
+    [Built in-house HR platform in #metric("3 months") — multi-entity, multi-jurisdiction across #metric("5 EU/EMEA countries"); Django/PostgreSQL, ADR + spec-driven sprints, invariants enforced across backend, frontend and DB],
     [Built LLM agent observability with Arize Phoenix; trajectory analysis for debugging agent failures in production],
     [Achieved #metric("5–10×") pipeline speedups via Dask distributed processing, Celery task queues, and vectorised operations],
-    [Operational exposure to KV-cache memory pressure and throughput–latency tradeoffs on long-context agent runs],
     [Led greenfield GenAI agent projects: LLM-based prediction pipelines and automated web data extraction],
     [Django data platform: large-scale JSON ingestion, web crawlers, Docker deployment, GitLab CI/CD],
   )
