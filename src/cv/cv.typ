@@ -76,13 +76,12 @@ Peter Blöchl at TU Clausthal).
 #job(
   "Senior ML & Data Engineer",
   "Nexern GmbH, Berlin",
-  "Aug 2020 – Jul 2026",
+  "Aug 2020 – Jun 2026",
 )[
   #list(
     tight: true,
     [Built LLM agent observability with Arize Phoenix; trajectory analysis for debugging agent failures in production],
     [Achieved 5–10× pipeline speedups via Dask distributed processing, Celery task queues, and vectorised operations],
-    [Operational exposure to KV-cache memory pressure and throughput–latency tradeoffs on long-context agent runs],
     [Led greenfield GenAI agent projects: LLM-based prediction pipelines and automated web data extraction],
     [Built and maintained Django data platform; large-scale JSON ingestion and web crawlers],
     [Deployed agents with Docker on VPS; S3/MinIO storage; GitLab CI/CD],
@@ -132,7 +131,7 @@ Peter Blöchl at TU Clausthal).
   [*Distributed Data*],
   [*Research & Formal Methods*],
   [Dask, Celery, vectorised ops, large-scale JSON ingestion, web crawlers],
-  [#text(fill: accent, weight: "bold")[Lean 4] / Mathlib, PyTorch, HuggingFace Transformers/Accelerate, LoRA/PEFT, quantisation (GPTQ, INT4/INT8), SVD/spectral methods, CUDA, Fortran, C, Rust],
+  [PyTorch, HuggingFace Transformers/Accelerate, LoRA/PEFT, quantisation (GPTQ, INT4/INT8), SVD/spectral methods, CUDA, Fortran, C, Rust],
 )
 
 // ── research ─────────────────────────────────────────────────────────────────

@@ -76,7 +76,7 @@
   #v(0.5em)
   #text(size: 8.5pt, weight: "bold", fill: ink)[ML / Research]
   #linebreak()
-  #mono("PyTorch · HuggingFace · LoRA/PEFT · GPTQ · CUDA · Lean 4")
+  #mono("PyTorch · HuggingFace · LoRA/PEFT · GPTQ · CUDA")
 
   #v(0.8em)
   #section("Education")
@@ -110,7 +110,7 @@
 
   #v(0.6em)
   #text(size: 9pt)[
-    Six years production ML engineering at Nexern (Berlin): LLM agent observability (Arize Phoenix), distributed pipelines (Dask/Celery, #metric("5–10×") speedups), GenAI agent deployment. Built #text(fill: accent, weight: "semibold")[butterflow] — declarative agent eval framework with token caching between runs; #text(fill: accent, weight: "semibold")[falcon] gates unsafe ML deserialization at the type-checker level via Lean 4-verified typestubs.
+    Six years production ML engineering at Nexern (Berlin): LLM agent observability (Arize Phoenix), distributed pipelines (Dask/Celery, #metric("5–10×") speedups), GenAI agent deployment. Built #text(fill: accent, weight: "semibold")[butterflow] — declarative agent eval framework with token caching between runs; #text(fill: accent, weight: "semibold")[falcon] gates unsafe ML deserialization at the type-checker level with formally verified typestubs.
   ]
 
   #section("Selected Projects")
@@ -130,13 +130,13 @@
     #set text(size: 8.8pt)
     #list(tight: true, spacing: 0.35em,
       [Python typestubs tracking payload annotations by source to gate unsafe ML deserialization (pickle, HDF5) at the type-checker],
-      [Born from huntr.com CVE research on serialization-route vulnerabilities in GenAI platforms; Lean 4 soundness proofs included],
+      [Born from huntr.com CVE research on serialization-route vulnerabilities in GenAI platforms; machine-checked soundness proof included],
     )
   ]
 
   #section("Experience")
 
-  #exp("Nexern GmbH", "Senior ML & Data Engineer · Aug 2020–Jul 2026 · Berlin")
+  #exp("Nexern GmbH", "Senior ML & Data Engineer · Aug 2020–Jun 2026 · Berlin")
   #set text(size: 8.8pt)
   #list(tight: true, spacing: 0.3em,
     [Built in-house HR platform in #metric("3 months") — multi-entity, multi-jurisdiction across #metric("5 EU/EMEA countries"); Django/PostgreSQL, ADR + spec-driven sprints, invariants enforced across backend, frontend and DB],
@@ -167,7 +167,7 @@
   #section("Research")
 
   #text(size: 8.8pt)[
-    Independent, Oct 2025–present. #metric("5 preprints") across MoE quantization, LoRA-DPO alignment geometry, RoPE provenance, symmetry survey, and compression methodology. #metric("74 Lean 4 theorems") (Mathlib).
+    Independent, Oct 2025–present. #metric("5 preprints") across MoE quantization, LoRA-DPO alignment geometry, RoPE provenance, symmetry survey, and compression methodology. #metric("74 machine-checked theorems") (Mathlib).
   ]
   #linebreak()
   #link("https://d3banjan.github.io/research")[#mono("d3banjan.github.io/research")]
