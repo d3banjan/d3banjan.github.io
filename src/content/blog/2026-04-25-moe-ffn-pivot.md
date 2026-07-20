@@ -5,6 +5,7 @@ pubDate: 'Apr 25 2026'
 series: "Compressing MoE Without Lying To Yourself"
 seriesOrder: 2
 tags: ["ml-research", "quantization", "MoE", "compression", "MLP"]
+provenance: human-research-ai-written
 ---
 
 Part E of the paper is where the plan met reality and the plan lost. The natural follow-on to the KV-cache gauge was to ask whether the same β-lift phenomenon — the moment-ratio improvement that made the gauge bounds tight — would appear in the FFN weights. If it did, you'd have a rotation-based compression scheme for MoE feed-forward networks, which is where most of the parameter count lives.

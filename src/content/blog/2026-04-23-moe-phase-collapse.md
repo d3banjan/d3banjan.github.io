@@ -5,6 +5,7 @@ pubDate: 'Apr 23 2026'
 series: "Compressing MoE Without Lying To Yourself"
 seriesOrder: 1
 tags: ["ml-research", "quantization", "MoE", "compression", "KV-cache"]
+provenance: human-research-ai-written
 ---
 
 Given only the moment statistics of a layer's KV activations — no inference run, no calibration sweep — you can prove whether 1-bit quantization of that layer is achievable. Not "probably bad." Provably impossible, with an explicit bound on the information loss floor.

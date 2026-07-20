@@ -5,6 +5,7 @@ pubDate: 'May 07 2026'
 tags: ["ml-research", "methodology", "research-style", "lean4"]
 series: "Notes on a Methodology Transition"
 seriesOrder: 4
+provenance: human-research-ai-written
 ---
 
 There is a question that comes up at the start of every research session: *is this candidate worth running?*

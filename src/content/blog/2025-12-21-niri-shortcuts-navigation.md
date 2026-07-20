@@ -5,6 +5,7 @@ pubDate: 'Dec 21 2025'
 tags: ["niri", "wayland", "keyboard-shortcuts"]
 series: "Wayland Desktop Mastery"
 seriesOrder: 2
+provenance: ai-written
 ---
 
 ## The Consistency Principle

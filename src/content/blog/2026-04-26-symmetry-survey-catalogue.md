@@ -5,6 +5,7 @@ pubDate: 'Apr 26 2026'
 tags: ["ml-research", "compression", "symmetry", "quantization", "RoPE"]
 series: "A Survey of Symmetries Compression Must Respect"
 seriesOrder: 1
+provenance: human-research-ai-written
 ---
 
 Compression research has a specific, underappreciated failure mode: schemes that are *algebraically illegal*.

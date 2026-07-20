@@ -5,6 +5,7 @@ pubDate: 'Oct 05 2025'
 tags: ["kitty", "terminal", "gpu"]
 series: "Terminal Power User"
 seriesOrder: 1
+provenance: human-research-ai-written
 ---
 
 ## The Core Insight

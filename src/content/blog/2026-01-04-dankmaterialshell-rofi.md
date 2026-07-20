@@ -5,6 +5,7 @@ pubDate: 'Jan 04 2026'
 tags: ["wayland", "rofi", "desktop-shell", "linux"]
 series: "Wayland Desktop Mastery"
 seriesOrder: 3
+provenance: ai-written
 ---
 
 ## The Integration Problem

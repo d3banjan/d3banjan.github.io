@@ -5,6 +5,7 @@ pubDate: 'May 03 2026'
 tags: ["ml-research", "lean4", "formal-verification", "RWKV", "methodology"]
 series: "A Survey of Symmetries Compression Must Respect"
 seriesOrder: 2
+provenance: human-research-ai-written
 ---
 
 A survey paper is usually a snapshot. You write it at a point in time, submit it, and then it's frozen. Theorems that were missing when you submitted stay missing. Architectures that didn't exist when you wrote the background section don't appear in it. The paper is a fossil.

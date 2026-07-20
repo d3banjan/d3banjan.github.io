@@ -5,6 +5,7 @@ pubDate: 'Apr 20 2026'
 tags: ["ml-research", "methodology", "pre-registration", "experimentation"]
 series: "Notes on a Methodology Transition"
 seriesOrder: 1
+provenance: human-research-ai-written
 ---
 
 The easiest person to deceive is yourself, and solo ML researchers are especially exposed: no co-authors to push back, no lab meeting where a skeptical postdoc asks why you switched metrics mid-run. Just you, your results, and a brain that wants the experiment to have worked.

@@ -5,6 +5,7 @@ pubDate: 'Apr 19 2026'
 tags: ["ml-research", "reproducibility", "latex", "makefile", "workflow"]
 series: "Falsifying LoRA Alignment Geometry"
 seriesOrder: 2
+provenance: human-research-ai-written
 ---
 
 Research papers have a dependency problem. The numbers in the prose come from experiments. The experiments produce JSON. Someone reads the JSON, types a number into the LaTeX, and six weeks later a reviewer asks why Table 2 says 0.34 but Figure 3 implies 0.37.

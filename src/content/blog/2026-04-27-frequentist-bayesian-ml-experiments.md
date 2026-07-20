@@ -5,6 +5,7 @@ pubDate: 'Apr 27 2026'
 tags: ["ml-research", "methodology", "statistics", "bayesian", "hypothesis-testing"]
 series: "Notes on a Methodology Transition"
 seriesOrder: 3
+provenance: human-research-ai-written
 ---
 
 Most ML researchers have a vague, uncomfortable relationship with p-values. You learned the formula, you know 0.05 is the magic number, and you have a nagging feeling that you are not quite using it right.

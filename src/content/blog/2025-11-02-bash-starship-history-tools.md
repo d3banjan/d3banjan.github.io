@@ -5,6 +5,7 @@ pubDate: 'Nov 02 2025'
 tags: ["bash", "terminal", "starship", "shell"]
 series: "Terminal Power User"
 seriesOrder: 3
+provenance: human-research-ai-written
 ---
 
 ## The Portability Question

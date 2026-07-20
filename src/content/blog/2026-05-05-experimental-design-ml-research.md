@@ -5,6 +5,7 @@ pubDate: 'May 05 2026'
 tags: ["ml-research", "methodology", "experimental-design", "statistics"]
 series: "Notes on a Methodology Transition"
 seriesOrder: 2
+provenance: human-research-ai-written
 ---
 
 My training is reductive. Physics background, IISER Kolkata — the instinct is to take the simplest model that contains the phenomenon, write down two parameters, derive a prediction, measure one number. If the number does not appear, the model is wrong. This is a clean way to think, and it does not require elaborate experimental design because the theory tells you what to measure.

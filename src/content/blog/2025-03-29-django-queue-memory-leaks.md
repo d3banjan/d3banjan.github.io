@@ -5,6 +5,7 @@ pubDate: 'Mar 29 2025'
 tags: ["django", "python", "memory-leak", "debugging"]
 series: "Production Django Task Queue"
 seriesOrder: 2
+provenance: human-research-ai-written
 ---
 
 ## The Symptom

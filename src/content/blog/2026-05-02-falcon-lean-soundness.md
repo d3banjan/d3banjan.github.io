@@ -5,6 +5,7 @@ pubDate: 'May 02 2026'
 tags: ["security", "lean4", "formal-verification", "python", "type-theory"]
 series: "Type-Stub Security Gates for ML Deserialization"
 seriesOrder: 2
+provenance: human-research-ai-written
 ---
 
 The [previous post](/blog/2026-05-01-falcon-pickle-security/) showed how `falcon-secure` uses Python type stubs to make unsafe pickle deserialization a static type error. A type checker sees a `TrustedBytes` annotation, sees raw `bytes` being passed, and flags the call before it runs.

@@ -11,6 +11,15 @@ const blogSchema = ({ image }: Parameters<Parameters<typeof defineCollection>[0]
 		tags: z.array(z.string()).default([]),
 		series: z.string().optional(),
 		seriesOrder: z.number().optional(),
+		// Required, no default: every post must make an explicit provenance claim.
+		// A default would silently mislabel, which defeats the point of the label.
+		provenance: z.enum([
+			'human-written',
+			'human-research-ai-written',
+			'ai-drafted',
+			'ai-translated',
+			'ai-written',
+		]),
 	});
 
 const blog = defineCollection({

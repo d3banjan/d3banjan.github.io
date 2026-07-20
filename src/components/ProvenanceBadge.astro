@@ -1,0 +1,53 @@
+---
+import { PROVENANCE_LABELS } from '../consts';
+
+interface Props {
+	provenance: string;
+	/** 'full' shows the explanatory line (post pages); 'compact' is label-only (listings). */
+	variant?: 'full' | 'compact';
+}
+
+const { provenance, variant = 'full' } = Astro.props;
+const meta = PROVENANCE_LABELS[provenance];
+---
+
+{
+	meta && (
+		<div class:list={['provenance', variant]}>
+			<span class="label">{meta.label}</span>
+			{variant === 'full' && <span class="detail">{meta.detail}</span>}
+		</div>
+	)
+}
+
+<style>
+	.provenance {
+		display: inline-flex;
+		flex-direction: column;
+		gap: 0.25em;
+		border: 1px solid rgb(var(--gray-light));
+		border-radius: 8px;
+		padding: 0.5em 0.75em;
+		text-align: left;
+	}
+	.label {
+		font-size: 0.8em;
+		font-weight: 600;
+		letter-spacing: 0.02em;
+		color: rgb(var(--gray-dark));
+	}
+	.detail {
+		font-size: 0.75em;
+		line-height: 1.4;
+		color: rgb(var(--gray));
+	}
+	.compact {
+		padding: 0.15em 0.5em;
+		border-radius: 1em;
+	}
+	.compact .label {
+		font-size: 0.7em;
+		font-weight: 500;
+		color: rgb(var(--gray));
+	}
+</style>

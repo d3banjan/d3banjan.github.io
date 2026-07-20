@@ -5,6 +5,7 @@ pubDate: 'May 08 2026'
 tags: ["ml-research", "methodology", "lean4", "compression", "negative-results"]
 series: "Notes on a Methodology Transition"
 seriesOrder: 5
+provenance: human-research-ai-written
 ---
 
 By week six, the experiment archive had over 25 preregistered, killed experiments. That's a lot of failures. Each one has a postmortem, a `decision.json`, trap results, and the SHA256-locked decision rule that made the kill clean. The machinery is documented in the [pre-registration post](/blog/2026-04-20-preregistration-ml/) and the [compression-falsification-ladder post](/blog/2026-04-28-compression-falsification-ladder/).

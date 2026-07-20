@@ -5,6 +5,7 @@ pubDate: 'Jan 18 2026'
 tags: ["niri", "wayland", "linux", "desktop-shell"]
 series: "Wayland Desktop Mastery"
 seriesOrder: 4
+provenance: ai-written
 ---
 
 ## The Integration Thesis
