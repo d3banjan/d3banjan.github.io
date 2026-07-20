@@ -8,6 +8,7 @@ import Header from '../components/Header.astro';
 import TagList from '../components/TagList.astro';
 import SeriesNav from '../components/SeriesNav.astro';
 import SeriesNextPost from '../components/SeriesNextPost.astro';
+import ProvenanceBadge from '../components/ProvenanceBadge.astro';
 import BilingualToggle from '../components/BilingualToggle.svelte';
 import { SERIES_META } from '../consts';
 
@@ -18,7 +19,7 @@ type Props = CollectionEntry<'blog'>['data'] & {
 	hreflangBn?: string;
 };
 
-const { title, description, pubDate, updatedDate, heroImage, tags, series, seriesOrder, id, defaultLang = 'en' } =
+const { title, description, pubDate, updatedDate, heroImage, tags, series, seriesOrder, provenance, id, defaultLang = 'en' } =
 	Astro.props;
 
 const SITE_URL = 'https://d3banjan.github.io';
@@ -117,6 +118,7 @@ const jsonLd = {
 						</div>
 						<h1>{title}</h1>
 						<TagList tags={tags} />
+						<ProvenanceBadge provenance={provenance} />
 						<hr />
 					</div>
 					{series && seriesOrder && (

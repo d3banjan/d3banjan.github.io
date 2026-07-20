@@ -5,6 +5,7 @@ pubDate: 'May 09 2026'
 tags: ["ml-research", "methodology", "lean4", "experimental-design"]
 series: "Notes on a Methodology Transition"
 seriesOrder: 6
+provenance: human-research-ai-written
 ---
 
 The most expensive thing in empirical ML research is running an experiment that a proof could have killed.

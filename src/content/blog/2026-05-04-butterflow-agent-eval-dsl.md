@@ -3,6 +3,7 @@ title: 'Butterflow: Pinning Agent Behavior with a Spec DSL'
 description: 'Agent evals that actually catch regressions: a Python flow/expect DSL for deterministic assertions, Arize Phoenix for fuzzy semantic evals, and cache-cluster grouping for token savings.'
 pubDate: 'May 04 2026'
 tags: ["ai-agents", "developer-tools", "software-engineering", "llm", "evals"]
+provenance: human-research-ai-written
 ---
 
 The problem with testing AI agents is not that they are nondeterministic. It is that most eval frameworks give up too early on the deterministic parts and too late on the fuzzy parts.

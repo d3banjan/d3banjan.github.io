@@ -5,6 +5,7 @@ pubDate: 'Dec 21 2024'
 tags: ["django", "python", "task-queue", "celery"]
 series: "Production Django Task Queue"
 seriesOrder: 1
+provenance: human-research-ai-written
 ---
 
 ## The Insight

@@ -5,6 +5,7 @@ pubDate: 'May 06 2026'
 series: "Compressing MoE Without Lying To Yourself"
 seriesOrder: 3
 tags: ["ml-research", "lean4", "formal-verification", "methodology"]
+provenance: human-research-ai-written
 ---
 
 Adding a Lean 4 appendix to an empirical ML paper sounds like it should make the paper stronger. It does — but not in the way most people expect. The value isn't that you have a proof assistant in your toolchain. The value is what happens when you try to close the sorry count to zero and the compiler tells you your proof doesn't work.

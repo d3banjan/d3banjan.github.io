@@ -5,6 +5,7 @@ pubDate: 'Apr 18 2026'
 tags: ["ml-research", "lora", "fine-tuning", "dpo", "geometry", "stable-rank"]
 series: "Falsifying LoRA Alignment Geometry"
 seriesOrder: 1
+provenance: human-research-ai-written
 ---
 
 The question we started with was small and embarrassing: after DPO fine-tuning, are the weight changes actually doing something geometrically different from standard language model training? Or are we just pattern-matching on a noisy signal?

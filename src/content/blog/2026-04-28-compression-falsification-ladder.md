@@ -5,6 +5,7 @@ pubDate: 'Apr 28 2026'
 tags: ["ml-research", "compression", "methodology", "quantization", "MoE"]
 series: "Compressing MoE Without Lying To Yourself"
 seriesOrder: 4
+provenance: human-research-ai-written
 ---
 
 Neural network compression papers have a replication problem. Not the statistical kind—the kind where the ideas simply don't work outside the paper's experimental setup.

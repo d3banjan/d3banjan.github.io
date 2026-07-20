@@ -5,6 +5,7 @@ pubDate: 'Oct 19 2025'
 tags: ["kitty", "terminal", "ssh", "automation"]
 series: "Terminal Power User"
 seriesOrder: 2
+provenance: human-research-ai-written
 ---
 
 ## The Extension Philosophy

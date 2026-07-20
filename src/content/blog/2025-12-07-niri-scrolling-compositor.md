@@ -5,6 +5,7 @@ pubDate: 'Dec 07 2025'
 tags: ["niri", "wayland", "tiling-wm", "linux"]
 series: "Wayland Desktop Mastery"
 seriesOrder: 1
+provenance: ai-written
 ---
 
 ## The Mental Model Shift

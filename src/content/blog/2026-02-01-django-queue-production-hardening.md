@@ -5,6 +5,7 @@ pubDate: 'Feb 01 2026'
 tags: ["django", "python", "security", "refactoring"]
 series: "Production Django Task Queue"
 seriesOrder: 5
+provenance: human-research-ai-written
 ---
 
 ## The Starting Point

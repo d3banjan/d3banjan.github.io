@@ -5,6 +5,7 @@ pubDate: 'Apr 24 2026'
 tags: ["ml-research", "d3", "jekyll", "lean4", "reproducibility", "visualization"]
 series: "Falsifying LoRA Alignment Geometry"
 seriesOrder: 4
+provenance: human-research-ai-written
 ---
 
 A static PDF is a strange way to publish interactive research. The figures are frozen at whatever resolution the author chose. The reader can't change axes, filter by model size, or ask "what does this look like for layer 6 specifically?" The author anticipated every question wrong.

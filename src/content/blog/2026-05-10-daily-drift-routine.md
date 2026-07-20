@@ -5,6 +5,7 @@ pubDate: 'May 10 2026'
 tags: ["ml-research", "methodology", "research-operations", "tooling"]
 series: "Notes on a Methodology Transition"
 seriesOrder: 7
+provenance: human-research-ai-written
 ---
 
 Solo research programs drift. Not because the researcher is careless, but because each session adds small exceptions to the protocol that feel justified in the moment.

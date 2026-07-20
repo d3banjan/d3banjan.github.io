@@ -5,6 +5,7 @@ pubDate: 'Sep 06 2025'
 tags: ["django", "python", "postgresql", "concurrency"]
 series: "Production Django Task Queue"
 seriesOrder: 4
+provenance: human-research-ai-written
 ---
 
 ## The Race Condition

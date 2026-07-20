@@ -22,6 +22,36 @@ export const SITE_DESCRIPTION = 'ML systems engineer. LLM agent observability (A
 
 export type ContentCategory = 'research' | 'engineering' | 'blog';
 
+/**
+ * How each post was produced. Displayed on every post and in the blog index.
+ * Keys match the `provenance` enum in content.config.ts; edit the labels here
+ * to change the wording everywhere at once.
+ */
+export const PROVENANCE_LABELS: Record<string, { label: string; detail: string }> = {
+	'human-written': {
+		label: 'Human-written + optionally AI-edited',
+		detail: 'Drafted by me. An LLM may have been used for copy-editing only.',
+	},
+	'human-research-ai-written': {
+		label: 'Human-led research + AI-written, Human-edited',
+		detail:
+			'The research, experiments, and conclusions are mine. An LLM drafted the prose from my notes and I edited it; I am responsible for its accuracy.',
+	},
+	'ai-drafted': {
+		label: 'AI-drafted + heavily Human-edited',
+		detail: 'I outlined it, an LLM produced a first draft, and I rewrote it extensively.',
+	},
+	'ai-translated': {
+		label: 'AI-translated from Human-edited Bengali',
+		detail:
+			'Machine translation of the Bengali original, which I outlined and extensively rewrote. The editing happened upstream, not on this text.',
+	},
+	'ai-written': {
+		label: 'AI-written + Human-reviewed',
+		detail: 'An LLM wrote the draft. I reviewed it and am responsible for its accuracy.',
+	},
+};
+
 export const SERIES_META: Record<string, { slug: string; description: string; category: ContentCategory }> = {
 	'Production Django Task Queue': {
 		slug: 'django-task-queue',

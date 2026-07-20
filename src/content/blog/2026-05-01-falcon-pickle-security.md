@@ -5,6 +5,7 @@ pubDate: 'May 01 2026'
 tags: ["security", "python", "pickle", "ml-ops", "type-stubs"]
 series: "Type-Stub Security Gates for ML Deserialization"
 seriesOrder: 1
+provenance: human-research-ai-written
 ---
 
 ```python

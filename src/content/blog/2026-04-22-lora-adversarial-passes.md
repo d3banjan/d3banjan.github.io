@@ -5,6 +5,7 @@ pubDate: 'Apr 22 2026'
 tags: ["ml-research", "lora", "dpo", "falsification", "methodology", "negative-results"]
 series: "Falsifying LoRA Alignment Geometry"
 seriesOrder: 3
+provenance: human-research-ai-written
 ---
 
 Two claims died during this project. One we were proud of — the orthogonal-complement hypothesis had a satisfying geometric story and clean code to test it. The other we were less proud of — it died because we hadn't thought carefully enough about what we were actually measuring.

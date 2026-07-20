@@ -5,6 +5,7 @@ pubDate: 'Apr 12 2025'
 tags: ["django", "python", "fork", "linux"]
 series: "Production Django Task Queue"
 seriesOrder: 3
+provenance: human-research-ai-written
 ---
 
 ## The Consequence of Forking

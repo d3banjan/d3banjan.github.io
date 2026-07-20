@@ -5,6 +5,7 @@ pubDate: 'Nov 16 2025'
 tags: ["kitty", "terminal", "workflow"]
 series: "Terminal Power User"
 seriesOrder: 4
+provenance: human-research-ai-written
 ---
 
 ## The Integration Mindset
